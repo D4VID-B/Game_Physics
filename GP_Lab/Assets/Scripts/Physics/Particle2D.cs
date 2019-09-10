@@ -7,13 +7,15 @@ using UnityEngine;
 public class Particle2D : MonoBehaviour
 {
     //Step 1
-
+    //Hi
     public Vector2 position;
     public Vector2 velocity;
     public Vector2 acceleration;
     public float rotation;
     public float angularVelocity;
     public float angularAcceleration;
+
+    public float accelerationValue;
 
     public enum PositionFunction
     {
@@ -27,8 +29,16 @@ public class Particle2D : MonoBehaviour
         RotationKinematic
     }
 
+    public enum UpdateFormula
+    {
+        Ocilate,
+        ConstantVelocity,
+        ConstantAcceleration
+    }
+
     public PositionFunction IntegrationMethod;
     public RotationFunction RotationUpdateMethod;
+    public UpdateFormula MovementType;
 
     //Step 2
 
@@ -112,8 +122,18 @@ public class Particle2D : MonoBehaviour
         
 
         //Step 4
-
-        acceleration.x = -3f*Mathf.Sin(Time.fixedTime);
+        if(MovementType == UpdateFormula.Ocilate)
+        {
+            acceleration.x = -3f * Mathf.Sin(Time.fixedTime);
+        }
+        else if(MovementType == UpdateFormula.ConstantVelocity)
+        {
+            acceleration.x = 0;
+        }
+        else if(MovementType == UpdateFormula.ConstantAcceleration)
+        {
+            acceleration.x = accelerationValue;
+        }
 
 
     }
