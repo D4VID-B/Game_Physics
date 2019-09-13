@@ -33,7 +33,6 @@ public class ForceGenerator
         //lookup friction coef table for materials
        
         Vector2 friction = new Vector2(0f, 0f);
-        Vector2 absNormal = new Vector2(Mathf.Abs(f_normal.x), Mathf.Abs(f_normal.y));
 
         if (particleVelocity == Vector2.zero)
         {
@@ -41,21 +40,21 @@ public class ForceGenerator
             //first calculate the max, then compare to opposing
 
             //Max:
-            Vector2 max = frictionCoefficient_static * absNormal;
+            float max = frictionCoefficient_static * f_normal.magnitude;
 
             //Compare
-            if (f_opposing.magnitude < max.magnitude)
+            if (f_opposing.magnitude < max)
             {
                 friction = -f_opposing;
             }
-            else if (f_opposing.magnitude > max.magnitude)
+            else if (f_opposing.magnitude > max)
             {
                 friction = (-frictionCoefficient_static * f_normal) * particleVelocity.normalized;
             }
         }
         else if(particleVelocity != Vector2.zero)
         {
-            friction = -frictionCoefficient_kinetic * absNormal; 
+            friction = -frictionCoefficient_kinetic * f_normal.magnitude * particleVelocity.normalized; 
         }
 
 
@@ -66,11 +65,12 @@ public class ForceGenerator
     // f_drag = (p * u^2 * area * coeff)/2
     public static Vector2 GenerateForce_drag(Vector2 particleVelocity, Vector2 fluidVelocity, float fluidDensity, float objectArea_crossSection, float objectDragCoefficient)
     {
-        //
-        //
-        //
+        float dragMag = (fluidDensity * (particleVelocity.magnitude * particleVelocity.magnitude) * objectArea_crossSection*objectDragCoefficient) / 2;
+        float dragDir = 1;
 
-        return Vector2.zero;
+        Vector2 drag = new Vector2(dragMag, dragDir);
+
+        return drag;
     }
     // f_spring = -coeff*(spring length - spring resting length)
     public static Vector2 GenerateForce_spring(Vector2 particlePosition, Vector2 anchorPosition, float springRestingLength, float springStiffnessCoefficient)
@@ -83,6 +83,8 @@ public class ForceGenerator
         float length = (particlePosition - anchorPosition).magnitude;
         float direction = (particlePosition - anchorPosition).magnitude / length;
 
-        return Vector2.zero;
+        Vector2 springForce = new Vector2(length, direction);
+
+        return springForce;
     }
 }

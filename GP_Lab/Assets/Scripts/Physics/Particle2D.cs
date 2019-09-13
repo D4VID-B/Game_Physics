@@ -19,10 +19,12 @@ public class Particle2D : MonoBehaviour
     public float startingMass;
     float mass, massInv;
 
+    public Transform surfaceTransform;
+
     public void setMass(float newMass)
     {
         mass = newMass >= 0 ? newMass : 0.0f; //Option 01
-        mass = Mathf.Max(0.0f, newMass);      // Option 02
+        mass = Mathf.Max(0.0f, newMass);      //Option 02
         massInv = mass > 0.0f ? 1.0f / mass : 0.0f;
     }
 
@@ -66,7 +68,8 @@ public class Particle2D : MonoBehaviour
     {
         Ocilate,
         ConstantVelocity,
-        ConstantAcceleration
+        ConstantAcceleration,
+        ZERO_MOVE
     }
 
     public PositionFunction IntegrationMethod;
@@ -183,5 +186,8 @@ public class Particle2D : MonoBehaviour
         //addForce(f_gravity);
 
         addForce(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up));
+        addForce(ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized));
+        addForce(ForceGenerator.GenerateForce_drag(velocity, velocity/10, 1, 1, 10));
+        //addForce(ForceGenerator.GenerateForce_sliding(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized)));
     }
 }
