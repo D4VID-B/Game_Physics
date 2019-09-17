@@ -7,16 +7,51 @@ using UnityEngine;
 public class Particle2D : MonoBehaviour
 {
     //Step 1
-    //Hi
     public Vector2 position;
     public Vector2 velocity;
     public Vector2 acceleration;
     public float rotation;
     public float angularVelocity;
     public float angularAcceleration;
-
     public float accelerationValue;
 
+    //Lab02 - Step 1
+    public float startingMass;
+    float mass, massInv;
+
+    public Transform surfaceTransform;
+
+    public void setMass(float newMass)
+    {
+        mass = newMass >= 0 ? newMass : 0.0f; //Option 01
+        mass = Mathf.Max(0.0f, newMass);      //Option 02
+        massInv = mass > 0.0f ? 1.0f / mass : 0.0f;
+    }
+
+    public float getMass()
+    {
+        return mass;
+    }
+
+    //Lab02 - Step02
+
+    Vector2 force;
+
+    public void addForce(Vector2 newForce)
+    {
+        //D'Alembert
+        force += newForce;
+    }
+
+    void updateAcceleration()
+    {
+        //Newton 2
+        acceleration = force * massInv;
+
+        force.Set(0.0f, 0.0f);
+    }
+
+    //Lab 01 - Step 1 cont
     public enum PositionFunction
     {
         PositionEuler,
@@ -33,12 +68,101 @@ public class Particle2D : MonoBehaviour
     {
         Ocilate,
         ConstantVelocity,
-        ConstantAcceleration
+        ConstantAcceleration,
+        ZERO_MOVE
+    }
+    //Lab 02 Demo
+
+    public enum FrictionCoef
+    {
+        AlumAlumStatic,
+        AlumAlumSliding,
+        LeatherIronStatic,
+        LeatherIronSliding,
+        SteelSteelStatic,
+        SteelSteelSliding
+
     }
 
     public PositionFunction IntegrationMethod;
     public RotationFunction RotationUpdateMethod;
     public UpdateFormula MovementType;
+    public FrictionCoef MaterialType;
+
+    public float getCoeff(FrictionCoef selection)
+    {
+        float coeff = 0;
+
+        switch (selection)
+        {
+            case FrictionCoef.AlumAlumStatic:
+                return coeff = 1.20f;
+            case FrictionCoef.AlumAlumSliding:
+                return coeff = 1.4f;
+            case FrictionCoef.LeatherIronStatic:
+                return coeff = 0.6f;
+
+            case FrictionCoef.LeatherIronSliding:
+                return coeff = 0.56f;
+
+            case FrictionCoef.SteelSteelStatic:
+                return coeff = 0.65f;
+
+            case FrictionCoef.SteelSteelSliding:
+                return coeff = 0.42f;
+
+        }
+
+        return coeff;
+    }
+    //Lab 3 - Step 1
+
+    float m_Inertia;
+
+    public float radius, i_Radius, o_Radius, height, width, length;
+
+    public float f_Torque;
+
+    public enum Shape_2D
+    {
+        Disk,   // I = 1/2*m*(r*r)
+        Ring,   // I = 1/2*m*(outer_r^2 * inner_r^2)
+        Rectangle,  // I = 1/12 * m * (height^2 * width^2)
+        Rod     // I = 1/12 * m * (length*length)
+    }
+
+    public Shape_2D Shape;
+
+    float calculateMomentOfInertia(Shape_2D shape)
+    {
+        float MoI = 0;
+        switch(shape)
+        {
+            case Shape_2D.Disk:
+                return MoI = 0.5f * mass * (radius * radius);
+            case Shape_2D.Ring:
+                return MoI = 0.5f * mass * ((o_Radius*o_Radius)*(i_Radius*i_Radius));
+            case Shape_2D.Rectangle:
+                return MoI = (float)1/12 * mass * ((height*height) * (width * width));
+            case Shape_2D.Rod:
+                return MoI = (float)1/12 * mass * (length * length);
+        }
+
+        return MoI;
+    }
+
+    //Lab 03 - Step 02
+    float convertToAcceleration(float inertia)
+    {
+        float conversion = 1/inertia * f_Torque;
+
+        return conversion;
+    }
+
+    void addTorque(float torque)
+    {
+        f_Torque += torque;
+    }
 
     //Step 2
 
@@ -46,8 +170,8 @@ public class Particle2D : MonoBehaviour
     {
         //x(t+dt) = x(t) + v(t)dt
         //Euler:
-                    //F(t+dt) = F(t) + f(t)dt
-                    //               + (df/dt)dt
+        //F(t+dt) = F(t) + f(t)dt
+        //               + (df/dt)dt
 
         position += velocity * dt;
 
@@ -57,7 +181,7 @@ public class Particle2D : MonoBehaviour
 
     void updatePosKinematic(float dt)
     {
-        position += velocity * dt + (acceleration*.5f)*dt*dt;
+        position += velocity * dt + (acceleration * .5f) * dt * dt;
         velocity += acceleration * dt;
     }
 
@@ -74,35 +198,44 @@ public class Particle2D : MonoBehaviour
         angularVelocity += angularAcceleration * dt;
     }
 
-
+    void Start()
+    {
+        setMass(startingMass);
+    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Step 3
-        if(IntegrationMethod == PositionFunction.PositionEuler)
+        //Lab 01 & Lab 02 - Step 3
+        if (IntegrationMethod == PositionFunction.PositionEuler)
         {
             updatePosEulerExplicit(Time.fixedDeltaTime);
+            updateAcceleration();
+
             transform.position = position;
 
-            if(RotationUpdateMethod == RotationFunction.RotationEuler)
+            //Rotations
+            if (RotationUpdateMethod == RotationFunction.RotationEuler)
             {
                 updateRotEulerExplicit(Time.fixedDeltaTime);
 
-                transform.eulerAngles = new Vector3 (0f, 0f, rotation);
+                transform.eulerAngles = new Vector3(0f, 0f, rotation);
             }
-            else if(RotationUpdateMethod == RotationFunction.RotationKinematic)
+            else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
                 updateRotKinematic(Time.fixedDeltaTime);
 
                 transform.eulerAngles = new Vector3(0f, 0f, rotation);
             }
         }
-        else if(IntegrationMethod == PositionFunction.PositionKinematic)
+        else if (IntegrationMethod == PositionFunction.PositionKinematic)
         {
             updatePosKinematic(Time.fixedDeltaTime);
+            updateAcceleration();
+
             transform.position = position;
 
+            //Rotations
             if (RotationUpdateMethod == RotationFunction.RotationEuler)
             {
                 updateRotEulerExplicit(Time.fixedDeltaTime);
@@ -118,23 +251,55 @@ public class Particle2D : MonoBehaviour
 
             }
         }
-        
-        
+
+
 
         //Step 4
-        if(MovementType == UpdateFormula.Ocilate)
+        //if(MovementType == UpdateFormula.Ocilate)
+        //{
+        //    acceleration.x = -3f * Mathf.Sin(Time.fixedTime);
+        //}
+        //else if(MovementType == UpdateFormula.ConstantVelocity)
+        //{
+        //    acceleration.x = 0;
+        //}
+        //else if(MovementType == UpdateFormula.ConstantAcceleration)
+        //{
+        //    acceleration.x = accelerationValue;
+        //}
+
+        //Lab 02 - Step 4
+        //F_gravity: f = mg
+        //Vector2 f_gravity = mass * new Vector2(0.0f, -9.871f);
+        //addForce(f_gravity);
+
+        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        Vector2 normal = ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized);
+
+        //Always there
+        addForce(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up));
+
+        //******** Block on a slanted surface ********//
+        if (gameObject.name == "SlideCube")
         {
-            acceleration.x = -3f * Mathf.Sin(Time.fixedTime);
-        }
-        else if(MovementType == UpdateFormula.ConstantVelocity)
-        {
-            acceleration.x = 0;
-        }
-        else if(MovementType == UpdateFormula.ConstantAcceleration)
-        {
-            acceleration.x = accelerationValue;
+            //addForce(ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized));
+            //addForce(ForceGenerator.GenerateForce_drag(velocity, velocity/10, 1, 1, 10));
+
+            //Using Friction (some more help from brother)
+            addForce(ForceGenerator.GenerateForce_friction(normal, new Vector2(mass * -9.871f * .5f, mass * -9.871f * .5f), Vector2.zero, getCoeff(FrictionCoef.AlumAlumStatic), getCoeff(MaterialType)));
+
+            //Using Sliding force
+            addForce(ForceGenerator.GenerateForce_sliding(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), normal));
         }
 
+
+
+
+        //********  Cube on a Spring ********//
+        if (gameObject.name == "HangCube")
+        {
+            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, 1f, 0.5f));
+        }
 
     }
 }
