@@ -81,13 +81,13 @@ public class ForceGenerator
         //length (float) = particlepos - anchorpos => magnitude of the vector
         // direction - comes from the length calculation -> direction = normalise (/by length)
 
-        float length = (particlePosition - anchorPosition).magnitude;
+        Vector2 displacement = (particlePosition - anchorPosition);
 
-        float direction = (particlePosition - anchorPosition).magnitude / length;
+        float springLength = displacement.magnitude;
 
-        float f_strength = -springStiffnessCoefficient * (length - springRestingLength);
+        float f_strength = -springStiffnessCoefficient * (springLength - springRestingLength);
 
-        Vector2 springForce = new Vector2(f_strength, direction);
+        Vector2 springForce = (displacement * f_strength)/springLength;
 
         return springForce;
     }

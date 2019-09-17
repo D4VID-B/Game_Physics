@@ -250,7 +250,7 @@ public class Particle2D : MonoBehaviour
                                         //********  Cube on a Spring ********//
         if(gameObject.name == "HangCube")
         {
-            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, 1f, 0.5f));
+            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, 1f, 1f));
         }
         
     }
