@@ -31,7 +31,8 @@ public class ForceGenerator
     public static Vector2 GenerateForce_friction(Vector2 f_normal, Vector2 f_opposing, Vector2 particleVelocity, float frictionCoefficient_static, float frictionCoefficient_kinetic)
     {
         //lookup friction coef table for materials
-       
+        //f_opposing x = mg*sin()*cos() y = mg*sin()*sin()
+
         Vector2 friction = new Vector2(0f, 0f);
 
         if (particleVelocity == Vector2.zero)

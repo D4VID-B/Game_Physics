@@ -71,10 +71,50 @@ public class Particle2D : MonoBehaviour
         ConstantAcceleration,
         ZERO_MOVE
     }
+    //Lab 02 Demo
+
+    public enum FrictionCoef
+    {
+        AlumAlumStatic,
+        AlumAlumSliding,
+        LeatherIronStatic,
+        LeatherIronSliding,
+        SteelSteelStatic,
+        SteelSteelSliding
+
+    }
 
     public PositionFunction IntegrationMethod;
     public RotationFunction RotationUpdateMethod;
     public UpdateFormula MovementType;
+    public FrictionCoef MaterialType;
+
+    public float getCoeff (FrictionCoef selection)
+    {
+        float coeff = 0;
+
+        switch(selection)
+        {
+            case FrictionCoef.AlumAlumStatic:
+                return coeff = 1.20f;
+            case FrictionCoef.AlumAlumSliding:
+                return coeff = 1.4f;
+            case FrictionCoef.LeatherIronStatic:
+                return coeff = 0.6f;
+
+            case FrictionCoef.LeatherIronSliding:
+                return coeff = 0.56f;
+
+            case FrictionCoef.SteelSteelStatic:
+                return coeff = 0.65f;
+
+            case FrictionCoef.SteelSteelSliding:
+                return coeff = 0.42f;
+
+        }
+
+            return coeff;
+    }
 
     //Step 2
 
@@ -185,9 +225,33 @@ public class Particle2D : MonoBehaviour
         //Vector2 f_gravity = mass * new Vector2(0.0f, -9.871f);
         //addForce(f_gravity);
 
+        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        Vector2 normal = ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized);
+        
+        //Always there
         addForce(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up));
-        addForce(ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized));
-        addForce(ForceGenerator.GenerateForce_drag(velocity, velocity/10, 1, 1, 10));
-        //addForce(ForceGenerator.GenerateForce_sliding(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized)));
+
+                                        //******** Block on a slanted surface ********//
+        if(gameObject.name == "SlideCube")
+        {
+            //addForce(ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized));
+            //addForce(ForceGenerator.GenerateForce_drag(velocity, velocity/10, 1, 1, 10));
+
+            //Using Friction (some more help from brother)
+            addForce(ForceGenerator.GenerateForce_friction(normal, new Vector2(mass * -9.871f * .5f, mass * -9.871f * .5f), Vector2.zero, getCoeff(FrictionCoef.AlumAlumStatic), getCoeff(MaterialType)));
+
+            //Using Sliding force
+            addForce(ForceGenerator.GenerateForce_sliding(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), normal));
+        }
+        
+
+
+
+                                        //********  Cube on a Spring ********//
+        if(gameObject.name == "HangCube")
+        {
+            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, 1f, 0.5f));
+        }
+        
     }
 }
