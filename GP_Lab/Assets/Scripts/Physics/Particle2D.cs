@@ -18,6 +18,10 @@ public class Particle2D : MonoBehaviour
     //Lab02 - Step 1
     public float startingMass;
     float mass, massInv;
+    public float spring_stiffness, spring_resting;
+
+    public float fluidDensity;
+    public Vector2 fluidVelocity;
 
     public Transform surfaceTransform;
 
@@ -71,6 +75,12 @@ public class Particle2D : MonoBehaviour
         ConstantAcceleration,
         ZERO_MOVE
     }
+
+    public PositionFunction IntegrationMethod;
+    public RotationFunction RotationUpdateMethod;
+    public UpdateFormula MovementType;
+
+
     //Lab 02 Demo
 
     public enum FrictionCoef
@@ -84,9 +94,7 @@ public class Particle2D : MonoBehaviour
 
     }
 
-    public PositionFunction IntegrationMethod;
-    public RotationFunction RotationUpdateMethod;
-    public UpdateFormula MovementType;
+
     public FrictionCoef MaterialType;
 
     public float getCoeff (FrictionCoef selection)
@@ -116,7 +124,7 @@ public class Particle2D : MonoBehaviour
             return coeff;
     }
 
-    //Step 2
+    //Lab 01 - Step 2
 
     void updatePosEulerExplicit(float dt)
     {
@@ -155,7 +163,6 @@ public class Particle2D : MonoBehaviour
         setMass(startingMass);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         //Lab 01 & Lab 02 - Step 3
@@ -222,35 +229,39 @@ public class Particle2D : MonoBehaviour
 
         //Lab 02 - Step 4
         //F_gravity: f = mg
-        //Vector2 f_gravity = mass * new Vector2(0.0f, -9.871f);
+        Vector2 gravity = mass * new Vector2(0.0f, -9.871f);
         //addForce(f_gravity);
 
-        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
-        Vector2 normal = ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized);
-        
-        //Always there
-        addForce(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up));
+        //Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, new Vector2(Mathf.Cos(surfaceTransform.eulerAngles.z), Mathf.Sin(surfaceTransform.eulerAngles.z)).normalized);
 
+        //Always there
+        
                                         //******** Block on a slanted surface ********//
         if(gameObject.name == "SlideCube")
         {
+            //addForce(gravity);
+            addForce(normal);
+
+
             //addForce(ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized));
             //addForce(ForceGenerator.GenerateForce_drag(velocity, velocity/10, 1, 1, 10));
 
             //Using Friction (some more help from brother)
-            addForce(ForceGenerator.GenerateForce_friction(normal, new Vector2(mass * -9.871f * .5f, mass * -9.871f * .5f), Vector2.zero, getCoeff(FrictionCoef.AlumAlumStatic), getCoeff(MaterialType)));
+            //addForce(ForceGenerator.GenerateForce_friction(normal, new Vector2(mass * -9.871f * .5f, mass * -9.871f * .5f), Vector2.zero, getCoeff(MaterialType), getCoeff(MaterialType)));
 
             //Using Sliding force
-            addForce(ForceGenerator.GenerateForce_sliding(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), normal));
+            //addForce(ForceGenerator.GenerateForce_sliding(gravity, normal));
         }
-        
 
 
 
-                                        //********  Cube on a Spring ********//
-        if(gameObject.name == "HangCube")
+
+        //********  Cube on a Spring ********//
+        if (gameObject.name == "HangCube")
         {
-            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, 1f, 1f));
+            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, spring_resting, spring_stiffness));
+            addForce(ForceGenerator.GenerateForce_drag(Vector2.zero, fluidVelocity, fluidDensity, 1, 1.05f));
         }
         
     }

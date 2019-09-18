@@ -17,7 +17,7 @@ public class ForceGenerator
         //surfaceNormal_unit = unit vector of the surface -> cos(x), sin(y)
         //proj = built into unity
         
-        Vector2 normalForce = Vector3.Project(f_gravity, surfaceNormal_unit);
+        Vector2 normalForce = Vector3.Project(-f_gravity, surfaceNormal_unit);
 
         return normalForce;
     }
@@ -50,7 +50,7 @@ public class ForceGenerator
             }
             else if (f_opposing.magnitude > max)
             {
-                friction = (-frictionCoefficient_static * f_normal) * particleVelocity.normalized;
+                friction = -max * f_opposing;
             }
         }
         else if(particleVelocity != Vector2.zero)
@@ -58,8 +58,6 @@ public class ForceGenerator
             friction = -frictionCoefficient_kinetic * f_normal.magnitude * particleVelocity.normalized; 
         }
 
-
-        
         return friction;
     }
    

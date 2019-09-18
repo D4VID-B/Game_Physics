@@ -205,13 +205,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401317095}
-  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: -1, y: -3, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &828410376
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: -2, y: -4}
+  position: {x: 0, y: -4}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
   rotation: 0
@@ -252,6 +252,10 @@ MonoBehaviour:
   angularAcceleration: 0
   accelerationValue: 0
   startingMass: 1
+  spring_stiffness: 5
+  spring_resting: 4
+  fluidDensity: 1.225
+  fluidVelocity: {x: 0, y: 0}
   surfaceTransform: {fileID: 401317099}
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -266,7 +270,7 @@ BoxCollider:
   m_GameObject: {fileID: 828410376}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -324,7 +328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828410376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: -4, z: 0}
+  m_LocalPosition: {x: 0, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -407,7 +411,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187940628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -536,14 +540,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: -2.6}
+  position: {x: -2.5, y: 0}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
-  rotation: 45
+  rotation: 0
   angularVelocity: 0
   angularAcceleration: 0
   accelerationValue: 0
   startingMass: 1
+  spring_stiffness: 0
+  spring_resting: 0
+  fluidDensity: 0
+  fluidVelocity: {x: 0, y: 0}
   surfaceTransform: {fileID: 401317099}
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -615,10 +623,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936263989}
-  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: -2.6, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
