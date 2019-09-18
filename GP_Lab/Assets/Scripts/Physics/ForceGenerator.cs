@@ -65,9 +65,9 @@ public class ForceGenerator
     public static Vector2 GenerateForce_drag(Vector2 particleVelocity, Vector2 fluidVelocity, float fluidDensity, float objectArea_crossSection, float objectDragCoefficient)
     {
         float dragMag = (fluidDensity * (particleVelocity.magnitude * particleVelocity.magnitude) * objectArea_crossSection*objectDragCoefficient) / 2;
-        float dragDir = 1;
+        Vector2 direction = -particleVelocity;
 
-        Vector2 drag = new Vector2(dragMag, dragDir);
+        Vector2 drag = (direction*dragMag) / particleVelocity.magnitude;
 
         return drag;
     }
@@ -79,7 +79,7 @@ public class ForceGenerator
         //length (float) = particlepos - anchorpos => magnitude of the vector
         // direction - comes from the length calculation -> direction = normalise (/by length)
 
-        Vector2 displacement = (particlePosition - anchorPosition);
+        Vector2 displacement = particlePosition - anchorPosition;
 
         float springLength = displacement.magnitude;
 
