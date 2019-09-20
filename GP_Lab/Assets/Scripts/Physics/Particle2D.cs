@@ -20,8 +20,8 @@ public class Particle2D : MonoBehaviour
     float mass, massInv;
     public float spring_stiffness, spring_resting;
 
-    public float fluidDensity;
-    public Vector2 fluidVelocity;
+    public float fluidDensity = 1.225f;
+    public Vector2 fluidVelocity = Vector2.zero;
 
     public Transform surfaceTransform;
 
@@ -83,45 +83,60 @@ public class Particle2D : MonoBehaviour
 
     //Lab 02 Demo
 
-    public enum FrictionCoef
+    public enum FrictionCoef_Static
     {
-        AlumAlumStatic,
-        AlumAlumSliding,
-        LeatherIronStatic,
-        LeatherIronSliding,
-        SteelSteelStatic,
-        SteelSteelSliding
-
+        AlumSteelStatic, // 0.61
+        RubberConcreteDryStatic, // 1.0
+        SteelSteelStatic, // 0.74
     }
 
-
-    public FrictionCoef MaterialType;
-
-    public float getCoeff (FrictionCoef selection)
+    public enum FrictionCoef_Kinetic
     {
-        float coeff = 0;
+        AlumSteelKinetic, // 0.47
+        RubberConcreteDryKinetic, // 0.8
+        SteelSteelKinetic, // 0.57
+    }
+
+    public FrictionCoef_Static MaterialType_Static;
+    public FrictionCoef_Kinetic MaterialType_Kinetic;
+    //Source: https://physics.ucf.edu/~saul/Common/06-Forces/friction-coeffs.gif
+
+    public float getCoeff_Static (FrictionCoef_Static selection)
+    {
+        float coeff = 1.0f;
 
         switch(selection)
         {
-            case FrictionCoef.AlumAlumStatic:
-                return coeff = 1.20f;
-            case FrictionCoef.AlumAlumSliding:
-                return coeff = 1.4f;
-            case FrictionCoef.LeatherIronStatic:
-                return coeff = 0.6f;
+            case FrictionCoef_Static.AlumSteelStatic:
+                return coeff = 0.61f;
+            
+            case FrictionCoef_Static.RubberConcreteDryStatic:
+                return coeff = 1.0f;
 
-            case FrictionCoef.LeatherIronSliding:
-                return coeff = 0.56f;
-
-            case FrictionCoef.SteelSteelStatic:
-                return coeff = 0.65f;
-
-            case FrictionCoef.SteelSteelSliding:
-                return coeff = 0.42f;
+            case FrictionCoef_Static.SteelSteelStatic:
+                return coeff = 0.74f;
 
         }
 
             return coeff;
+    }
+
+    public float getCoeff_Kinetic(FrictionCoef_Kinetic selection)
+    {
+        float coeff = 1.0f;
+
+        switch(selection)
+        {
+            case FrictionCoef_Kinetic.AlumSteelKinetic:
+                return coeff = 0.47f;
+            case FrictionCoef_Kinetic.RubberConcreteDryKinetic:
+                return coeff = 0.8f;
+            case FrictionCoef_Kinetic.SteelSteelKinetic:
+                return coeff = 0.57f;
+        }
+
+        return coeff;
+
     }
 
     //Lab 01 - Step 2
@@ -229,39 +244,39 @@ public class Particle2D : MonoBehaviour
 
         //Lab 02 - Step 4
         //F_gravity: f = mg
-        Vector2 gravity = mass * new Vector2(0.0f, -9.871f);
+        //Vector2 gravity = mass * new Vector2(0.0f, -9.871f);
         //addForce(f_gravity);
 
-        //Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
-        Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, new Vector2(Mathf.Cos(surfaceTransform.eulerAngles.z), Mathf.Sin(surfaceTransform.eulerAngles.z)).normalized);
+        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
+        Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
 
-        //Always there
-        
+                
                                         //******** Block on a slanted surface ********//
-        if(gameObject.name == "SlideCube")
+        if(gameObject.name == "SlideCube") // Demostrating Gravity, Normal (As Sliding) and Friction forces
         {
             //addForce(gravity);
-            addForce(normal);
+            //addForce(normal);
 
-
-            //addForce(ForceGenerator.GenerateForce_normal(ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up), new Vector2(Mathf.Cos(surfaceTransform.rotation.z), Mathf.Sin(surfaceTransform.rotation.z)).normalized));
-            //addForce(ForceGenerator.GenerateForce_drag(velocity, velocity/10, 1, 1, 10));
+            addForce(ForceGenerator.GenerateForce_sliding(gravity, normal));
 
             //Using Friction (some more help from brother)
-            //addForce(ForceGenerator.GenerateForce_friction(normal, new Vector2(mass * -9.871f * .5f, mass * -9.871f * .5f), Vector2.zero, getCoeff(MaterialType), getCoeff(MaterialType)));
+            //x = Mass * g * sin()cos() y = mass * g * sin()sin()
+            Vector2 fOpposing = new Vector2((mass * -9.871f * Mathf.Sin(surfaceTransform.eulerAngles.z) * Mathf.Cos(surfaceTransform.eulerAngles.z)), (mass * -9.871f * Mathf.Sin(surfaceTransform.eulerAngles.z) * Mathf.Sin(surfaceTransform.eulerAngles.z)));
+            addForce(ForceGenerator.GenerateForce_friction(normal, fOpposing, velocity, getCoeff_Static(MaterialType_Static), getCoeff_Kinetic(MaterialType_Kinetic)));
 
-            //Using Sliding force
-            //addForce(ForceGenerator.GenerateForce_sliding(gravity, normal));
         }
 
 
 
 
         //********  Cube on a Spring ********//
-        if (gameObject.name == "HangCube")
+        if (gameObject.name == "HangCube") // Demonstrating Spring and Drag forces
         {
             addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, spring_resting, spring_stiffness));
-            addForce(ForceGenerator.GenerateForce_drag(Vector2.zero, fluidVelocity, fluidDensity, 1, 1.05f));
+            addForce(ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, 1, 1.05f)); //Drag coef & object x-section are pre-calculated for a 
+            //Velocity is taken fronm the particle properties and is integrated by the script, 
+            //while fluid density & velocity are public variables that default to Earth air with no wind
         }
         
     }

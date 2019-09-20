@@ -16,9 +16,10 @@ public class ForceGenerator
     {
         //surfaceNormal_unit = unit vector of the surface -> cos(x), sin(y)
         //proj = built into unity
-        
-        Vector2 normalForce = Vector3.Project(-f_gravity, surfaceNormal_unit);
 
+        //Vector2 normalForce = Vector3.Project(surfaceNormal_unit , - f_gravity);
+        Vector2 normalForce = Vector3.Project(-f_gravity, surfaceNormal_unit.normalized);
+        //Debug.Log(normalForce);
         return normalForce;
     }
     // f_sliding = f_gravity + f_normal
@@ -50,7 +51,8 @@ public class ForceGenerator
             }
             else if (f_opposing.magnitude > max)
             {
-                friction = -max * f_opposing;
+                //friction = -max * f_opposing;
+                friction = -frictionCoefficient_kinetic * f_normal.magnitude * particleVelocity.normalized;
             }
         }
         else if(particleVelocity != Vector2.zero)
@@ -64,7 +66,7 @@ public class ForceGenerator
     // f_drag = (p * u^2 * area * coeff)/2
     public static Vector2 GenerateForce_drag(Vector2 particleVelocity, Vector2 fluidVelocity, float fluidDensity, float objectArea_crossSection, float objectDragCoefficient)
     {
-        float dragMag = (fluidDensity * (particleVelocity.magnitude * particleVelocity.magnitude) * objectArea_crossSection*objectDragCoefficient) / 2;
+        float dragMag = (fluidDensity * (particleVelocity.magnitude * particleVelocity.magnitude) * objectArea_crossSection*objectDragCoefficient) / 2f;
         Vector2 direction = -particleVelocity;
 
         Vector2 drag = (direction*dragMag) / particleVelocity.magnitude;
