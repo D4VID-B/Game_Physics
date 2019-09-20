@@ -15,13 +15,13 @@ public class Particle2D : MonoBehaviour
     public float angularAcceleration;
     public float accelerationValue;
 
-    public float spring_stiffness, spring_resting;
     //Lab02 - Step 1
     public float startingMass;
     float mass, massInv;
 
     public float fluidDensity = 1.225f;
     public Vector2 fluidVelocity = Vector2.zero;
+    public float spring_stiffness, spring_resting;
 
     public Transform surfaceTransform;
 
@@ -36,6 +36,57 @@ public class Particle2D : MonoBehaviour
     {
         return mass;
     }
+
+
+    //Lab 3 - Step 1
+
+    float m_Inertia;
+
+    public float radius, i_Radius, o_Radius, height, width, length;
+
+    public float f_Torque;
+
+    public enum Shape_2D
+    {
+        Disk,   // I = 1/2*m*(r*r)
+        Ring,   // I = 1/2*m*(outer_r^2 * inner_r^2)
+        Rectangle,  // I = 1/12 * m * (height^2 * width^2)
+        Rod     // I = 1/12 * m * (length*length)
+    }
+
+    public Shape_2D Shape;
+
+    float calculateMomentOfInertia(Shape_2D shape)
+    {
+        float MoI = 0;
+        switch (shape)
+        {
+            case Shape_2D.Disk:
+                return MoI = 0.5f * mass * (radius * radius);
+            case Shape_2D.Ring:
+                return MoI = 0.5f * mass * ((o_Radius * o_Radius) * (i_Radius * i_Radius));
+            case Shape_2D.Rectangle:
+                return MoI = (float)1 / 12 * mass * ((height * height) * (width * width));
+            case Shape_2D.Rod:
+                return MoI = (float)1 / 12 * mass * (length * length);
+        }
+
+        return MoI;
+    }
+
+    //Lab 03 - Step 02
+    float convertToAcceleration(float inertia)
+    {
+        float conversion = 1 / inertia * f_Torque;
+
+        return conversion;
+    }
+
+    void addTorque(float torque)
+    {
+        f_Torque += torque;
+    }
+
 
     //Lab02 - Step02
 
@@ -91,8 +142,7 @@ public class Particle2D : MonoBehaviour
     public PositionFunction IntegrationMethod;
     public RotationFunction RotationUpdateMethod;
     public UpdateFormula MovementType;
-    public FrictionCoef MaterialType;
-
+    
 
     //Lab 02 Demo
 
