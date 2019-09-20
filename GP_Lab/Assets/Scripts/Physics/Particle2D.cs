@@ -87,6 +87,10 @@ public class Particle2D : MonoBehaviour
         f_Torque += torque;
     }
 
+    void updateAngularAcceleration()
+    {
+
+    }
 
     //Lab02 - Step02
 
