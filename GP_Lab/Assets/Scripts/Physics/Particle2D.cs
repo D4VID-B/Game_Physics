@@ -75,22 +75,20 @@ public class Particle2D : MonoBehaviour
     }
 
     //Lab 03 - Step 02
-    float convertToAcceleration(float inertia)
+    float convertToAcceleration(float inertia) //Update angular Acceleration
     {
         float conversion = 1 / inertia * f_Torque;
+
+        f_Torque = 0f;
 
         return conversion;
     }
 
-    void addTorque(float torque)
+    void addTorque(float torque) //Apply torque
     {
         f_Torque += torque;
     }
 
-    void updateAngularAcceleration()
-    {
-
-    }
 
     //Lab02 - Step02
 
