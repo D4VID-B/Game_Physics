@@ -86,13 +86,14 @@ public class Particle2D : MonoBehaviour
         return conversion;
     }
 
-    void addTorque(float torque) //Apply torque
+    void addTorque(float torque, Vector2 position, Vector2 force) //Apply torque
     {
+        float torqueAmount = (position.x * force.y) - (position.y * force.x);
+        //torqueAmount could also be torque, which would mean the function doesn't take the float
         f_Torque += torque;
 
-        //float momentArm = ; //moment arm = distance between object center of mass & point of force application 
-                              // for regular objects of scale 1 moment arm = 0.5
-        float appliedForce;
+        
+        
     }
 
 
