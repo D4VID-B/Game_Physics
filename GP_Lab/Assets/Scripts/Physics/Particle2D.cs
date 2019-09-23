@@ -46,6 +46,8 @@ public class Particle2D : MonoBehaviour
 
     public float f_Torque;
 
+    Vector2 localCM, globalCM, foreAppPoint;
+
     public enum Shape_2D
     {
         Disk,   // I = 1/2*m*(r*r)
@@ -87,6 +89,10 @@ public class Particle2D : MonoBehaviour
     void addTorque(float torque) //Apply torque
     {
         f_Torque += torque;
+
+        //float momentArm = ; //moment arm = distance between object center of mass & point of force application 
+                              // for regular objects of scale 1 moment arm = 0.5
+        float appliedForce;
     }
 
 
