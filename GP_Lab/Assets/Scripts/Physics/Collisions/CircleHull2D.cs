@@ -21,11 +21,6 @@ public class CircleHull2D : CollisionHull2D
         
     }
 
-    public bool TestCollision(CollisionHull2D a, CollisionHull2D b)
-    {
-
-        return false;
-    }
 
     public override bool TestCollisionVsCircle(CircleHull2D circle)
     {

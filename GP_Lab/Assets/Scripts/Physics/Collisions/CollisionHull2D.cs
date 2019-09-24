@@ -30,7 +30,7 @@ public abstract class CollisionHull2D : MonoBehaviour
         
     }
 
-    public bool TestCollision(CollisionHull2D a, CollisionHull2D b)
+    public static bool TestCollision(CollisionHull2D a, CollisionHull2D b) //Decides which collision detection function needs to be called
     {
 
         return false;
