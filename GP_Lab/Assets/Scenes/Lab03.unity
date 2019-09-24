@@ -230,25 +230,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
+  position: {x: -5, y: 0}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
   rotation: 0
   angularVelocity: 0
   angularAcceleration: 0
   accelerationValue: 0
-  startingMass: 0
+  startingMass: 1
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 0}
-  radius: 0
+  radius: 1
   i_Radius: 0
-  o_Radius: 0
-  height: 0
-  width: 0
-  length: 0
+  o_Radius: 1
+  height: 1
+  width: 1
+  length: 1
   f_Torque: 0
   Shape: 0
   IntegrationMethod: 0
@@ -551,7 +551,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c3325daf82b8b2941a38a10f5ce9e6d5, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -609,11 +609,11 @@ MonoBehaviour:
   radius: 0
   i_Radius: 0
   o_Radius: 0
-  height: 0
-  width: 0
+  height: 1
+  width: 1
   length: 0
   f_Torque: 0
-  Shape: 0
+  Shape: 2
   IntegrationMethod: 0
   RotationUpdateMethod: 0
   MovementType: 0
@@ -713,7 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
+  position: {x: 5, y: 0}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
   rotation: 0
@@ -727,13 +727,13 @@ MonoBehaviour:
   spring_resting: 0
   surfaceTransform: {fileID: 0}
   radius: 0
-  i_Radius: 0
-  o_Radius: 0
+  i_Radius: 0.5
+  o_Radius: 1
   height: 0
   width: 0
   length: 0
   f_Torque: 0
-  Shape: 0
+  Shape: 1
   IntegrationMethod: 0
   RotationUpdateMethod: 0
   MovementType: 0
