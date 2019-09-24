@@ -600,7 +600,7 @@ MonoBehaviour:
   angularVelocity: 0
   angularAcceleration: 0
   accelerationValue: 0
-  startingMass: 0
+  startingMass: 1
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
   spring_stiffness: 0
@@ -720,13 +720,13 @@ MonoBehaviour:
   angularVelocity: 0
   angularAcceleration: 0
   accelerationValue: 0
-  startingMass: 0
+  startingMass: 1
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 0}
-  radius: 0
+  radius: 1
   i_Radius: 0.5
   o_Radius: 1
   height: 0
