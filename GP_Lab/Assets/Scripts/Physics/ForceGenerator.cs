@@ -66,10 +66,11 @@ public class ForceGenerator
     // f_drag = (p * u^2 * area * coeff)/2
     public static Vector2 GenerateForce_drag(Vector2 particleVelocity, Vector2 fluidVelocity, float fluidDensity, float objectArea_crossSection, float objectDragCoefficient)
     {
-        float dragMag = (fluidDensity * (particleVelocity * particleVelocity).magnitude * objectArea_crossSection*objectDragCoefficient) / 2f;
-        Vector2 direction = -particleVelocity;
+        Vector2 diff = fluidVelocity - particleVelocity;
 
-        Vector2 drag = (direction*dragMag) / particleVelocity.magnitude;
+        float dragMag = (fluidDensity * diff.magnitude * objectArea_crossSection*objectDragCoefficient) * 0.5f;
+
+        Vector2 drag = diff*dragMag;
 
         return drag;
     }
