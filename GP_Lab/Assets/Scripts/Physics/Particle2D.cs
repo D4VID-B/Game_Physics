@@ -52,6 +52,8 @@ public class Particle2D : MonoBehaviour
 
     Vector2 localCM, globalCM, foreAppPoint;
 
+    public Vector2 t_Position, t_Force;
+
     public enum Shape_2D
     {
         Disk,   // I = 1/2*m*(r*r)
@@ -299,14 +301,14 @@ public class Particle2D : MonoBehaviour
             if (RotationUpdateMethod == RotationFunction.RotationEuler)
             {
                 updateRotEulerExplicit(Time.fixedDeltaTime);
-                //updateAngularAcceleration();
+                updateAngularAcceleration();
 
                 transform.eulerAngles = new Vector3(0f, 0f, rotation);
             }
             else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
                 updateRotKinematic(Time.fixedDeltaTime);
-                //updateAngularAcceleration();
+                updateAngularAcceleration();
 
                 transform.eulerAngles = new Vector3(0f, 0f, rotation);
             }
@@ -322,7 +324,7 @@ public class Particle2D : MonoBehaviour
             if (RotationUpdateMethod == RotationFunction.RotationEuler)
             {
                 updateRotEulerExplicit(Time.fixedDeltaTime);
-                //updateAngularAcceleration();
+                updateAngularAcceleration();
 
                 transform.eulerAngles = new Vector3(0f, 0f, rotation);
 
@@ -330,7 +332,7 @@ public class Particle2D : MonoBehaviour
             else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
                 updateRotKinematic(Time.fixedDeltaTime);
-                //updateAngularAcceleration();
+                updateAngularAcceleration();
 
 
                 transform.eulerAngles = new Vector3(0f, 0f, rotation);
@@ -340,7 +342,11 @@ public class Particle2D : MonoBehaviour
 
 
         //we should already know what the MoI specific to the game model is based on what the enum input was
-        //addTorque(new Vector2(0.1f, 0.5f), new Vector2(20.0f,20.0f));
+        if (Input.GetKey(KeyCode.F))
+        {
+            addTorque(t_Position, t_Force);
+        }
+        
 
 
         //Step 4
@@ -362,42 +368,42 @@ public class Particle2D : MonoBehaviour
         //Vector2 gravity = mass * new Vector2(0.0f, -9.871f);
         //addForce(f_gravity);
 
-        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
-        Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
-        Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
+        //Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        //Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
+        //Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
 
-        Vector2 drag = ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, objectAreaXSection, dragCoefficient);
+        //Vector2 drag = ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, objectAreaXSection, dragCoefficient);
         
 
-        addForce(gravity);
-        addForce(drag);
+        //addForce(gravity);
+        //addForce(drag);
 
                                         //******** Block on a slanted surface ********
-        if(gameObject.name == "SlideCube") // Demostrating Gravity, Normal (As Sliding) and Friction forces
-        {
-            //addForce(gravity);
-            //addForce(normal);
-            Vector2 sliding = ForceGenerator.GenerateForce_sliding(gravity, normal);
-            addForce(sliding);
+        //if(gameObject.name == "SlideCube") // Demostrating Gravity, Normal (As Sliding) and Friction forces
+        //{
+        //    //addForce(gravity);
+        //    //addForce(normal);
+        //    Vector2 sliding = ForceGenerator.GenerateForce_sliding(gravity, normal);
+        //    addForce(sliding);
 
-            //Using Friction (some more help from brother)
-            //x = Mass * g * sin()cos() y = mass * g * sin()sin()
-            //Vector2 fOpposing = new Vector2((mass * -9.871f * Mathf.Sin(surfaceTransform.eulerAngles.z) * Mathf.Cos(surfaceTransform.eulerAngles.z)), (mass * -9.871f * Mathf.Sin(surfaceTransform.eulerAngles.z) * Mathf.Sin(surfaceTransform.eulerAngles.z)));
-            addForce(ForceGenerator.GenerateForce_friction(normal, sliding, velocity, getCoeff_Static(MaterialType_Static), getCoeff_Kinetic(MaterialType_Kinetic)));
+        //    //Using Friction (some more help from brother)
+        //    //x = Mass * g * sin()cos() y = mass * g * sin()sin()
+        //    //Vector2 fOpposing = new Vector2((mass * -9.871f * Mathf.Sin(surfaceTransform.eulerAngles.z) * Mathf.Cos(surfaceTransform.eulerAngles.z)), (mass * -9.871f * Mathf.Sin(surfaceTransform.eulerAngles.z) * Mathf.Sin(surfaceTransform.eulerAngles.z)));
+        //    addForce(ForceGenerator.GenerateForce_friction(normal, sliding, velocity, getCoeff_Static(MaterialType_Static), getCoeff_Kinetic(MaterialType_Kinetic)));
 
-        }
-
-
+        //}
 
 
-        //********  Cube on a Spring ********
-        if (gameObject.name == "HangCube") // Demonstrating Spring and Drag forces
-        {
-            addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, spring_resting, spring_stiffness));
-            addForce(ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, 1, 1.05f)); //Drag coef & object x-section are pre-calculated for a 
-            //Velocity is taken fronm the particle properties and is integrated by the script, 
-            //while fluid density & velocity are public variables that default to Earth air with no wind
-        }
+
+
+        ////********  Cube on a Spring ********
+        //if (gameObject.name == "HangCube") // Demonstrating Spring and Drag forces
+        //{
+        //    addForce(ForceGenerator.GenerateForce_spring(transform.position, surfaceTransform.position, spring_resting, spring_stiffness));
+        //    addForce(ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, 1, 1.05f)); //Drag coef & object x-section are pre-calculated for a 
+        //    //Velocity is taken fronm the particle properties and is integrated by the script, 
+        //    //while fluid density & velocity are public variables that default to Earth air with no wind
+        //}
         
     }
 }

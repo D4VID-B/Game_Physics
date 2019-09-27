@@ -120,6 +120,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &233153605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 233153606}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &233153606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233153605}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &329653049
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,9 +270,11 @@ MonoBehaviour:
   startingMass: 1
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
+  dragCoefficient: 0
+  objectAreaXSection: 0
   spring_stiffness: 0
   spring_resting: 0
-  surfaceTransform: {fileID: 0}
+  surfaceTransform: {fileID: 233153606}
   radius: 1
   i_Radius: 0
   o_Radius: 1
@@ -250,6 +282,8 @@ MonoBehaviour:
   width: 1
   length: 1
   f_Torque: 0
+  t_Position: {x: 0.1, y: 0.5}
+  t_Force: {x: 20, y: 20}
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -603,9 +637,11 @@ MonoBehaviour:
   startingMass: 1
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
+  dragCoefficient: 0
+  objectAreaXSection: 0
   spring_stiffness: 0
   spring_resting: 0
-  surfaceTransform: {fileID: 0}
+  surfaceTransform: {fileID: 233153606}
   radius: 0
   i_Radius: 0
   o_Radius: 0
@@ -613,6 +649,8 @@ MonoBehaviour:
   width: 1
   length: 0
   f_Torque: 0
+  t_Position: {x: 0.1, y: 0.5}
+  t_Force: {x: 20, y: 20}
   Shape: 2
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -723,9 +761,11 @@ MonoBehaviour:
   startingMass: 1
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
+  dragCoefficient: 0
+  objectAreaXSection: 0
   spring_stiffness: 0
   spring_resting: 0
-  surfaceTransform: {fileID: 0}
+  surfaceTransform: {fileID: 233153606}
   radius: 1
   i_Radius: 0.5
   o_Radius: 1
@@ -733,6 +773,8 @@ MonoBehaviour:
   width: 0
   length: 0
   f_Torque: 0
+  t_Position: {x: 0.1, y: 0.5}
+  t_Force: {x: 20, y: 20}
   Shape: 1
   IntegrationMethod: 0
   RotationUpdateMethod: 0
