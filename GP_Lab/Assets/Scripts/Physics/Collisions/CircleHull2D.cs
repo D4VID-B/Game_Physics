@@ -51,7 +51,9 @@ public class CircleHull2D : CollisionHull2D
     {
         //Same as above, but first:
         //move circle center into box space by * -world transform
-        //1)
+        //1) this.position is now * -box.position 
+        //2) call testAABB with box
+
 
         return false;
     }

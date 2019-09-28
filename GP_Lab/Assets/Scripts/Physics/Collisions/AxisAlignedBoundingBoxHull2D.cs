@@ -19,6 +19,14 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     }
 
+    float calculateSquareDiagonal(float side)
+    {
+        float diagonal;
+
+        diagonal = 1.41f * side;
+
+        return diagonal;
+    }
 
     public override bool TestCollisionVsCircle(CircleHull2D circle)
     {
@@ -27,16 +35,16 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         return false;
     }
 
-    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box)
+    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box) //David
     {
         //on each axis, max extent of one < min extent of other
         //
-        //1)
+        //1) 
 
         return false;
     }
 
-    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box)
+    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box) //David
     {
         //same as above twice:
         //first: find max extents of OBB, do AABB vs this

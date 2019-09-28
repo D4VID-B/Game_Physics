@@ -25,13 +25,46 @@ public abstract class CollisionHull2D : MonoBehaviour
         particle = GetComponent<Particle2D>();
     }
 
-    void Update()
-    {
-        
-    }
 
     public static bool TestCollision(CollisionHull2D a, CollisionHull2D b) //Decides which collision detection function needs to be called
     {
+        //if a is cirlce and b is also circle
+            //call the circel-circle function
+
+        //if a is a circle and b is an AABB
+            //call the 
+
+        //if a is a circle and b ia an OBB
+            // ....
+
+
+
+        if(a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle)
+        {
+            //do circle-circle collision
+            return ((CircleHull2D)a).TestCollisionVsCircle((CircleHull2D)b);
+        }
+        else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
+        {
+            return true;
+        }
+        else if(a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
+        {
+            return true;
+        }
+        else if(a.type == CollisionHull2D.CollisionHullType2D.Hull_AABB && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
+        {
+            return true;
+        }
+        else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_AABB && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
+        {
+            return true;
+        }
+        else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_OBB && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
+        {
+            return true;
+        }
+
 
         return false;
     }
