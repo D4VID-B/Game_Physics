@@ -33,8 +33,25 @@ public class CircleHull2D : CollisionHull2D
         //5)    summ of radii ^2
         //6)    Test: dist^2 <= summ^2
 
+        Vector2 positionA = circle.transform.position;
+        Vector2 positionB = this.transform.position;
 
-        return false;
+        Vector2 diff = positionB - positionA;
+
+        float distance = (diff.x * diff.x) + (diff.y * diff.y); 
+
+        float sumOfRadii = radius + circle.radius;
+
+        float squaredSumOfRadii = sumOfRadii * sumOfRadii;
+
+        if (distance <= squaredSumOfRadii)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box)
@@ -43,8 +60,83 @@ public class CircleHull2D : CollisionHull2D
         //
         //1)
 
+        Vector2 circCenter = this.transform.position;
 
-        return false;
+        //when we clamp on each dimension, there are only two dimesnions
+
+
+
+        //bottom left
+        float x = box.transform.position.x - box.length * 0.5f;
+        float y = box.transform.position.y - box.height * 0.5f;
+        Vector2 bottomLeft = new Vector2(x, y);
+
+        //bottom right
+        x = box.transform.position.x + box.length * 0.5f;
+        y = box.transform.position.y - box.height * 0.5f;
+        Vector2 bottomRight = new Vector2(x, y);
+
+        //top left
+        x = box.transform.position.x + box.length * 0.5f;
+        y = box.transform.position.y - box.height * 0.5f;
+        Vector2 topLeft = new Vector2(x, y);
+
+        //top right
+        x = box.transform.position.x + box.length * 0.5f;
+        y = box.transform.position.y + box.height * 0.5f;
+        Vector2 topRight = new Vector2(x, y);
+
+        //get all corners
+        //get the diff between circ center and all corners
+        //choose the shortest diff
+        //do vs circ
+
+        Vector2 tempDiffOne = bottomLeft - circCenter;
+        Vector2 tempDiffTwo = bottomRight - circCenter;
+        Vector2 tempDiffThree = topLeft - circCenter;
+        Vector2 tempDiffFour = topRight - circCenter;
+
+        float[] diffArr = new float[3];
+        diffArr[0] = tempDiffOne.magnitude;
+        diffArr[1] = tempDiffTwo.magnitude;
+        diffArr[2] = tempDiffThree.magnitude;
+        diffArr[3] = tempDiffFour.magnitude;
+        
+        Vector2 closestAABBPoint;
+        Vector2 diff = new Vector2();
+
+        if (Mathf.Max(diffArr) == diffArr[0])
+        {
+            closestAABBPoint = tempDiffOne;
+            diff = circCenter - closestAABBPoint;
+        }
+        if (Mathf.Max(diffArr) == diffArr[1])
+        {
+            closestAABBPoint = tempDiffTwo;
+            diff = circCenter - closestAABBPoint;
+        }
+        if (Mathf.Max(diffArr) == diffArr[2])
+        {
+            closestAABBPoint = tempDiffThree;
+            diff = circCenter - closestAABBPoint;
+        }
+        if (Mathf.Max(diffArr) == diffArr[3])
+        {
+            closestAABBPoint = tempDiffFour;
+            diff = circCenter - closestAABBPoint;
+        }
+
+
+        float disSq = (diff.x * diff.x) + (diff.y * diff.y);
+        float sumSq = radius * radius; //we are just going to a point with a radius of zero
+        if (disSq <= sumSq)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box)
