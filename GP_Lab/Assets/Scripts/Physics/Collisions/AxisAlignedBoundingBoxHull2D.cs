@@ -7,18 +7,6 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     public AxisAlignedBoundingBoxHull2D() : base(CollisionHullType2D.Hull_AABB) { }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     float calculateSquareDiagonal(float side)
     {
         float diagonal;
@@ -28,9 +16,11 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         return diagonal;
     }
 
-    public override bool TestCollisionVsCircle(CircleHull2D circle)
+    public override bool TestCollisionVsCircle(CircleHull2D circle) //David
     {
-        //Call circle, flip arguments
+        //Call circle, flip arguments <=== What does this mean?
+
+        TestCollisionVsAABB(); //Give this the circle?
 
         return false;
     }
@@ -39,7 +29,19 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
     {
         //on each axis, max extent of one < min extent of other
         //
-        //1) 
+        //1) Find Max and Min of each box  <=== \\\*** HOW? ***///
+        //Max = 
+        //Min = 
+
+        //2) Compare max 1 to min 2
+        //if(max01 >= min2) is true, continue
+        //else, stop - they are not colliding
+
+        //3) Compare max 2 to min 1
+        //if(max02 >= min1) is true, the boxes have collided  
+        //else, false positive
+
+        //4) Repeat 2 & 3 for the y axis
 
         return false;
     }
@@ -48,8 +50,14 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
     {
         //same as above twice:
         //first: find max extents of OBB, do AABB vs this
+        //call test aabb
+
         //Second: transform this into OBB space, find max extents, repat AABB
-        //1)
+        //1) transform into OBB space:
+
+        //2) find max and min of [??]
+
+        //3) Call testaabb again
 
         return false;
     }
