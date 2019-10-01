@@ -7,6 +7,9 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     public AxisAlignedBoundingBoxHull2D() : base(CollisionHullType2D.Hull_AABB) { }
 
+    public float length;
+    public float height;
+
     float calculateSquareDiagonal(float side)
     {
         float diagonal;
