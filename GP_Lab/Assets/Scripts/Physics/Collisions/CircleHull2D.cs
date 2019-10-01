@@ -8,6 +8,7 @@ public class CircleHull2D : CollisionHull2D
     public CollisionHull2D AABB;
     public CollisionHull2D OBB;
     public CollisionHull2D Circle;
+    public Material success, fail;
 
     public CircleHull2D () : base (CollisionHullType2D.Hull_Circle) { }
 
@@ -22,9 +23,39 @@ public class CircleHull2D : CollisionHull2D
 
     void Update()
     {
-        TestCollision(this, AABB);
-        TestCollision(this, OBB);
-        TestCollision(this, Circle);
+        //WORKS
+        if (TestCollision(this, AABB))
+        {
+            gameObject.GetComponent<MeshRenderer>().material = success;
+        }
+        else
+        {
+            gameObject.GetComponent<MeshRenderer>().material = fail;
+
+        }
+
+        if (TestCollision(this, OBB))
+        {
+            gameObject.GetComponent<MeshRenderer>().material = success;
+
+        }
+        else
+        {
+            gameObject.GetComponent<MeshRenderer>().material = fail;
+
+        }
+
+        //WORKS
+        if (TestCollision(this, Circle))
+        {
+            gameObject.GetComponent<MeshRenderer>().material = success;
+
+        }
+        else
+        {
+            gameObject.GetComponent<MeshRenderer>().material = fail;
+
+        }
     }
 
 
@@ -52,12 +83,10 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
-            Debug.Log("Circ V Circ : true");
             return true;
         }
         else
         {
-            Debug.Log("Circ V Circ : false");
             return false;
         }
     }
@@ -109,10 +138,10 @@ public class CircleHull2D : CollisionHull2D
         diffArr[1] = tempDiffTwo.magnitude;
         diffArr[2] = tempDiffThree.magnitude;
         diffArr[3] = tempDiffFour.magnitude;
-        */
+        
         Vector2 closestAABBPoint;
         Vector2 diff = new Vector2();
-        /*
+        
         if (Mathf.Max(diffArr) == diffArr[0])
         {
             closestAABBPoint = tempDiffOne;
@@ -133,19 +162,42 @@ public class CircleHull2D : CollisionHull2D
             closestAABBPoint = tempDiffFour;
             diff = circCenter - closestAABBPoint;
         }
-        */
+        
 
 
         float disSq = (diff.x * diff.x) + (diff.y * diff.y);
         float sumSq = radius * radius; //we are just going to a point with a radius of zero
         if (disSq <= sumSq)
         {
-            Debug.Log("Circ V AABB : true");
             return true;
         }
         else
         {
-            Debug.Log("Circ V AABB : true");
+            return false;
+        }
+        */
+
+
+        //AABB, finding corners(sides) in if()
+        bool colOnX = false;
+        bool colOnY = false;
+
+        if (circCenter.x + radius >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= circCenter.x - radius)
+        {
+            colOnX = true;
+        }
+
+        if (circCenter.y + radius >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= circCenter.y - radius)
+        {
+            colOnY = true;
+        }
+
+        if (colOnY && colOnX)
+        {
+            return true;
+        }
+        else
+        {
             return false;
         }
     }
@@ -161,79 +213,103 @@ public class CircleHull2D : CollisionHull2D
         circCenter.x = this.transform.position.x * -box.transform.position.x;
         circCenter.y = this.transform.position.y * -box.transform.position.y;
 
+        //AABB, finding corners(sides) in if()
+        bool colOnX = false;
+        bool colOnY = false;
 
-        //bottom left
-        float x = box.transform.position.x - box.length * 0.5f;
-        float y = box.transform.position.y - box.height * 0.5f;
-        Vector2 bottomLeft = new Vector2(x, y);
-
-        //bottom right
-        x = box.transform.position.x + box.length * 0.5f;
-        y = box.transform.position.y - box.height * 0.5f;
-        Vector2 bottomRight = new Vector2(x, y);
-
-        //top left
-        x = box.transform.position.x + box.length * 0.5f;
-        y = box.transform.position.y - box.height * 0.5f;
-        Vector2 topLeft = new Vector2(x, y);
-
-        //top right
-        x = box.transform.position.x + box.length * 0.5f;
-        y = box.transform.position.y + box.height * 0.5f;
-        Vector2 topRight = new Vector2(x, y);
-
-        //get all corners
-        //get the diff between circ center and all corners
-        //choose the shortest diff
-        //do vs circ
-
-        Vector2 tempDiffOne = bottomLeft - circCenter;
-        Vector2 tempDiffTwo = bottomRight - circCenter;
-        Vector2 tempDiffThree = topLeft - circCenter;
-        Vector2 tempDiffFour = topRight - circCenter;
-
-        float[] diffArr = new float[4];
-        diffArr[0] = tempDiffOne.magnitude;
-        diffArr[1] = tempDiffTwo.magnitude;
-        diffArr[2] = tempDiffThree.magnitude;
-        diffArr[3] = tempDiffFour.magnitude;
-
-        Vector2 closestAABBPoint;
-        Vector2 diff = new Vector2();
-
-        if (Mathf.Max(diffArr) == diffArr[0])
+        if (circCenter.x + radius >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= circCenter.x - radius)
         {
-            closestAABBPoint = tempDiffOne;
-            diff = circCenter - closestAABBPoint;
-        }
-        if (Mathf.Max(diffArr) == diffArr[1])
-        {
-            closestAABBPoint = tempDiffTwo;
-            diff = circCenter - closestAABBPoint;
-        }
-        if (Mathf.Max(diffArr) == diffArr[2])
-        {
-            closestAABBPoint = tempDiffThree;
-            diff = circCenter - closestAABBPoint;
-        }
-        if (Mathf.Max(diffArr) == diffArr[3])
-        {
-            closestAABBPoint = tempDiffFour;
-            diff = circCenter - closestAABBPoint;
+            colOnX = true;
         }
 
-
-        float disSq = (diff.x * diff.x) + (diff.y * diff.y);
-        float sumSq = radius * radius; //we are just going to a point with a radius of zero
-        if (disSq <= sumSq)
+        if (circCenter.y + radius >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= circCenter.y - radius)
         {
-            Debug.Log("Circ V OBB : true");
+            colOnY = true;
+        }
+
+        if (colOnY && colOnX)
+        {
             return true;
         }
         else
         {
-            Debug.Log("Circ V OBB : false");
             return false;
         }
+
+
+        /*
+                //bottom left
+                float x = box.transform.position.x - box.length * 0.5f;
+                float y = box.transform.position.y - box.height * 0.5f;
+                Vector2 bottomLeft = new Vector2(x, y);
+
+                //bottom right
+                x = box.transform.position.x + box.length * 0.5f;
+                y = box.transform.position.y - box.height * 0.5f;
+                Vector2 bottomRight = new Vector2(x, y);
+
+                //top left
+                x = box.transform.position.x + box.length * 0.5f;
+                y = box.transform.position.y - box.height * 0.5f;
+                Vector2 topLeft = new Vector2(x, y);
+
+                //top right
+                x = box.transform.position.x + box.length * 0.5f;
+                y = box.transform.position.y + box.height * 0.5f;
+                Vector2 topRight = new Vector2(x, y);
+
+                //get all corners
+                //get the diff between circ center and all corners
+                //choose the shortest diff
+                //do vs circ
+
+                Vector2 tempDiffOne = bottomLeft - circCenter;
+                Vector2 tempDiffTwo = bottomRight - circCenter;
+                Vector2 tempDiffThree = topLeft - circCenter;
+                Vector2 tempDiffFour = topRight - circCenter;
+
+                float[] diffArr = new float[4];
+                diffArr[0] = tempDiffOne.magnitude;
+                diffArr[1] = tempDiffTwo.magnitude;
+                diffArr[2] = tempDiffThree.magnitude;
+                diffArr[3] = tempDiffFour.magnitude;
+
+                Vector2 closestAABBPoint;
+                Vector2 diff = new Vector2();
+
+                if (Mathf.Max(diffArr) == diffArr[0])
+                {
+                    closestAABBPoint = tempDiffOne;
+                    diff = circCenter - closestAABBPoint;
+                }
+                if (Mathf.Max(diffArr) == diffArr[1])
+                {
+                    closestAABBPoint = tempDiffTwo;
+                    diff = circCenter - closestAABBPoint;
+                }
+                if (Mathf.Max(diffArr) == diffArr[2])
+                {
+                    closestAABBPoint = tempDiffThree;
+                    diff = circCenter - closestAABBPoint;
+                }
+                if (Mathf.Max(diffArr) == diffArr[3])
+                {
+                    closestAABBPoint = tempDiffFour;
+                    diff = circCenter - closestAABBPoint;
+                }
+
+
+                float disSq = (diff.x * diff.x) + (diff.y * diff.y);
+                float sumSq = radius * radius; //we are just going to a point with a radius of zero
+                if (disSq <= sumSq)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                */
     }
+    
 }

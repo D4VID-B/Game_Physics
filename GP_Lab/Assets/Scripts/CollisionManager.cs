@@ -27,7 +27,7 @@ public class CollisionManager : MonoBehaviour
         {
             if(obj.tag == "Collider")
             {
-                colliders.Add(obj);
+                //colliders.Add(obj);
             }
         }
 
