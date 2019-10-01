@@ -5,6 +5,10 @@ using UnityEngine;
 public class CircleHull2D : CollisionHull2D
 {
 
+    public CollisionHull2D AABB;
+    public CollisionHull2D OBB;
+    public CollisionHull2D Circle;
+
     public CircleHull2D () : base (CollisionHullType2D.Hull_Circle) { }
 
     [Range(0.0f, 100.0f)]
@@ -18,7 +22,9 @@ public class CircleHull2D : CollisionHull2D
 
     void Update()
     {
-        
+        TestCollision(this, AABB);
+        TestCollision(this, OBB);
+        TestCollision(this, Circle);
     }
 
 
@@ -46,10 +52,12 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
+            Debug.Log("Circ V Circ : true");
             return true;
         }
         else
         {
+            Debug.Log("Circ V Circ : false");
             return false;
         }
     }
@@ -64,7 +72,7 @@ public class CircleHull2D : CollisionHull2D
 
         //when we clamp on each dimension, there are only two dimesnions
 
-
+        /*
 
         //bottom left
         float x = box.transform.position.x - box.length * 0.5f;
@@ -96,15 +104,15 @@ public class CircleHull2D : CollisionHull2D
         Vector2 tempDiffThree = topLeft - circCenter;
         Vector2 tempDiffFour = topRight - circCenter;
 
-        float[] diffArr = new float[3];
+        float[] diffArr = new float[4];
         diffArr[0] = tempDiffOne.magnitude;
         diffArr[1] = tempDiffTwo.magnitude;
         diffArr[2] = tempDiffThree.magnitude;
         diffArr[3] = tempDiffFour.magnitude;
-        
+        */
         Vector2 closestAABBPoint;
         Vector2 diff = new Vector2();
-
+        /*
         if (Mathf.Max(diffArr) == diffArr[0])
         {
             closestAABBPoint = tempDiffOne;
@@ -125,16 +133,19 @@ public class CircleHull2D : CollisionHull2D
             closestAABBPoint = tempDiffFour;
             diff = circCenter - closestAABBPoint;
         }
+        */
 
 
         float disSq = (diff.x * diff.x) + (diff.y * diff.y);
         float sumSq = radius * radius; //we are just going to a point with a radius of zero
         if (disSq <= sumSq)
         {
+            Debug.Log("Circ V AABB : true");
             return true;
         }
         else
         {
+            Debug.Log("Circ V AABB : true");
             return false;
         }
     }
@@ -181,7 +192,7 @@ public class CircleHull2D : CollisionHull2D
         Vector2 tempDiffThree = topLeft - circCenter;
         Vector2 tempDiffFour = topRight - circCenter;
 
-        float[] diffArr = new float[3];
+        float[] diffArr = new float[4];
         diffArr[0] = tempDiffOne.magnitude;
         diffArr[1] = tempDiffTwo.magnitude;
         diffArr[2] = tempDiffThree.magnitude;
@@ -216,10 +227,12 @@ public class CircleHull2D : CollisionHull2D
         float sumSq = radius * radius; //we are just going to a point with a radius of zero
         if (disSq <= sumSq)
         {
+            Debug.Log("Circ V OBB : true");
             return true;
         }
         else
         {
+            Debug.Log("Circ V OBB : false");
             return false;
         }
     }

@@ -10,6 +10,15 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
     public float length;
     public float height;
 
+    public CollisionHull2D AABB;
+    public CollisionHull2D OBB;
+    public CollisionHull2D Circle;
+
+    void Update()
+    {
+        TestCollision(this, AABB);   
+    }
+
     float calculateSquareDiagonal(float side)
     {
         float diagonal;
@@ -98,8 +107,30 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         //first: find max extents of OBB, do AABB vs this
         //call test aabb
 
+        //Finding corners/Max-Min of box
+        //bottom left
+        float box_X = box.transform.position.x - box.length * 0.5f;
+        float box_Y = box.transform.position.y - box.height * 0.5f;
+        Vector2 box_bottomLeft = new Vector2(box_X, box_Y);
+
+        //top right
+        box_X = box.transform.position.x + box.length * 0.5f;
+        box_Y = box.transform.position.y + box.height * 0.5f;
+        Vector2 box_topRight = new Vector2(box_X, box_Y);
+
+        //Finding corners of this
+        //bottom left
+        float this_X = transform.position.x - length * 0.5f;
+        float this_Y = transform.position.y - height * 0.5f;
+        Vector2 this_bottomLeft = new Vector2(this_X, this_Y);
+
+        //top right
+        this_X = transform.position.x + length * 0.5f;
+        this_Y = transform.position.y + height * 0.5f;
+        Vector2 this_topRight = new Vector2(this_X, this_Y);
+
         //TestCollisionVsAABB();
-        box.TestCollisionVsAABB(this);
+        //box.TestCollisionVsAABB(this);
 
         //Second: transform this into OBB space, find max extents, repat AABB
         //1) transform into OBB space:
@@ -107,6 +138,8 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         //2) find max and min of [??]
 
         //3) Call testaabb again
+
+
 
 
         return false;
