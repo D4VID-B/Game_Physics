@@ -18,25 +18,21 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
         
     }
 
-    public bool TestCollision(CollisionHull2D a, CollisionHull2D b)
-    {
+   
 
-        return false;
-    }
-
-    public override bool TestCollisionVsCircle(CircleHull2D circle)
+    public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
     {
         //Use circle
         return false;
     }
 
-    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box)
+    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
     {
         //Use AABB
         return false;
     }
 
-    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box)
+    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
     {
         //AABB-OBB part 2 twice
         return false;

@@ -21,13 +21,9 @@ public class CircleHull2D : CollisionHull2D
         
     }
 
-    public bool TestCollision(CollisionHull2D a, CollisionHull2D b)
-    {
+   
 
-        return false;
-    }
-
-    public override bool TestCollisionVsCircle(CircleHull2D circle)
+    public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
     {
         //Collision test passes if(distance between them <= sum of radii)
         //Optimize: by ^2 both sides
@@ -42,7 +38,7 @@ public class CircleHull2D : CollisionHull2D
         return false;
     }
 
-    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box)
+    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
     {
         //Calculate closest point by clamping(??) center; closest point vs circle test
         //
@@ -52,7 +48,7 @@ public class CircleHull2D : CollisionHull2D
         return false;
     }
 
-    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box)
+    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
     {
         //Same as above, but first:
         //move circle center into box space by * -world transform
