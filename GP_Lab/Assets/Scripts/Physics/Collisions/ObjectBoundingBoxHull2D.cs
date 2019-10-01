@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ObjectBoundingBoxHull2D : CollisionHull2D
 {
+    public float length;
+    public float height;
+
     public ObjectBoundingBoxHull2D(): base(CollisionHullType2D.Hull_OBB) { }
 
     // Start is called before the first frame update
@@ -20,14 +23,12 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
 
     public override bool TestCollisionVsCircle(CircleHull2D circle)
     {
-        //Use circle
-        return false;
+        return circle.TestCollisionVsOBB(this);
     }
 
     public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box)
     {
-        //Use AABB
-        return false;
+        return box.TestCollisionVsOBB(this);
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box) //David
