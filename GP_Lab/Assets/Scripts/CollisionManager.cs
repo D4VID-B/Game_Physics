@@ -9,13 +9,13 @@ public class CollisionManager : MonoBehaviour
     Collision desc;
 
     Scene currentScene;
-    List<GameObject> colliders;
+    List<CollisionHull2D> colliders;
     List<GameObject> rootObjects;
 
     // Start is called before the first frame update
     void Start()
     {
-        colliders = new List<GameObject>();
+        colliders = new List<CollisionHull2D>();
         rootObjects = new List<GameObject>();
         currentScene.GetRootGameObjects(rootObjects);
     }
@@ -36,7 +36,21 @@ public class CollisionManager : MonoBehaviour
 
     void checkForCollisions()
     {
-
+        for(int i = 0; i < colliders.Count; i++)
+        {
+            for(int j = 0; j < colliders.Count; j++)
+            {
+                //Check if they are the same object
+                if(colliders[i].gameObject == colliders[j].gameObject)
+                {
+                    //Do nothing - these are the same object
+                }
+                else
+                {
+                    CollisionHull2D.TestCollision(colliders[i], colliders[j]);
+                }
+            }
+        }
     }
 
 }
