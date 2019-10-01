@@ -33,7 +33,14 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box) //David
     {
-        //AABB-OBB part 2 twice
+        //AABB-OBB part 2 twice:
+
+        //Second: transform this into OBB space, find max extents, repat AABB
+        //1) transform into OBB space:
+
+        //2) find max and min of [??]
+
+        //3) Call testaabb again
         return false;
     }
 

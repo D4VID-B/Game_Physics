@@ -67,9 +67,29 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         Vector2 this_topRight = new Vector2(this_X, this_Y);
 
 
+        //AABB, finding corners(sides) in if()
+        bool colOnX = false;
+        bool colOnY = false;
 
+        if (this.transform.position.x + (this.length * 0.5f) >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= this.transform.position.x - (this.length * 0.5f))
+        {
+            colOnX = true;
+        }
 
-        return false;
+        if (this.transform.position.y + (this.height * 0.5f) >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= this.transform.position.y - (this.length * 0.5f))
+        {
+            colOnY = true;
+        }
+
+        if (colOnY && colOnX)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box) //David
@@ -78,6 +98,9 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         //first: find max extents of OBB, do AABB vs this
         //call test aabb
 
+        //TestCollisionVsAABB();
+        box.TestCollisionVsAABB(this);
+
         //Second: transform this into OBB space, find max extents, repat AABB
         //1) transform into OBB space:
 
@@ -85,28 +108,8 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
         //3) Call testaabb again
 
-        bool colOnX = false;
-        bool colOnY = false;
 
-        if(this.transform.position.x + (this.length * 0.5f) >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= this.transform.position.x - (this.length * 0.5f))
-        {
-            colOnX = true;
-        }
-        
-        if(this.transform.position.y + (this.height * 0.5f) >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= this.transform.position.y - (this.length * 0.5f))
-        {
-            colOnY = true;
-        }
-
-        if(colOnY && colOnX)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-       
+        return false;
     }
 
 }
