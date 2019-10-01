@@ -44,6 +44,8 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
         //4) Repeat 2 & 3 for the y axis
 
+
+
         return false;
     }
 
@@ -60,7 +62,28 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
         //3) Call testaabb again
 
-        return false;
+        bool colOnX = false;
+        bool colOnY = false;
+
+        if(this.transform.position.x + (this.length * 0.5f) >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= this.transform.position.x - (this.length * 0.5f))
+        {
+            colOnX = true;
+        }
+        
+        if(this.transform.position.y + (this.height * 0.5f) >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= this.transform.position.y - (this.length * 0.5f))
+        {
+            colOnY = true;
+        }
+
+        if(colOnY && colOnX)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+       
     }
 
 }
