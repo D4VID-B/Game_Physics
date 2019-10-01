@@ -18,11 +18,9 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     public override bool TestCollisionVsCircle(CircleHull2D circle) //David
     {
-        //Call circle, flip arguments <=== What does this mean?
-
-        TestCollisionVsAABB(); //Give this the circle?
-
-        return false;
+        //Call circle, flip arguments <=== ///What does this mean\\\?
+        
+        return circle.TestCollisionVsAABB(this);
     }
 
     public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box) //David
