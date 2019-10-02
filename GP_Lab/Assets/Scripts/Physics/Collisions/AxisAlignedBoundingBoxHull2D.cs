@@ -10,10 +10,6 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
     public float length;
     public float height;
 
-    public CollisionHull2D AABB;
-    public CollisionHull2D OBB;
-    public CollisionHull2D Circle;
-    public Material success, fail;
 
     void Update()
     {

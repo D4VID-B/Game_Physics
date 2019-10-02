@@ -5,11 +5,6 @@ using UnityEngine;
 public class CircleHull2D : CollisionHull2D
 {
 
-    public CollisionHull2D AABB;
-    public CollisionHull2D OBB;
-    public CollisionHull2D Circle;
-    public Material success, fail;
-
     public CircleHull2D () : base (CollisionHullType2D.Hull_Circle) { }
 
     [Range(0.0f, 100.0f)]
@@ -51,6 +46,7 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
+            Debug.Log("Collision");
             return true;
         }
         else
@@ -83,7 +79,6 @@ public class CircleHull2D : CollisionHull2D
         if (colOnY && colOnX)
         {
             Debug.Log("Collision");
-            GetComponent<MeshRenderer>().material = success;
             return true;
         }
         else
