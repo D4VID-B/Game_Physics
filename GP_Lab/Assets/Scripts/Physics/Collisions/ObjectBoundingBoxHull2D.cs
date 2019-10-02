@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ObjectBoundingBoxHull2D : CollisionHull2D
 {
+    public float length;
+    public float height;
+
     public ObjectBoundingBoxHull2D(): base(CollisionHullType2D.Hull_OBB) { }
 
     // Start is called before the first frame update
@@ -22,19 +25,26 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
 
     public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
     {
-        //Use circle
-        return false;
+        return circle.TestCollisionVsOBB(this);
     }
 
     public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
     {
-        //Use AABB
-        return false;
+        return box.TestCollisionVsOBB(this);
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
     {
-        //AABB-OBB part 2 twice
+        //AABB-OBB part 2 twice:
+
+        //Second: transform this into OBB space, find max extents, repat AABB
+        //1) transform into OBB space:
+
+        //2) find max and min of [??]
+
+        //3) Call testaabb again
+
+
         return false;
     }
 
