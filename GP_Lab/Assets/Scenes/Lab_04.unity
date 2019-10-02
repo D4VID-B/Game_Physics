@@ -156,7 +156,7 @@ MonoBehaviour:
   Circle: {fileID: 637820646}
   success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
   fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
-  radius: 0.5
+  radius: 0
 --- !u!23 &101530277
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -253,6 +253,8 @@ MonoBehaviour:
   AABB: {fileID: 541477000}
   OBB: {fileID: 1179852485}
   Circle: {fileID: 101530276}
+  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
+  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
 --- !u!23 &478088073
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -270,7 +272,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -307,7 +309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478088071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.37, z: 0}
+  m_LocalPosition: {x: 0, y: 1.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -349,6 +351,8 @@ MonoBehaviour:
   AABB: {fileID: 478088072}
   OBB: {fileID: 1179852485}
   Circle: {fileID: 101530276}
+  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
+  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
 --- !u!23 &541477001
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -593,7 +597,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179852484}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: -6.31, y: 1.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

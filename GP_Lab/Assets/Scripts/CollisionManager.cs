@@ -27,6 +27,7 @@ public class CollisionManager : MonoBehaviour
         {
             if(obj.tag == "Collider")
             {
+                //Convert to collisionHull and add to the list
                 //colliders.Add(obj);
             }
         }
@@ -43,7 +44,7 @@ public class CollisionManager : MonoBehaviour
                 //Check if they are the same object
                 if(colliders[i].gameObject == colliders[j].gameObject)
                 {
-                    //Do nothing - these are the same object
+                    //Do nothing - they are the same object
                 }
                 else
                 {

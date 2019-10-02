@@ -26,34 +26,35 @@ public class CircleHull2D : CollisionHull2D
         //WORKS
         if (TestCollision(this, AABB))
         {
-            gameObject.GetComponent<MeshRenderer>().material = success;
+            GetComponent<MeshRenderer>().material = success;
         }
         else
         {
-            gameObject.GetComponent<MeshRenderer>().material = fail;
+            GetComponent<MeshRenderer>().material = fail;
 
         }
 
+        //Doesn't Work
         if (TestCollision(this, OBB))
         {
-            gameObject.GetComponent<MeshRenderer>().material = success;
+            GetComponent<MeshRenderer>().material = success;
 
         }
         else
         {
-            gameObject.GetComponent<MeshRenderer>().material = fail;
+            GetComponent<MeshRenderer>().material = fail;
 
         }
 
         //WORKS
         if (TestCollision(this, Circle))
         {
-            gameObject.GetComponent<MeshRenderer>().material = success;
+            GetComponent<MeshRenderer>().material = success;
 
         }
         else
         {
-            gameObject.GetComponent<MeshRenderer>().material = fail;
+            GetComponent<MeshRenderer>().material = fail;
 
         }
     }
@@ -98,6 +99,30 @@ public class CircleHull2D : CollisionHull2D
         //1)
 
         Vector2 circCenter = this.transform.position;
+
+        bool colOnX = false;
+        bool colOnY = false;
+
+        if (circCenter.x + radius >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= circCenter.x - radius)
+        {
+            colOnX = true;
+        }
+
+        if (circCenter.y + radius >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= circCenter.y - radius)
+        {
+            colOnY = true;
+        }
+
+        if (colOnY && colOnX)
+        {
+            Debug.Log("Collision");
+            GetComponent<MeshRenderer>().material = success;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
         //when we clamp on each dimension, there are only two dimesnions
 
@@ -176,30 +201,6 @@ public class CircleHull2D : CollisionHull2D
             return false;
         }
         */
-
-
-        //AABB, finding corners(sides) in if()
-        bool colOnX = false;
-        bool colOnY = false;
-
-        if (circCenter.x + radius >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= circCenter.x - radius)
-        {
-            colOnX = true;
-        }
-
-        if (circCenter.y + radius >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= circCenter.y - radius)
-        {
-            colOnY = true;
-        }
-
-        if (colOnY && colOnX)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box)
@@ -229,6 +230,7 @@ public class CircleHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
+            Debug.Log("Hit");
             return true;
         }
         else
@@ -236,80 +238,7 @@ public class CircleHull2D : CollisionHull2D
             return false;
         }
 
-
-        /*
-                //bottom left
-                float x = box.transform.position.x - box.length * 0.5f;
-                float y = box.transform.position.y - box.height * 0.5f;
-                Vector2 bottomLeft = new Vector2(x, y);
-
-                //bottom right
-                x = box.transform.position.x + box.length * 0.5f;
-                y = box.transform.position.y - box.height * 0.5f;
-                Vector2 bottomRight = new Vector2(x, y);
-
-                //top left
-                x = box.transform.position.x + box.length * 0.5f;
-                y = box.transform.position.y - box.height * 0.5f;
-                Vector2 topLeft = new Vector2(x, y);
-
-                //top right
-                x = box.transform.position.x + box.length * 0.5f;
-                y = box.transform.position.y + box.height * 0.5f;
-                Vector2 topRight = new Vector2(x, y);
-
-                //get all corners
-                //get the diff between circ center and all corners
-                //choose the shortest diff
-                //do vs circ
-
-                Vector2 tempDiffOne = bottomLeft - circCenter;
-                Vector2 tempDiffTwo = bottomRight - circCenter;
-                Vector2 tempDiffThree = topLeft - circCenter;
-                Vector2 tempDiffFour = topRight - circCenter;
-
-                float[] diffArr = new float[4];
-                diffArr[0] = tempDiffOne.magnitude;
-                diffArr[1] = tempDiffTwo.magnitude;
-                diffArr[2] = tempDiffThree.magnitude;
-                diffArr[3] = tempDiffFour.magnitude;
-
-                Vector2 closestAABBPoint;
-                Vector2 diff = new Vector2();
-
-                if (Mathf.Max(diffArr) == diffArr[0])
-                {
-                    closestAABBPoint = tempDiffOne;
-                    diff = circCenter - closestAABBPoint;
-                }
-                if (Mathf.Max(diffArr) == diffArr[1])
-                {
-                    closestAABBPoint = tempDiffTwo;
-                    diff = circCenter - closestAABBPoint;
-                }
-                if (Mathf.Max(diffArr) == diffArr[2])
-                {
-                    closestAABBPoint = tempDiffThree;
-                    diff = circCenter - closestAABBPoint;
-                }
-                if (Mathf.Max(diffArr) == diffArr[3])
-                {
-                    closestAABBPoint = tempDiffFour;
-                    diff = circCenter - closestAABBPoint;
-                }
-
-
-                float disSq = (diff.x * diff.x) + (diff.y * diff.y);
-                float sumSq = radius * radius; //we are just going to a point with a radius of zero
-                if (disSq <= sumSq)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-                */
+        //TestCollisionVsAABB(box);
     }
     
 }
