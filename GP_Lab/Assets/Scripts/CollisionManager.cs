@@ -48,7 +48,14 @@ public class CollisionManager : MonoBehaviour
                 }
                 else
                 {
-                    CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc);
+                    if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         }
