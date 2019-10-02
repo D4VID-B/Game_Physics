@@ -23,41 +23,7 @@ public class CircleHull2D : CollisionHull2D
 
     void Update()
     {
-        //WORKS
-        if (TestCollision(this, AABB))
-        {
-            GetComponent<MeshRenderer>().material = success;
-        }
-        else
-        {
-            GetComponent<MeshRenderer>().material = fail;
-
-   
-        }
-
-        //Doesn't Work
-        if (TestCollision(this, OBB))
-        {
-            GetComponent<MeshRenderer>().material = success;
-
-        }
-        else
-        {
-            GetComponent<MeshRenderer>().material = fail;
-
-        }
-
-        //WORKS
-        if (TestCollision(this, Circle))
-        {
-            GetComponent<MeshRenderer>().material = success;
-
-        }
-        else
-        {
-            GetComponent<MeshRenderer>().material = fail;
-
-        }
+        
     }
 
 

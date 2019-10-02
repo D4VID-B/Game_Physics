@@ -25,12 +25,12 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
 
     public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
     {
-        return circle.TestCollisionVsOBB(this);
+        return circle.TestCollisionVsOBB(this, ref c);
     }
 
     public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
     {
-        return box.TestCollisionVsOBB(this);
+        return box.TestCollisionVsOBB(this, ref c);
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class CollisionManager : MonoBehaviour
 {
 
-    Collision desc;
+    CollisionHull2D.Collision desc;
 
     Scene currentScene;
     List<CollisionHull2D> colliders;
@@ -28,7 +28,7 @@ public class CollisionManager : MonoBehaviour
             if(obj.tag == "Collider")
             {
                 //Convert to collisionHull and add to the list
-                //colliders.Add(obj);
+                colliders.Add(obj.GetComponent<CollisionHull2D>());
             }
         }
 
@@ -48,7 +48,7 @@ public class CollisionManager : MonoBehaviour
                 }
                 else
                 {
-                    CollisionHull2D.TestCollision(colliders[i], colliders[j]);
+                    CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc);
                 }
             }
         }

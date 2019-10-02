@@ -17,23 +17,7 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     void Update()
     {
-       if(TestCollision(this, AABB))
-        {
-            GetComponent<MeshRenderer>().material = success;
-        }
-       else
-        {
-            GetComponent<MeshRenderer>().material = fail;
-        }
-
-        if (TestCollision(this, Circle))
-        {
-            GetComponent<MeshRenderer>().material = success;
-        }
-        else
-        {
-            GetComponent<MeshRenderer>().material = fail;
-        }
+       
     }
 
 
@@ -42,7 +26,7 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
     {
         //Call circle, flip arguments <=== ///What does this mean\\\?
         
-        return circle.TestCollisionVsAABB(this);
+        return circle.TestCollisionVsAABB(this, ref c);
     }
 
     public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
