@@ -60,16 +60,13 @@ public abstract class CollisionHull2D : MonoBehaviour
         //if a is a circle and b is an AABB
         //call the 
 
-        if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
-        {
-            //Debug.Log("Test");
-            return ((CircleHull2D)a).TestCollisionVsAABB((AxisAlignedBoundingBoxHull2D)b, ref c);
-        }
-
         if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle)
         {
-            //do circle-circle collision
             return ((CircleHull2D)a).TestCollisionVsCircle((CircleHull2D)b, ref c);
+        }
+        else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
+        {
+\            return ((CircleHull2D)a).TestCollisionVsAABB((AxisAlignedBoundingBoxHull2D)b, ref c);
         }
         else if(a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
         {

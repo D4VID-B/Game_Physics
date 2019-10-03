@@ -19,15 +19,6 @@ public class CircleHull2D : CollisionHull2D
 
     void Update()
     {
-        if(TestCollisionVsCircle(circle, ref col))
-        {
-            circle.changeColor(manager.success);
-        }
-
-
-        TestCollisionVsAABB(aabBox, ref col);
-
-        TestCollisionVsOBB(ooBox, ref col);
 
     }
 
@@ -204,7 +195,6 @@ public class CircleHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
-            Debug.Log("Hit");
             updateCollision(ref c);
             return true;
         }

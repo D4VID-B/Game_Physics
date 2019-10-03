@@ -42,12 +42,13 @@ public class CollisionManager : MonoBehaviour
 
     void findHulls()
     {
+        CollisionHull2D hull;
         foreach (GameObject obj in rootObjects)
         {
-            if (obj.tag == "Collider")
+            hull = obj.GetComponent<CollisionHull2D>();
+            if (hull != null)
             {
-                //Convert to collisionHull and add to the list
-                colliders.Add(obj.GetComponent<CollisionHull2D>());
+                colliders.Add(hull);
             }
         }
     }
@@ -56,26 +57,18 @@ public class CollisionManager : MonoBehaviour
     {
         for(int i = 0; i < colliders.Count; i++)
         {
-            for(int j = 0; j < colliders.Count; j++)
+            for(int j = i+1; j < colliders.Count; j++)
             {
-                //Check if they are the same object
-                if(colliders[i].gameObject == colliders[j].gameObject)
+                if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
                 {
-                    //Do nothing - they are the same object
+                    colliders[i].changeColor(success);
+                    colliders[j].changeColor(success);
+                    Debug.Log("Objects collided");
                 }
                 else
                 {
-                    if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
-                    {
-                        colliders[i].changeColor(success);
-                        colliders[j].changeColor(success);
-                        Debug.Log("Objects collided");
-                    }
-                    else
-                    {
-                        colliders[i].changeColor(fail);
-                        colliders[j].changeColor(fail);
-                    }
+                    colliders[i].changeColor(fail);
+                    colliders[j].changeColor(fail);
                 }
             }
         }
