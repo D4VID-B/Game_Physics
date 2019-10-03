@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class CollisionManager : MonoBehaviour
 {
 
+    public static CollisionManager instance;
+
     CollisionHull2D.Collision desc;
 
     Scene currentScene;
@@ -13,6 +15,8 @@ public class CollisionManager : MonoBehaviour
     List<GameObject> rootObjects;
 
     public Material success, fail;
+
+    public bool enableManager = true;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +32,12 @@ public class CollisionManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
-        checkForCollisions();
+    {   
+        if(enableManager)
+        {
+            checkForCollisions();
+        }
+        
     }
 
     void findHulls()

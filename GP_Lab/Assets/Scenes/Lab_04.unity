@@ -151,12 +151,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82d1d088aa6ae748a660e8f107c34f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AABB: {fileID: 541477000}
-  OBB: {fileID: 1179852485}
-  Circle: {fileID: 637820646}
-  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
-  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
   radius: 0
+  circle: {fileID: 637820646}
+  aabBox: {fileID: 541477000}
+  ooBox: {fileID: 1179852485}
+  manager: {fileID: 1755459898}
 --- !u!23 &101530277
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -248,13 +247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d60d40f05811da47a31b2277c6d43b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 1
-  height: 1
-  AABB: {fileID: 541477000}
-  OBB: {fileID: 1179852485}
-  Circle: {fileID: 101530276}
-  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
-  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
+  length: 0
+  height: 0
 --- !u!23 &478088073
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -328,7 +322,7 @@ GameObject:
   - component: {fileID: 541477001}
   - component: {fileID: 541477000}
   m_Layer: 0
-  m_Name: AABB (1)
+  m_Name: AABB-AABB-Circle
   m_TagString: Collider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -346,13 +340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d60d40f05811da47a31b2277c6d43b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 1
-  height: 1
-  AABB: {fileID: 478088072}
-  OBB: {fileID: 1179852485}
-  Circle: {fileID: 101530276}
-  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
-  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
+  length: 0
+  height: 0
 --- !u!23 &541477001
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -444,12 +433,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82d1d088aa6ae748a660e8f107c34f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AABB: {fileID: 478088072}
-  OBB: {fileID: 1179852485}
-  Circle: {fileID: 101530276}
-  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
-  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
   radius: 0.5
+  circle: {fileID: 101530276}
+  aabBox: {fileID: 478088072}
+  ooBox: {fileID: 1179852485}
+  manager: {fileID: 1755459898}
 --- !u!23 &637820647
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -541,8 +529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5456da7976e19cc4b9b42e4898fd5bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 1
-  height: 1
+  length: 0
+  height: 0
 --- !u!23 &1179852486
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -685,6 +673,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1755459897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755459899}
+  - component: {fileID: 1755459898}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1755459898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755459897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa9128adbe399f4e84b5b31e91cded2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders: []
+  success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
+  fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
+  enableManager: 0
+--- !u!4 &1755459899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755459897}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.075321, y: 3.2833443, z: -3.7984378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1844825227
 GameObject:

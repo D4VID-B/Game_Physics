@@ -11,12 +11,6 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
     public float height;
 
 
-    void Update()
-    {
-       
-    }
-
-
 
     public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
     {
@@ -82,7 +76,9 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
+            updateCollision(ref c);
             return true;
+            
         }
         else
         {
@@ -130,7 +126,7 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         //3) Call testaabb again
 
 
-
+        updateCollision(ref c);
 
         return false;
     }
