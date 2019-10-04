@@ -10,11 +10,6 @@ public class CircleHull2D : CollisionHull2D
     [Range(0.0f, 100.0f)]
     public float radius;
 
-    public CircleHull2D circle;
-    public AxisAlignedBoundingBoxHull2D aabBox;
-    public ObjectBoundingBoxHull2D ooBox;
-    public CollisionManager manager;
-
     Collision col;
 
     void Update()
@@ -47,7 +42,6 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
-            Debug.Log("Collision!");
             updateCollision(ref c);
             return true;
         }
@@ -80,7 +74,6 @@ public class CircleHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
-            Debug.Log("Collision");
             updateCollision(ref c);
             return true;
         }
