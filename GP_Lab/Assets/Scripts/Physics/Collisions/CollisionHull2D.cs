@@ -9,19 +9,19 @@ public abstract class CollisionHull2D : MonoBehaviour
     {
         public struct Contact
         {
-            Vector2 point;
-            Vector2 normal;
-            float restitution;
+            Vector2 point; //Point of contact
+            Vector2 normal; //sin() cos() of position
+            float restitution; //0-1, collision elasticity
 
         }
 
         //Collision event
-        public CollisionHull2D a = null, b = null;
-        public Contact[] contacts = new Contact[4];
+        public CollisionHull2D a = null, b = null; //Colliding objects
+        public Contact[] contacts = new Contact[4]; //???
         public int contactCount;
-        public bool status = false;
+        public bool status = false; //has the collision occured?
 
-        public Vector2 closingVelocity;
+        public Vector2 closingVelocity; //a.velocity - b.velocity
     }
 
 
@@ -47,23 +47,21 @@ public abstract class CollisionHull2D : MonoBehaviour
         particle = GetComponent<Particle2D>();
     }
 
+    public void changeColor(Material newColor)
+    {
+        GetComponent<MeshRenderer>().material = newColor;
+    }
 
     public static bool TestCollision(CollisionHull2D a, CollisionHull2D b, ref Collision c)
     {
         //if a is cirlce and b is also circle
-            //call the circel-circle function
+        //call the circel-circle function
 
         //if a is a circle and b is an AABB
-            //call the 
+        //call the 
 
-        //if a is a circle and b ia an OBB
-            // ....
-
-
-
-        if(a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle)
+        if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle)
         {
-            //do circle-circle collision
             return ((CircleHull2D)a).TestCollisionVsCircle((CircleHull2D)b, ref c);
         }
         else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
@@ -96,4 +94,9 @@ public abstract class CollisionHull2D : MonoBehaviour
     public abstract bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c);
 
     public abstract bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c);
+
+    public static void updateCollision(ref Collision col)
+    {
+        
+    }
 }

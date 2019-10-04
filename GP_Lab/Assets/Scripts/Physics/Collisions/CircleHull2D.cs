@@ -5,25 +5,21 @@ using UnityEngine;
 public class CircleHull2D : CollisionHull2D
 {
 
-    public CollisionHull2D AABB;
-    public CollisionHull2D OBB;
-    public CollisionHull2D Circle;
-    public Material success, fail;
-
     public CircleHull2D () : base (CollisionHullType2D.Hull_Circle) { }
 
     [Range(0.0f, 100.0f)]
     public float radius;
 
-    void Start()
-    {
-        
-    }
+    public CircleHull2D circle;
+    public AxisAlignedBoundingBoxHull2D aabBox;
+    public ObjectBoundingBoxHull2D ooBox;
+    public CollisionManager manager;
 
+    Collision col;
 
     void Update()
     {
-        
+
     }
 
 
@@ -51,6 +47,8 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
+            Debug.Log("Collision!");
+            updateCollision(ref c);
             return true;
         }
         else
@@ -83,7 +81,7 @@ public class CircleHull2D : CollisionHull2D
         if (colOnY && colOnX)
         {
             Debug.Log("Collision");
-            GetComponent<MeshRenderer>().material = success;
+            updateCollision(ref c);
             return true;
         }
         else
@@ -197,7 +195,7 @@ public class CircleHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
-            Debug.Log("Hit");
+            updateCollision(ref c);
             return true;
         }
         else
