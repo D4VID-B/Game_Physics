@@ -15,6 +15,8 @@ public class Particle2D : MonoBehaviour
     public float angularAcceleration;
     public float accelerationValue;
 
+    public bool SHIP_MODE;          // COLTON ADDED THIS FOR SHIP SCRIPT
+
     //Lab02 - Step 1
     public float startingMass;
     float mass, massInv;
@@ -347,6 +349,59 @@ public class Particle2D : MonoBehaviour
             addTorque(t_Position, t_Force);
         }
         
+        if(SHIP_MODE)
+        {
+            //F_gravity: f = mg
+            Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+            Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
+            Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
+
+            addForce(gravity);
+
+            //addForce(normal);     //find a way to add normal force only when colliding with ground
+
+            //this is shit and is temporary
+            
+            if(this.transform.position.y <= surfaceTransform.position.y + 4)        //TO TEST ONLY GET RID OF WHEN COLLISION WORKS
+            {
+                addForce(normal);
+                Debug.Log("ADDING NORMAL FORCE");
+            }
+
+            Vector2 elevationForce = new Vector2(0.0f, 10.0f);
+            Vector2 lateralForce = new Vector2(4.0f, 0.0f);
+
+            //Yaw control (isnt it pitch though? yaw would be on the Y axis which just pointlessly spins it)
+            if (Input.GetKey(KeyCode.Q))
+            {
+                addTorque(t_Position, -t_Force);
+            }
+            else if (Input.GetKey(KeyCode.E))
+            {
+                addTorque(t_Position, t_Force);
+            }
+            else
+            {
+                //we need to slow torque a little maybe, or not who gives a shit
+            }
+
+            //Elevation control
+            if (Input.GetKey(KeyCode.W))
+            {
+                addForce(elevationForce);
+            }
+
+            // Lateral control
+            if (Input.GetKey(KeyCode.A))
+            {
+                addForce(-lateralForce);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                addForce(lateralForce);
+            }
+
+        }
 
 
         //Step 4
@@ -373,12 +428,12 @@ public class Particle2D : MonoBehaviour
         //Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
 
         //Vector2 drag = ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, objectAreaXSection, dragCoefficient);
-        
+
 
         //addForce(gravity);
         //addForce(drag);
 
-                                        //******** Block on a slanted surface ********
+        //******** Block on a slanted surface ********
         //if(gameObject.name == "SlideCube") // Demostrating Gravity, Normal (As Sliding) and Friction forces
         //{
         //    //addForce(gravity);
@@ -404,6 +459,6 @@ public class Particle2D : MonoBehaviour
         //    //Velocity is taken fronm the particle properties and is integrated by the script, 
         //    //while fluid density & velocity are public variables that default to Earth air with no wind
         //}
-        
+
     }
 }
