@@ -19,7 +19,7 @@ public class CircleHull2D : CollisionHull2D
 
     void Update()
     {
-
+        TestCollisionVsOBB(ooBox, ref col);
     }
 
 
@@ -175,20 +175,85 @@ public class CircleHull2D : CollisionHull2D
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
-        Vector2 circCenter = new Vector2();
-        circCenter.x = this.transform.position.x * -box.transform.position.x;
-        circCenter.y = this.transform.position.y * -box.transform.position.y;
+        //Vector2 circCenter = -box.transform.localToWorldMatrix.MultiplyVector(this.transform.position);
+        Vector2 circCenter = this.transform.position;
 
+        //get the norms of the box
+        float RotZOBB = box.transform.rotation.z;
+        Vector2 xNormOBB = new Vector2(Mathf.Cos(RotZOBB), Mathf.Sin(RotZOBB));
+        Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
+
+        //bottom left
+        float x = box.transform.position.x - box.length * 0.5f;
+        float y = box.transform.position.y - box.height * 0.5f;
+        Vector2 bottomLeft = new Vector2(x, y);
+
+        //bottom right
+        x = box.transform.position.x + box.length * 0.5f;
+        y = box.transform.position.y - box.height * 0.5f;
+        Vector2 bottomRight = new Vector2(x, y);
+
+        //top left
+        x = box.transform.position.x + box.length * 0.5f;
+        y = box.transform.position.y - box.height * 0.5f;
+        Vector2 topLeft = new Vector2(x, y);
+
+        //top right
+        x = box.transform.position.x + box.length * 0.5f;
+        y = box.transform.position.y + box.height * 0.5f;
+        Vector2 topRight = new Vector2(x, y);
+
+
+        //project all x valued (one for each corner, 4) vertices onto normal for x
+        //Vector2 xNormProjectedVertices = Vector3.Project( , xNormOBB);
+        Vector2 pointX1 = (bottomLeft * xNormOBB) * xNormOBB;
+        Vector2 pointX2 = (bottomRight * xNormOBB) * xNormOBB;
+        Vector2 pointX3 = (topLeft * xNormOBB) * xNormOBB;
+        Vector2 pointX4 = (topRight * xNormOBB) * xNormOBB;
+
+
+        //project all y valued (one for each corner, 4) vertices onto normal for y
+        Vector2 pointY1 = (bottomLeft * yNormOBB) * yNormOBB;
+        Vector2 pointY2 = (bottomRight * yNormOBB) * yNormOBB;
+        Vector2 pointY3 = (topLeft * yNormOBB) * yNormOBB;
+        Vector2 pointY4 = (topRight * yNormOBB) * yNormOBB;
+
+
+
+
+
+        /*
+        //bottom left
+        float x1 = box.transform.position.x - box.length * 0.5f;
+        float x2 = box.transform.position.x + box.length * 0.5f;
+        Vector2 bottomLeft = new Vector2(x1, x2);
+
+        //top right
+        float y1 = box.transform.position.y - box.height * 0.5f;
+        float y2 = box.transform.position.y + box.height * 0.5f;
+        Vector2 topRight = new Vector2(y1, y2);
+
+        //go to world space
+        Vector2 localToWorldX = box.transform.localToWorldMatrix.MultiplyVector(bottomLeft);
+        Vector2 localToWorldY = box.transform.localToWorldMatrix.MultiplyVector(topRight);
+        
+
+
+        //AxisAlignedBoundingBoxHull2D newBox = new AxisAlignedBoundingBoxHull2D();
+
+        
         //AABB, finding corners(sides) in if()
         bool colOnX = false;
         bool colOnY = false;
 
-        if (circCenter.x + radius >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= circCenter.x - radius)
+        Debug.Log("circPos: " + circCenter + "    localToWorldX: " + localToWorldX + "    localToWorldY: " + localToWorldY);
+
+        if (circCenter.x + radius >= localToWorldX.x && localToWorldX.y >= circCenter.x - radius)
         {
             colOnX = true;
         }
 
-        if (circCenter.y + radius >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= circCenter.y - radius)
+        if (circCenter.y + radius >= localToWorldY.x && localToWorldY.y >= circCenter.y - radius)
         {
             colOnY = true;
         }
@@ -202,8 +267,10 @@ public class CircleHull2D : CollisionHull2D
         {
             return false;
         }
+        */
 
-        //TestCollisionVsAABB(box);
+
+        //return this.TestCollisionVsAABB(box, ref c);
     }
-    
+
 }
