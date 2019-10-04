@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevationThrust: 10
+  lateralThrust: 4
   position: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}

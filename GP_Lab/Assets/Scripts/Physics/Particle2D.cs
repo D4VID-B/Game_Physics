@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class Particle2D : MonoBehaviour
 {
+    //SHIP SHIT
+    public float elevationThrust;
+    public float lateralThrust;
+
     //Step 1
     public Vector2 position;
     public Vector2 velocity;
@@ -285,6 +289,7 @@ public class Particle2D : MonoBehaviour
 
     void Start()
     {
+        position = this.transform.position;
         setMass(startingMass);
         calculateMomentOfInertia(Shape);
     }
@@ -352,24 +357,28 @@ public class Particle2D : MonoBehaviour
         if(SHIP_MODE)
         {
             //F_gravity: f = mg
-            Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+            Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -1.625f, Vector2.up);  //I USED A DIFFERENT GRAVITY, THE MOONS GRAVITY
             Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
             Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
 
-            addForce(gravity);
+            //addForce(gravity);
 
             //addForce(normal);     //find a way to add normal force only when colliding with ground
 
             //this is shit and is temporary
             
-            if(this.transform.position.y <= surfaceTransform.position.y + 4)        //TO TEST ONLY GET RID OF WHEN COLLISION WORKS
-            {
-                addForce(normal);
-                Debug.Log("ADDING NORMAL FORCE");
-            }
+            
 
-            Vector2 elevationForce = new Vector2(0.0f, 10.0f);
-            Vector2 lateralForce = new Vector2(4.0f, 0.0f);
+            float RotZOBB = this.transform.rotation.z;
+            Vector2 xNormOBB = new Vector2(Mathf.Cos(RotZOBB), Mathf.Sin(RotZOBB));
+            Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
+
+
+            Vector2 elevationForce = yNormOBB * 10.0f;//new Vector2(0.0f, 20.0f);// * yNormOBB;
+            Vector2 lateralForce = xNormOBB * 10.0f;//new Vector2(4.0f, 0.0f);// * xNormOBB;
+
+            //Vector2 elevationForce = new Vector2(0.0f, elevationThrust);// * yNormOBB;
+            //Vector2 lateralForce = new Vector2(lateralThrust, 0.0f);// * xNormOBB;
 
             //Yaw control (isnt it pitch though? yaw would be on the Y axis which just pointlessly spins it)
             if (Input.GetKey(KeyCode.Q))
@@ -385,10 +394,26 @@ public class Particle2D : MonoBehaviour
                 //we need to slow torque a little maybe, or not who gives a shit
             }
 
+            //rotation is greater than pi
+            //if()
+            {
+
+            }
+
+            //rotation is less than negative pi
+            //if()
+            {
+
+            }
+
             //Elevation control
             if (Input.GetKey(KeyCode.W))
             {
                 addForce(elevationForce);
+            }
+            if(Input.GetKey(KeyCode.S))
+            {
+                addForce(-elevationForce);
             }
 
             // Lateral control
