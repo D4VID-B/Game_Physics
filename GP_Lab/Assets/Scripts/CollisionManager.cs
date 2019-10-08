@@ -61,14 +61,18 @@ public class CollisionManager : MonoBehaviour
             {
                 if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
                 {
-                    colliders[i].changeColor(success);
-                    colliders[j].changeColor(success);
+                    //if(colliders[i].GetComponent<MeshRenderer>().material == fail || colliders[j].GetComponent<MeshRenderer>().material == fail)
+                    //{
+                        CollisionHull2D.changeColor(colliders[i].gameObject, true);
+                        CollisionHull2D.changeColor(colliders[j].gameObject, true);
+                    
+
                     Debug.Log("Objects collided");
                 }
                 else
                 {
-                    colliders[i].changeColor(fail);
-                    colliders[j].changeColor(fail);
+                    CollisionHull2D.changeColor(colliders[i].gameObject, false);
+                    CollisionHull2D.changeColor(colliders[j].gameObject, false);
                 }
             }
         }

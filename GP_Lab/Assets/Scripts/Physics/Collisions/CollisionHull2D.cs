@@ -47,9 +47,21 @@ public abstract class CollisionHull2D : MonoBehaviour
         particle = GetComponent<Particle2D>();
     }
 
-    public void changeColor(Material newColor)
+    public static void changeColor(GameObject obj,  bool shouldChange)
     {
-        GetComponent<MeshRenderer>().material = newColor;
+        if(shouldChange)
+        {
+            //Debug.Log("Previous material: " + obj.GetComponent<Renderer>().material);
+            obj.GetComponent<MeshRenderer>().material.color = Color.green;
+            //Debug.Log("New material: " + obj.GetComponent<Renderer>().material);
+        }
+
+        //if(!shouldChange)
+        //{
+        //    obj.GetComponent<MeshRenderer>().material.color = Color.red;
+        //}
+        
+
     }
 
     public static bool TestCollision(CollisionHull2D a, CollisionHull2D b, ref Collision c)
