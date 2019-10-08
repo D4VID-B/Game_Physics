@@ -34,7 +34,7 @@ public class CircleHull2D : CollisionHull2D
 
         Vector2 diff = positionB - positionA;
 
-        float distance = (diff.x * diff.x) + (diff.y * diff.y); 
+        float distance = (diff.x * diff.x) + (diff.y * diff.y); //distance squared
 
         float sumOfRadii = radius + circle.radius;
 
@@ -42,12 +42,27 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
-
+            //Assign objects
             col.a = this;
             col.b = circle;
 
-            col.contacts[0].point = diff;
-            col.contacts[0].normal = (col.a.transform.position - col.b.transform.position).normalized;
+            //Calculate contact normal - is also the contact direction
+            distance = Mathf.Sqrt(distance);
+            col.contacts[0].normal = diff*(1/distance);
+
+            //Calculate contact point => center of the overlap
+            //take the diff
+            //magnitude = distance
+            //normalise by /magnitude
+            Vector2 e0 = col.contacts[0].normal * -radius;
+            Vector2 e1 = col.contacts[0].normal * circle.radius;
+            col.contacts[0].point = (e0+e1)*0.5f;
+
+            //Calculate interpenetration depth
+            //subtract distance from sum of radii => interpen depth
+            
+            col.interpenDepth = sumOfRadii - distance;
+           
 
             return true;
         }
@@ -80,7 +95,12 @@ public class CircleHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
-            updateCollision(ref c);
+            //Assign objects
+            col.a = this;
+            col.b = box;
+
+            //
+
             return true;
         }
         else
@@ -90,81 +110,7 @@ public class CircleHull2D : CollisionHull2D
 
         //when we clamp on each dimension, there are only two dimesnions
 
-        /*
-
-        //bottom left
-        float x = box.transform.position.x - box.length * 0.5f;
-        float y = box.transform.position.y - box.height * 0.5f;
-        Vector2 bottomLeft = new Vector2(x, y);
-
-        //bottom right
-        x = box.transform.position.x + box.length * 0.5f;
-        y = box.transform.position.y - box.height * 0.5f;
-        Vector2 bottomRight = new Vector2(x, y);
-
-        //top left
-        x = box.transform.position.x + box.length * 0.5f;
-        y = box.transform.position.y - box.height * 0.5f;
-        Vector2 topLeft = new Vector2(x, y);
-
-        //top right
-        x = box.transform.position.x + box.length * 0.5f;
-        y = box.transform.position.y + box.height * 0.5f;
-        Vector2 topRight = new Vector2(x, y);
-
-        //get all corners
-        //get the diff between circ center and all corners
-        //choose the shortest diff
-        //do vs circ
-
-        Vector2 tempDiffOne = bottomLeft - circCenter;
-        Vector2 tempDiffTwo = bottomRight - circCenter;
-        Vector2 tempDiffThree = topLeft - circCenter;
-        Vector2 tempDiffFour = topRight - circCenter;
-
-        float[] diffArr = new float[4];
-        diffArr[0] = tempDiffOne.magnitude;
-        diffArr[1] = tempDiffTwo.magnitude;
-        diffArr[2] = tempDiffThree.magnitude;
-        diffArr[3] = tempDiffFour.magnitude;
         
-        Vector2 closestAABBPoint;
-        Vector2 diff = new Vector2();
-        
-        if (Mathf.Max(diffArr) == diffArr[0])
-        {
-            closestAABBPoint = tempDiffOne;
-            diff = circCenter - closestAABBPoint;
-        }
-        if (Mathf.Max(diffArr) == diffArr[1])
-        {
-            closestAABBPoint = tempDiffTwo;
-            diff = circCenter - closestAABBPoint;
-        }
-        if (Mathf.Max(diffArr) == diffArr[2])
-        {
-            closestAABBPoint = tempDiffThree;
-            diff = circCenter - closestAABBPoint;
-        }
-        if (Mathf.Max(diffArr) == diffArr[3])
-        {
-            closestAABBPoint = tempDiffFour;
-            diff = circCenter - closestAABBPoint;
-        }
-        
-
-
-        float disSq = (diff.x * diff.x) + (diff.y * diff.y);
-        float sumSq = radius * radius; //we are just going to a point with a radius of zero
-        if (disSq <= sumSq)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        */
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
@@ -267,6 +213,15 @@ public class CircleHull2D : CollisionHull2D
             return false;
         }
         */
+
+
+
+        //Assign objects
+        col.a = this;
+        col.b = box;
+
+        //
+
 
         return false;
 
