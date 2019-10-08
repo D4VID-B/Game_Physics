@@ -61,10 +61,9 @@ public class CollisionManager : MonoBehaviour
             {
                 if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
                 {
-                    //if(colliders[i].GetComponent<MeshRenderer>().material == fail || colliders[j].GetComponent<MeshRenderer>().material == fail)
-                    //{
                         CollisionHull2D.changeColor(colliders[i].gameObject, true);
                         CollisionHull2D.changeColor(colliders[j].gameObject, true);
+                    CollisionHull2D.updateCollision(ref desc);
                     
 
                     Debug.Log("Objects collided");

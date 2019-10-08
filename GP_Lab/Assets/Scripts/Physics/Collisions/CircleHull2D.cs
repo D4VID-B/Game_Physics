@@ -42,7 +42,13 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
-            updateCollision(ref c);
+
+            col.a = this;
+            col.b = circle;
+
+            col.contacts[0].point = diff;
+            col.contacts[0].normal = (col.a.transform.position - col.b.transform.position).normalized;
+
             return true;
         }
         else

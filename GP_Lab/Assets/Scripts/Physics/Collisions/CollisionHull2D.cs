@@ -9,10 +9,8 @@ public abstract class CollisionHull2D : MonoBehaviour
     {
         public struct Contact
         {
-            Vector2 point; //Point of contact
-            Vector2 normal; //sin() cos() of position
-            float restitution; //0-1, collision elasticity
-
+            public Vector2 point; //Point of contact
+            public Vector2 normal; //sin() cos() of position
         }
 
         //Collision event
@@ -21,6 +19,7 @@ public abstract class CollisionHull2D : MonoBehaviour
         public int contactCount;
         public bool status = false; //has the collision occured?
 
+        float restitution; //0-1, collision elasticity
         public Vector2 closingVelocity; //a.velocity - b.velocity
     }
 
