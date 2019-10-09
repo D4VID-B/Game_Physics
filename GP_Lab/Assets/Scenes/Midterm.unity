@@ -5066,8 +5066,17 @@ PrefabInstance:
       propertyPath: surfaceTransform
       value: 
       objectReference: {fileID: 927151304}
+    - target: {fileID: 5578042902577664774, guid: 37b271776b560da4caed0dca42c2052d,
+        type: 3}
+      propertyPath: lateralThrust
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 608683984, guid: 37b271776b560da4caed0dca42c2052d, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 608683982, guid: 37b271776b560da4caed0dca42c2052d, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

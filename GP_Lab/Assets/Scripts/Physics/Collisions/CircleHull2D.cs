@@ -34,7 +34,7 @@ public class CircleHull2D : CollisionHull2D
 
         Vector2 diff = positionB - positionA;
 
-        float distance = (diff.x * diff.x) + (diff.y * diff.y); 
+        float distance = (diff.x * diff.x) + (diff.y * diff.y); //distance squared
 
         float sumOfRadii = radius + circle.radius;
 
@@ -42,7 +42,28 @@ public class CircleHull2D : CollisionHull2D
 
         if (distance <= squaredSumOfRadii)
         {
-            updateCollision(ref c);
+            //Assign objects
+            col.a = this;
+            col.b = circle;
+
+            //Calculate contact normal - is also the contact direction
+            distance = Mathf.Sqrt(distance);
+            col.contacts[0].normal = diff*(1/distance);
+
+            //Calculate contact point => center of the overlap
+            //take the diff
+            //magnitude = distance
+            //normalise by /magnitude
+            Vector2 e0 = col.contacts[0].normal * -radius;
+            Vector2 e1 = col.contacts[0].normal * circle.radius;
+            col.contacts[0].point = (e0+e1)*0.5f;
+
+            //Calculate interpenetration depth
+            //subtract distance from sum of radii => interpen depth
+            
+            col.interpenDepth = sumOfRadii - distance;
+           
+
             return true;
         }
         else
@@ -76,6 +97,23 @@ public class CircleHull2D : CollisionHull2D
 
         if(dSq < (this.radius * this.radius))
         {
+            //Assign objects
+            col.a = this;
+            col.b = box;
+
+            //get the clamped combinded vector as the point to have norm from
+            Vector2 Point = new Vector2(clampedX, clampedY);
+
+            //take the centerpoint of the circle, subtract the point to get the norm (it may be point - circ)
+            //Vector2 norm = (circCenter - Point).normalized; //(same as distance)
+
+            //col.contacts[0].normal = norm;
+            col.contacts[0].normal = distance.normalized;
+            col.contacts[0].point = Point;
+
+            //radius of the circle minus the distance to the original point of entry
+            col.interpenDepth = (this.radius * this.radius) - dSq;
+
             return true;
         }
         else
@@ -109,6 +147,9 @@ public class CircleHull2D : CollisionHull2D
         */
 
        
+        //when we clamp on each dimension, there are only two dimesnions
+
+        
     }
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
@@ -122,10 +163,35 @@ public class CircleHull2D : CollisionHull2D
         Vector2 circCenter = this.transform.position;
 
         //get the norms of the box
-        float RotZOBB = box.transform.rotation.z;
-        Vector2 xNormOBB = new Vector2(Mathf.Cos(RotZOBB), Mathf.Sin(RotZOBB));
-        Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
+        float RotZOBB = box.transform.eulerAngles.z;
+        //Vector2 xNormOBB = new Vector2(Mathf.Cos(RotZOBB), Mathf.Sin(RotZOBB));
+        //Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
 
+        //just rotate the circle around the centerpoint of the box using the norm (or angle) of the box then call AABB
+        //      this is a copy over for AABB test (dont change these values, we just need to change the circle)
+        //      the box is rotated by the -RotZOBB in a way to get back to axis aligned, so we need to do the same for the circle
+        AxisAlignedBoundingBoxHull2D newBox = new AxisAlignedBoundingBoxHull2D();
+        newBox.length = box.length;
+        newBox.height = box.height;
+        newBox.transform.position = box.transform.position;
+
+        //create a new circle to edit
+        CircleHull2D newCirc = new CircleHull2D();
+        newCirc.radius = this.radius;
+
+        //Rotate centerpoint of circ around the box pos point by the angle of the box
+        float subPosX = circCenter.x - box.transform.position.x;
+        float subPosY = circCenter.y - box.transform.position.y;
+        Vector2 newPos = new Vector2(Mathf.Cos(-RotZOBB) * (subPosX) - Mathf.Sin(-RotZOBB) * (subPosY) + box.transform.position.x,
+                                            Mathf.Sin(-RotZOBB) * (subPosX) + Mathf.Cos(-RotZOBB) * (subPosY) + box.transform.position.y);
+
+        newCirc.transform.position = newPos;
+
+        //a possible problem is that now that we have a new 
+        return newCirc.TestCollisionVsAABB(newBox, ref c);
+
+
+        /*
         //bottom left
         float x = box.transform.position.x - box.length * 0.5f;
         float y = box.transform.position.y - box.height * 0.5f;
@@ -161,8 +227,8 @@ public class CircleHull2D : CollisionHull2D
         Vector2 pointY3 = (topLeft * yNormOBB) * yNormOBB;
         Vector2 pointY4 = (topRight * yNormOBB) * yNormOBB;
 
+        */
 
-        
 
 
         /*
@@ -212,7 +278,16 @@ public class CircleHull2D : CollisionHull2D
         }
         */
 
-        return false;
+
+
+        //Assign objects
+        //col.a = this;
+        //col.b = box;
+
+        //
+
+
+        //return false;
 
         //return this.TestCollisionVsAABB(box, ref c);
     }
