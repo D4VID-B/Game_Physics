@@ -7,33 +7,57 @@ using UnityEngine;
 public class Particle2D : MonoBehaviour
 {
     //SHIP SHIT
+    [Header("Ship Properties")]
     public float elevationThrust;
     public float lateralThrust;
+    public bool SHIP_MODE;          // COLTON ADDED THIS FOR SHIP SCRIPT
 
     //Step 1
+    [Header("Position")]
     public Vector2 position;
     public Vector2 velocity;
     public Vector2 acceleration;
+    Vector2 force;
+
+    [Header("Rotation")]
     public float rotation;
     public float angularVelocity;
     public float angularAcceleration;
     public float accelerationValue;
 
-    public bool SHIP_MODE;          // COLTON ADDED THIS FOR SHIP SCRIPT
-
     //Lab02 - Step 1
+    [Header("Mass")]
     public float startingMass;
     float mass, massInv;
 
+    [Header("Torque")]
+    public float f_Torque;
+    public Vector2 t_Position, t_Force;
+
+
+    [Header("Shape Properties")]
+    public float radius;
+    public float i_Radius;
+    public float o_Radius;
+    public float height;
+    public float width;
+    public float length;
+
+    [Header("Coefficients, Density, and Inertia")]
     public float fluidDensity = 1.225f;
     public Vector2 fluidVelocity = Vector2.zero;
     public float dragCoefficient, objectAreaXSection;
     public float spring_stiffness, spring_resting;
-
     private float momentOfInertia;
     private float invMomentOfInertia;
+    float m_Inertia;
 
+    [Header("Outside Force Suppliers")]
     public Transform surfaceTransform;
+    Vector2 localCM, globalCM, foreAppPoint;
+
+
+
 
     public void setMass(float newMass)
     {
@@ -48,18 +72,7 @@ public class Particle2D : MonoBehaviour
     }
     
 
-    //Lab 3 - Step 1
-
-    float m_Inertia;
-
-    public float radius, i_Radius, o_Radius, height, width, length;
-
-    public float f_Torque;
-
-    Vector2 localCM, globalCM, foreAppPoint;
-
-    public Vector2 t_Position, t_Force;
-
+   
     public enum Shape_2D
     {
         Disk,   // I = 1/2*m*(r*r)
@@ -134,7 +147,6 @@ public class Particle2D : MonoBehaviour
 
     //Lab02 - Step02
 
-    Vector2 force;
 
     public void addForce(Vector2 newForce)
     {
@@ -374,8 +386,8 @@ public class Particle2D : MonoBehaviour
             Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
 
 
-            Vector2 elevationForce = yNormOBB * 10.0f;//new Vector2(0.0f, 20.0f);// * yNormOBB;
-            Vector2 lateralForce = xNormOBB * 10.0f;//new Vector2(4.0f, 0.0f);// * xNormOBB;
+            Vector2 elevationForce = yNormOBB * elevationThrust;//new Vector2(0.0f, 20.0f);// * yNormOBB;
+            Vector2 lateralForce = xNormOBB * lateralThrust;//new Vector2(4.0f, 0.0f);// * xNormOBB;
 
             //Vector2 elevationForce = new Vector2(0.0f, elevationThrust);// * yNormOBB;
             //Vector2 lateralForce = new Vector2(lateralThrust, 0.0f);// * xNormOBB;
