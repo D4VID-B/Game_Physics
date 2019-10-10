@@ -73,26 +73,51 @@ public abstract class CollisionHull2D : MonoBehaviour
         //if a is a circle and b is an AABB
         //call the 
 
+        //Debug.Log("CH2D a: " + a + "  CH2D b: " + b);
+
+        //You need the nine conditions seperately, you cant even use or statements
+        //the original way this was set up, if a was circ and b was AABB, then there wasn't a condition for a to be AABB and b to be circ (which matters for the return)
+
         if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle)
         {
             return ((CircleHull2D)a).TestCollisionVsCircle((CircleHull2D)b, ref c);
         }
+
         else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
         {
             return ((CircleHull2D)a).TestCollisionVsAABB((AxisAlignedBoundingBoxHull2D)b, ref c);
         }
+
+        else if (b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && a.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
+        {
+            return ((CircleHull2D)b).TestCollisionVsAABB((AxisAlignedBoundingBoxHull2D)a, ref c);
+        }
+
         else if(a.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
         {
             return ((CircleHull2D)a).TestCollisionVsOBB((ObjectBoundingBoxHull2D)b, ref c);
         }
+
+        else if (b.type == CollisionHull2D.CollisionHullType2D.Hull_Circle && a.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
+        {
+            return ((CircleHull2D)b).TestCollisionVsOBB((ObjectBoundingBoxHull2D)a, ref c);
+        }
+
         else if(a.type == CollisionHull2D.CollisionHullType2D.Hull_AABB && b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB)
         {
             return ((AxisAlignedBoundingBoxHull2D)a).TestCollisionVsAABB((AxisAlignedBoundingBoxHull2D)b, ref c);
         }
+
         else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_AABB && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
         {
-            return ((AxisAlignedBoundingBoxHull2D)a).TestCollisionVsOBB((ObjectBoundingBoxHull2D)b, ref c); 
+            return ((AxisAlignedBoundingBoxHull2D)a).TestCollisionVsOBB((ObjectBoundingBoxHull2D)b, ref c);
         }
+
+        else if (b.type == CollisionHull2D.CollisionHullType2D.Hull_AABB && a.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
+        {
+            return ((AxisAlignedBoundingBoxHull2D)b).TestCollisionVsOBB((ObjectBoundingBoxHull2D)a, ref c);
+        }
+
         else if (a.type == CollisionHull2D.CollisionHullType2D.Hull_OBB && b.type == CollisionHull2D.CollisionHullType2D.Hull_OBB)
         {
             return ((ObjectBoundingBoxHull2D)a).TestCollisionVsOBB((ObjectBoundingBoxHull2D)b, ref c);
