@@ -61,8 +61,8 @@ public class CollisionManager : MonoBehaviour
             {
                 if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
                 {
-                        CollisionHull2D.changeColor(colliders[i].gameObject, true);
-                        CollisionHull2D.changeColor(colliders[j].gameObject, true);
+                    CollisionHull2D.changeColor(colliders[i].gameObject, true);
+                    CollisionHull2D.changeColor(colliders[j].gameObject, true);
                     CollisionHull2D.updateCollision(ref desc);
                     
 
