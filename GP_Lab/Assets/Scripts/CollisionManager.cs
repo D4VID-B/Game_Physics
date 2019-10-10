@@ -21,6 +21,7 @@ public class CollisionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        desc = new CollisionHull2D.Collision();
         currentScene = SceneManager.GetActiveScene();
 
         colliders = new List<CollisionHull2D>();
@@ -63,6 +64,8 @@ public class CollisionManager : MonoBehaviour
                 {
                         CollisionHull2D.changeColor(colliders[i].gameObject, true);
                         CollisionHull2D.changeColor(colliders[j].gameObject, true);
+
+                    //CollisionHull2D.int
                     CollisionHull2D.updateCollision(ref desc);
                     
 

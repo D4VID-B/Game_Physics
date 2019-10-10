@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CircleHull2D : CollisionHull2D
 {
 
@@ -9,8 +10,6 @@ public class CircleHull2D : CollisionHull2D
 
     [Range(0.0f, 100.0f)]
     public float radius;
-
-    Collision col;
 
     void Update()
     {
@@ -43,25 +42,25 @@ public class CircleHull2D : CollisionHull2D
         if (distance <= squaredSumOfRadii)
         {
             //Assign objects
-            col.a = this;
-            col.b = circle;
+            c.a = this;
+            c.b = circle;
 
             //Calculate contact normal - is also the contact direction
             distance = Mathf.Sqrt(distance);
-            col.contacts[0].normal = diff*(1/distance);
+            c.contacts[0].normal = diff*(1/distance);
 
             //Calculate contact point => center of the overlap
             //take the diff
             //magnitude = distance
             //normalise by /magnitude
-            Vector2 e0 = col.contacts[0].normal * -radius;
-            Vector2 e1 = col.contacts[0].normal * circle.radius;
-            col.contacts[0].point = (e0+e1)*0.5f;
+            Vector2 e0 = c.contacts[0].normal * -radius;
+            Vector2 e1 = c.contacts[0].normal * circle.radius;
+            c.contacts[0].point = (e0+e1)*0.5f;
 
             //Calculate interpenetration depth
             //subtract distance from sum of radii => interpen depth
             
-            col.interpenDepth = sumOfRadii - distance;
+            c.interpenDepth = sumOfRadii - distance;
            
 
             return true;
