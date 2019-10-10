@@ -11,11 +11,7 @@ public class CircleHull2D : CollisionHull2D
     [Range(0.0f, 100.0f)]
     public float radius;
 
-<<<<<<< HEAD
-=======
-    //Collision col = null;
 
->>>>>>> Midterm
     void Update()
     {
 
@@ -52,38 +48,27 @@ public class CircleHull2D : CollisionHull2D
 
 
             //Assign objects
-<<<<<<< HEAD
-            c.a = this;
-            c.b = circle;
-=======
             col.a = this;
             col.b = circle;
             
->>>>>>> Midterm
+
 
             //Calculate contact normal - is also the contact direction
             distance = Mathf.Sqrt(distance);
-            c.contacts[0].normal = diff*(1/distance);
+            col.contacts[0].normal = diff*(1/distance);
 
             //Calculate contact point => center of the overlap
             //take the diff
             //magnitude = distance
             //normalise by /magnitude
-            Vector2 e0 = c.contacts[0].normal * -radius;
-            Vector2 e1 = c.contacts[0].normal * circle.radius;
-            c.contacts[0].point = (e0+e1)*0.5f;
+            Vector2 e0 = col.contacts[0].normal * -radius;
+            Vector2 e1 = col.contacts[0].normal * circle.radius;
+            col.contacts[0].point = (e0+e1)*0.5f;
 
             //Calculate interpenetration depth
             //subtract distance from sum of radii => interpen depth
-            
-<<<<<<< HEAD
-            c.interpenDepth = sumOfRadii - distance;
-           
-=======
-            col.interpenDepth = sumOfRadii - distance;
 
-            updateCollision(ref col);
->>>>>>> Midterm
+            col.interpenDepth = sumOfRadii - distance;
 
             return true;
         }
@@ -141,7 +126,6 @@ public class CircleHull2D : CollisionHull2D
             //radius of the circle minus the distance to the original point of entry
             col.interpenDepth = (this.radius * this.radius) - dSq;
 
-            updateCollision(ref col);
 
             return true;
         }

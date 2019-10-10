@@ -792,6 +792,7 @@ MonoBehaviour:
   success: {fileID: 2100000, guid: 00c99de81c1c0c4498fac1006f55a5c5, type: 2}
   fail: {fileID: 2100000, guid: 15343ba40f8aab34a92722c5e87f2328, type: 2}
   enableManager: 1
+  coefficientOfRestitution: 0.8
 --- !u!4 &1755459899
 Transform:
   m_ObjectHideFlags: 0

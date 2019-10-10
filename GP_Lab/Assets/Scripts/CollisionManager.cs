@@ -18,6 +18,9 @@ public class CollisionManager : MonoBehaviour
 
     public bool enableManager = true;
 
+    [Range(0.0f, 1.0f)]
+    public float coefficientOfRestitution = 0.8f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,8 +68,8 @@ public class CollisionManager : MonoBehaviour
                         CollisionHull2D.changeColor(colliders[i].gameObject, true);
                         CollisionHull2D.changeColor(colliders[j].gameObject, true);
 
-                    //CollisionHull2D.int
-                    CollisionHull2D.updateCollision(ref desc);
+                    CollisionHull2D.resolveInterpenetration(ref desc);
+                    CollisionHull2D.updateCollision(ref desc, coefficientOfRestitution);
                     
 
                     Debug.Log("Objects collided");
