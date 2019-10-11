@@ -11,8 +11,10 @@ public class CircleHull2D : CollisionHull2D
     [Range(0.0f, 100.0f)]
     public float radius;
 
+    //Collision col = null;
 
-    void Update()
+
+    void Start()
     {
 
     }
@@ -167,15 +169,17 @@ public class CircleHull2D : CollisionHull2D
         
     }
 
-    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
+    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision col)
     {
         //Same as above, but first:
         //move circle center into box space by * -world transform
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
+        Debug.Log("OBB v Circ Start");
+
         //Vector2 circCenter = -box.transform.localToWorldMatrix.MultiplyVector(this.transform.position);
-        Vector2 circCenter = this.transform.position;
+        //Vector2 circCenter = this.transform.position;
 
         //get the norms of the box
         float RotZOBB = box.transform.eulerAngles.z;
@@ -189,6 +193,13 @@ public class CircleHull2D : CollisionHull2D
         //AxisAlignedBoundingBoxHull2D newBox = this.gameObject.AddComponent(typeof(AxisAlignedBoundingBoxHull2D)) as AxisAlignedBoundingBoxHull2D;
         //AxisAlignedBoundingBoxHull2D newBox = gameObject.AddComponent<AxisAlignedBoundingBoxHull2D>();
         //CollisionHull2D newBox = null;
+
+        //GameObject temp = new GameObject();
+        //AxisAlignedBoundingBoxHull2D newBox = temp.AddComponent<AxisAlignedBoundingBoxHull2D>();
+
+        //AxisAlignedBoundingBoxHull2D newBox = new AxisAlignedBoundingBoxHull2D(box);
+
+        /*
         AxisAlignedBoundingBoxHull2D newBox = new AxisAlignedBoundingBoxHull2D();
         newBox.length = box.length;
         newBox.height = box.height;
@@ -207,8 +218,65 @@ public class CircleHull2D : CollisionHull2D
         newCirc.transform.position = newPos;
 
         //a possible problem is that now that we have a new 
-        return newCirc.TestCollisionVsAABB(newBox, ref c);
+        //return newCirc.TestCollisionVsAABB(newBox, ref c);
+        */
 
+        
+
+        Vector2 circCenter = this.transform.position;
+        Vector2 boxCenter = box.transform.position;
+
+        float subPosX = circCenter.x - box.transform.position.x;
+        float subPosY = circCenter.y - box.transform.position.y;
+        Vector2 newPos = new Vector2(Mathf.Cos(-RotZOBB) * (subPosX) - Mathf.Sin(-RotZOBB) * (subPosY) + box.transform.position.x,
+                                            Mathf.Sin(-RotZOBB) * (subPosX) + Mathf.Cos(-RotZOBB) * (subPosY) + box.transform.position.y);
+
+        circCenter = newPos;
+
+        float boxXMin = box.transform.position.x - (box.length * 0.5f);
+        float boxYMin = box.transform.position.y - (box.height * 0.5f);
+
+        float boxXMax = box.transform.position.x + (box.length * 0.5f);
+        float boxYMax = box.transform.position.y + (box.height * 0.5f);
+
+
+        float clampedX = Mathf.Clamp(circCenter.x, boxXMin, boxXMax);
+        float clampedY = Mathf.Clamp(circCenter.y, boxYMin, boxYMax);
+
+        Vector2 distance = new Vector2(circCenter.x - clampedX, circCenter.y - clampedY);
+
+        float dSq = (distance.x * distance.x) + (distance.y * distance.y);
+
+        if (dSq < (this.radius * this.radius))
+        {
+            Debug.Log("OBB v C pass");
+
+            //Assign objects
+            col.a = this;
+            col.b = box;
+
+            //get the clamped combinded vector as the point to have norm from
+            Vector2 Point = new Vector2(clampedX, clampedY);
+
+            //take the centerpoint of the circle, subtract the point to get the norm (it may be point - circ)
+            //Vector2 norm = (circCenter - Point).normalized; //(same as distance)
+
+            //col.contacts[0].normal = norm;
+            col.contacts[0].normal = distance.normalized;
+            col.contacts[0].point = Point;
+
+            //radius of the circle minus the distance to the original point of entry
+            col.interpenDepth = (this.radius * this.radius) - dSq;
+
+
+            return true;
+        }
+        else
+        {
+            Debug.Log("OBB v C fail");
+
+            return false;
+        }
 
         /*
         //bottom left

@@ -7,6 +7,14 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     public AxisAlignedBoundingBoxHull2D() : base(CollisionHullType2D.Hull_AABB) { }
 
+    public AxisAlignedBoundingBoxHull2D(ObjectBoundingBoxHull2D temp) : base(CollisionHullType2D.Hull_AABB) 
+    {
+        length = temp.length;
+        height = temp.height;
+        this.transform.position = temp.transform.position;
+    }
+
+
     public float length;
     public float height;
 
