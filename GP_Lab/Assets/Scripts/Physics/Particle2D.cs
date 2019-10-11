@@ -20,10 +20,10 @@ public class Particle2D : MonoBehaviour
     Vector2 force;
 
     [Header("Rotation")]
-    public float rotation;
-    public float angularVelocity;
-    public float angularAcceleration;
-    public float accelerationValue;
+    public float rotation = 0;
+    public float angularVelocity = 0;
+    public float angularAcceleration = 0;
+    public float accelerationValue = 0;
 
     //Lab02 - Step 1
     [Header("Mass")]
@@ -295,8 +295,12 @@ public class Particle2D : MonoBehaviour
 
     void updateRotKinematic(float dt)
     {
-        rotation += angularVelocity * dt + (angularAcceleration * .5f * dt * dt);
-        angularVelocity += angularAcceleration * dt;
+        
+        
+         rotation += angularVelocity * dt + (angularAcceleration * .5f * dt * dt);
+         angularVelocity += angularAcceleration * dt;
+      
+        
     }
 
     void Start()
@@ -322,14 +326,22 @@ public class Particle2D : MonoBehaviour
                 updateRotEulerExplicit(Time.fixedDeltaTime);
                 updateAngularAcceleration();
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                if (rotation != 0)
+                {
+                    Debug.Log("Rotation: " + rotation);
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
+                
             }
             else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
                 updateRotKinematic(Time.fixedDeltaTime);
                 updateAngularAcceleration();
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                if (rotation != 0)
+                {
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
             }
         }
         else if (IntegrationMethod == PositionFunction.PositionKinematic)
@@ -345,8 +357,10 @@ public class Particle2D : MonoBehaviour
                 updateRotEulerExplicit(Time.fixedDeltaTime);
                 updateAngularAcceleration();
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
-
+                if (rotation != 0)
+                {
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
             }
             else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
@@ -354,8 +368,10 @@ public class Particle2D : MonoBehaviour
                 updateAngularAcceleration();
 
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
-
+                if (rotation != 0)
+                {
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
             }
         }
 
