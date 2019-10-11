@@ -135,7 +135,8 @@ public abstract class CollisionHull2D : MonoBehaviour
 
     public static void updateCollision(ref Collision col, float coeff)
     {
-        
+        col.restitution = coeff;
+        col.closingVelocity = -col.restitution * ((col.a.GetComponent<Particle2D>().velocity - col.a.GetComponent<Particle2D>().velocity) * col.contacts[0].normal);
     }
 
     /*
@@ -143,6 +144,8 @@ public abstract class CollisionHull2D : MonoBehaviour
          */
     public static void resolveInterpenetration(ref Collision col)
     {
-        col.b.transform.Translate(col.contacts[0].normal * col.interpenDepth);
+        col.b.GetComponent<Particle2D>().addForce(col.contacts[0].normal * col.interpenDepth);
+        //col.b.GetComponent<Particle2D>().addForce(new Vector3() * col.contacts[0].normal.magnitude * col.interpenDepth);
+
     }
 }
