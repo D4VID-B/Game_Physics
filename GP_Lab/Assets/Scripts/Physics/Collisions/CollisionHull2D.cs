@@ -133,8 +133,16 @@ public abstract class CollisionHull2D : MonoBehaviour
 
     public abstract bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c);
 
-    public static void updateCollision(ref Collision col)
+    public static void updateCollision(ref Collision col, float coeff)
     {
         
+    }
+
+    /*
+     Move col.b by the interpenetration depth in the direction of the collision normal
+         */
+    public static void resolveInterpenetration(ref Collision col)
+    {
+        col.b.transform.Translate(col.contacts[0].normal * col.interpenDepth);
     }
 }

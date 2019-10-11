@@ -31,9 +31,6 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
         //2) find max and min of [??]
 
         //3) Call testaabb again
-
-        updateCollision(ref c);
-
         return false;
     }
 

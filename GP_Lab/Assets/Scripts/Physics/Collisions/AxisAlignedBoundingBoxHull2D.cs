@@ -84,7 +84,6 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
         if (colOnY && colOnX)
         {
-            updateCollision(ref c);
             return true;
             
         }
@@ -132,9 +131,6 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         //2) find max and min of [??]
 
         //3) Call testaabb again
-
-
-        updateCollision(ref c);
 
         return false;
     }
