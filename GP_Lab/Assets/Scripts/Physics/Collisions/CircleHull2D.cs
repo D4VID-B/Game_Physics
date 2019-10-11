@@ -10,9 +10,10 @@ public class CircleHull2D : CollisionHull2D
     [Range(0.0f, 100.0f)]
     public float radius;
 
+
     //Collision col = null;
 
-    void Update()
+    void Start()
     {
 
     }
@@ -191,6 +192,12 @@ public class CircleHull2D : CollisionHull2D
         //AxisAlignedBoundingBoxHull2D newBox = this.gameObject.AddComponent(typeof(AxisAlignedBoundingBoxHull2D)) as AxisAlignedBoundingBoxHull2D;
         //AxisAlignedBoundingBoxHull2D newBox = gameObject.AddComponent<AxisAlignedBoundingBoxHull2D>();
         //CollisionHull2D newBox = null;
+
+        //GameObject temp = new GameObject();
+        //AxisAlignedBoundingBoxHull2D newBox = temp.AddComponent<AxisAlignedBoundingBoxHull2D>();
+
+        //AxisAlignedBoundingBoxHull2D newBox = new AxisAlignedBoundingBoxHull2D(box);
+
         AxisAlignedBoundingBoxHull2D newBox = new AxisAlignedBoundingBoxHull2D();
         newBox.length = box.length;
         newBox.height = box.height;
