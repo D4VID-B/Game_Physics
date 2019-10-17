@@ -74,6 +74,9 @@ public class CollisionManager : MonoBehaviour
 
                     CollisionHull2D.resolveInterpenetration(ref desc);
                     CollisionHull2D.updateCollision(ref desc, coefficientOfRestitution);
+
+                    //Kill the player
+                    GameObject.Find("CollisionManagerHost").GetComponent<GameManagerScript>().hitByAstroid = true;
                     
 
                     Debug.Log("Objects collided");
