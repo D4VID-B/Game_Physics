@@ -17,6 +17,7 @@ public class CollisionManager : MonoBehaviour
     public Material success, fail;
 
     public bool enableManager = true;
+    public bool shouldChangeColor;
 
     [Range(0.0f, 1.0f)]
     public float coefficientOfRestitution = 0.8f;
@@ -65,8 +66,11 @@ public class CollisionManager : MonoBehaviour
             {
                 if (CollisionHull2D.TestCollision(colliders[i], colliders[j], ref desc))
                 {
+                    if(shouldChangeColor)
+                    {
                         CollisionHull2D.changeColor(colliders[i].gameObject, true);
                         CollisionHull2D.changeColor(colliders[j].gameObject, true);
+                    }
 
                     CollisionHull2D.resolveInterpenetration(ref desc);
                     CollisionHull2D.updateCollision(ref desc, coefficientOfRestitution);
@@ -76,8 +80,12 @@ public class CollisionManager : MonoBehaviour
                 }
                 else
                 {
-                    CollisionHull2D.changeColor(colliders[i].gameObject, false);
-                    CollisionHull2D.changeColor(colliders[j].gameObject, false);
+                    if(shouldChangeColor)
+                    {
+                        CollisionHull2D.changeColor(colliders[i].gameObject, false);
+                        CollisionHull2D.changeColor(colliders[j].gameObject, false);
+                    }
+                    
                 }
             }
         }

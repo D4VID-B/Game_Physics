@@ -252,6 +252,7 @@ MonoBehaviour:
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 0}
+  gravityOn: 1
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -483,6 +484,7 @@ MonoBehaviour:
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 0}
+  gravityOn: 0
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0

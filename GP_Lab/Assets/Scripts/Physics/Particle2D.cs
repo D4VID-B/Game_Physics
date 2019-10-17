@@ -55,6 +55,7 @@ public class Particle2D : MonoBehaviour
     [Header("Outside Force Suppliers")]
     public Transform surfaceTransform;
     Vector2 localCM, globalCM, foreAppPoint;
+    public bool gravityOn = false;
 
 
 
@@ -385,11 +386,11 @@ public class Particle2D : MonoBehaviour
         if(SHIP_MODE)
         {
             //F_gravity: f = mg
-            Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -1.625f, Vector2.up);  //I USED A DIFFERENT GRAVITY, THE MOONS GRAVITY
+            Vector2 shipGravity = ForceGenerator.generateForce_Gravity(mass, -1.625f, Vector2.up);  //I USED A DIFFERENT GRAVITY, THE MOONS GRAVITY
             Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
-            Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
+            Vector2 normal = ForceGenerator.GenerateForce_normal(shipGravity, surfaceNormalUnit);
 
-            //addForce(gravity);
+            addForce(shipGravity);
 
             //addForce(normal);     //find a way to add normal force only when colliding with ground
 
@@ -478,14 +479,17 @@ public class Particle2D : MonoBehaviour
         //Vector2 gravity = mass * new Vector2(0.0f, -9.871f);
         //addForce(f_gravity);
 
-        //Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
         //Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
         //Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
 
         //Vector2 drag = ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, objectAreaXSection, dragCoefficient);
 
-
-        //addForce(gravity);
+        if (gravityOn)
+        {
+            addForce(gravity);
+        }
+        
         //addForce(drag);
 
         //******** Block on a slanted surface ********
