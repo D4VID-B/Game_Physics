@@ -138,7 +138,7 @@ public abstract class CollisionHull2D : MonoBehaviour
         col.restitution = coeff;
         col.closingVelocity = -col.restitution * ((col.a.GetComponent<Particle2D>().velocity - col.b.GetComponent<Particle2D>().velocity) * col.contacts[0].normal);
 
-        col.a.GetComponent<Particle2D>().velocity = col.closingVelocity;
+        col.a.GetComponent<Particle2D>().velocity = -col.closingVelocity;
         //col.b.GetComponent<Particle2D>().velocity = col.closingVelocity;
     }
 
