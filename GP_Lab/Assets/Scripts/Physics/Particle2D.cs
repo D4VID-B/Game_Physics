@@ -398,15 +398,18 @@ public class Particle2D : MonoBehaviour
             
             
             //this normal calc aint workin
-            float RotZOBB = this.transform.rotation.z;
+            float RotZOBB = this.transform.eulerAngles.z * Mathf.Deg2Rad;
             Vector2 xNormOBB = new Vector2(Mathf.Cos(RotZOBB), Mathf.Sin(RotZOBB));
             Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
 
             Debug.Log("xNorm = " + xNormOBB);
             Debug.Log("yNorm = " + yNormOBB);
 
-            Vector2 elevationForce = yNormOBB * elevationThrust;//new Vector2(0.0f, 20.0f);// * yNormOBB;
+            Vector2 elevationForce =  yNormOBB * elevationThrust;//new Vector2(0.0f, 20.0f);// * yNormOBB;
             Vector2 lateralForce = xNormOBB * lateralThrust;//new Vector2(4.0f, 0.0f);// * xNormOBB;
+
+            //Vector2 elevationForce = new Vector2(yNormOBB.x * elevationThrust, yNormOBB.y);
+            //Vector2 lateralForce = new Vector2(xNormOBB.x , xNormOBB.y * lateralThrust);
 
             //Vector2 elevationForce = new Vector2(0.0f, elevationThrust);// * yNormOBB;
             //Vector2 lateralForce = new Vector2(lateralThrust, 0.0f);// * xNormOBB;
