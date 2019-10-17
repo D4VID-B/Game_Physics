@@ -115,18 +115,23 @@ public class CircleHull2D : CollisionHull2D
             col.a = this;
             col.b = box;
 
+            Vector2 clamped = new Vector2(clampedX, clampedY);
+
+
             //get the clamped combinded vector as the point to have norm from
-            Vector2 Point = new Vector2(clampedX, clampedY);
+            Vector2 Point = (clamped + (distance.normalized * this.radius)) * 0.5f;
 
             //take the centerpoint of the circle, subtract the point to get the norm (it may be point - circ)
             //Vector2 norm = (circCenter - Point).normalized; //(same as distance)
 
             //col.contacts[0].normal = norm;
             col.contacts[0].normal = distance.normalized;
+
             col.contacts[0].point = Point;
 
             //radius of the circle minus the distance to the original point of entry
             col.interpenDepth = (this.radius * this.radius) - dSq;
+           // col.interpenDepth = (this.radius + clamped.magnitude) - distance.magnitude;
 
 
             return true;
@@ -255,8 +260,10 @@ public class CircleHull2D : CollisionHull2D
             col.a = this;
             col.b = box;
 
+            Vector2 clamped = new Vector2(clampedX, clampedY);
+
             //get the clamped combinded vector as the point to have norm from
-            Vector2 Point = new Vector2(clampedX, clampedY);
+            Vector2 Point = (clamped + (distance.normalized * this.radius)) * 0.5f;
 
             //take the centerpoint of the circle, subtract the point to get the norm (it may be point - circ)
             //Vector2 norm = (circCenter - Point).normalized; //(same as distance)
@@ -267,6 +274,8 @@ public class CircleHull2D : CollisionHull2D
 
             //radius of the circle minus the distance to the original point of entry
             col.interpenDepth = (this.radius * this.radius) - dSq;
+            //col.interpenDepth = ((this.radius + clamped.magnitude) * (this.radius + clamped.magnitude)) - dSq;
+            //col.interpenDepth = (this.radius + clamped.magnitude) - distance.magnitude;
 
 
             return true;
