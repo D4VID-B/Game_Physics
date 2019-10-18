@@ -11,6 +11,7 @@ public class GameManagerScript : MonoBehaviour
     public bool getToEnd;
     public bool hitByAstroid;
 
+    private Coroutine killPlayer;
     //public int health;
     //public Text healthBar;
 
@@ -26,7 +27,12 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(GameObject.Find("TempShip").transform.position.x >= 89)
+        {
+            getToEnd = true;
+        }
+
+        gameState();
     }
 
     void gameState()
@@ -38,6 +44,7 @@ public class GameManagerScript : MonoBehaviour
 
         if(hitByAstroid)
         {
+            //killPlayer = hitAst(.1f);
             StartCoroutine(hitAst());
             SceneManager.LoadScene("Midterm");
         }
@@ -47,14 +54,14 @@ public class GameManagerScript : MonoBehaviour
     IEnumerator hitAst()
     {
         CountDown.text = "TERMINAL DAMAGE";
-        yield return new WaitForSeconds(2.0f);
-        CountDown.text = "3";
-        yield return new WaitForSeconds(0.5f);
-        CountDown.text = "2";
-        yield return new WaitForSeconds(0.5f);
-        CountDown.text = "1";
-        yield return new WaitForSeconds(0.5f);
-        CountDown.text = " ";
+        yield return new WaitForSeconds(5.0f);
+        //CountDown.text = "3";
+        //yield return new WaitForSeconds(0.5f);
+        //CountDown.text = "2";
+        //yield return new WaitForSeconds(0.5f);
+        //CountDown.text = "1";
+        //yield return new WaitForSeconds(0.5f);
+        //CountDown.text = " ";
 
     }
 }
