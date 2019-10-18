@@ -46,7 +46,6 @@ public class GameManagerScript : MonoBehaviour
         {
             //killPlayer = hitAst(.1f);
             StartCoroutine(hitAst());
-            SceneManager.LoadScene("Midterm");
         }
     }
 
@@ -54,14 +53,15 @@ public class GameManagerScript : MonoBehaviour
     IEnumerator hitAst()
     {
         CountDown.text = "TERMINAL DAMAGE";
-        yield return new WaitForSeconds(5.0f);
-        //CountDown.text = "3";
-        //yield return new WaitForSeconds(0.5f);
-        //CountDown.text = "2";
-        //yield return new WaitForSeconds(0.5f);
-        //CountDown.text = "1";
-        //yield return new WaitForSeconds(0.5f);
-        //CountDown.text = " ";
+        yield return new WaitForSeconds(1.0f);
+        CountDown.text = "3";
+        yield return new WaitForSeconds(0.5f);
+        CountDown.text = "2";
+        yield return new WaitForSeconds(0.5f);
+        CountDown.text = "1";
+        yield return new WaitForSeconds(0.5f);
+        CountDown.text = " ";
+        SceneManager.LoadScene("Midterm");
 
     }
 }
