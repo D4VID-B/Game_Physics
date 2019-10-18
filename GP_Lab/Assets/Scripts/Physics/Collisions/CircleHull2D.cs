@@ -11,12 +11,13 @@ public class CircleHull2D : CollisionHull2D
     [Range(0.0f, 100.0f)]
     public float radius;
 
+    public bool hitExplode;
     //Collision col = null;
 
 
     void Start()
     {
-
+        hitExplode = false;
     }
 
 
@@ -47,7 +48,7 @@ public class CircleHull2D : CollisionHull2D
         if (distance <= squaredSumOfRadii)
         {
             Debug.Log("CVC test pass");
-
+            hitExplode = true;
 
             //Assign objects
             col.a = this;
@@ -110,6 +111,7 @@ public class CircleHull2D : CollisionHull2D
         if(dSq < (this.radius * this.radius))
         {
             Debug.Log("AABB v C pass");
+            hitExplode = true;
 
             //Assign objects
             col.a = this;
@@ -255,6 +257,7 @@ public class CircleHull2D : CollisionHull2D
         if (dSq < (this.radius * this.radius))
         {
             Debug.Log("OBB v C pass");
+            hitExplode = true;
 
             //Assign objects
             col.a = this;
