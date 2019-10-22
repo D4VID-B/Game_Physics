@@ -6,28 +6,59 @@ using UnityEngine;
 
 public class Particle2D : MonoBehaviour
 {
+    //SHIP SHIT
+    [Header("Ship Properties")]
+    public float elevationThrust;
+    public float lateralThrust;
+    public bool SHIP_MODE;          // COLTON ADDED THIS FOR SHIP SCRIPT
+
     //Step 1
+    [Header("Position")]
     public Vector2 position;
     public Vector2 velocity;
     public Vector2 acceleration;
-    public float rotation;
-    public float angularVelocity;
-    public float angularAcceleration;
-    public float accelerationValue;
+    Vector2 force;
+
+    [Header("Rotation")]
+    public float rotation = 0;
+    public float angularVelocity = 0;
+    public float angularAcceleration = 0;
+    public float accelerationValue = 0;
 
     //Lab02 - Step 1
+    [Header("Mass")]
     public float startingMass;
     float mass, massInv;
 
+    [Header("Torque")]
+    public float f_Torque;
+    public Vector2 t_Position, t_Force;
+
+
+    [Header("Shape Properties")]
+    public float radius;
+    public float i_Radius;
+    public float o_Radius;
+    public float height;
+    public float width;
+    public float length;
+
+    [Header("Coefficients, Density, and Inertia")]
     public float fluidDensity = 1.225f;
     public Vector2 fluidVelocity = Vector2.zero;
     public float dragCoefficient, objectAreaXSection;
     public float spring_stiffness, spring_resting;
-
     private float momentOfInertia;
     private float invMomentOfInertia;
+    float m_Inertia;
 
+    [Header("Outside Force Suppliers")]
     public Transform surfaceTransform;
+    Vector2 localCM, globalCM, foreAppPoint;
+    public bool gravityOn = false;
+
+
+
 
     public void setMass(float newMass)
     {
@@ -42,18 +73,7 @@ public class Particle2D : MonoBehaviour
     }
     
 
-    //Lab 3 - Step 1
-
-    float m_Inertia;
-
-    public float radius, i_Radius, o_Radius, height, width, length;
-
-    public float f_Torque;
-
-    Vector2 localCM, globalCM, foreAppPoint;
-
-    public Vector2 t_Position, t_Force;
-
+   
     public enum Shape_2D
     {
         Disk,   // I = 1/2*m*(r*r)
@@ -128,7 +148,6 @@ public class Particle2D : MonoBehaviour
 
     //Lab02 - Step02
 
-    Vector2 force;
 
     public void addForce(Vector2 newForce)
     {
@@ -277,12 +296,17 @@ public class Particle2D : MonoBehaviour
 
     void updateRotKinematic(float dt)
     {
-        rotation += angularVelocity * dt + (angularAcceleration * .5f * dt * dt);
-        angularVelocity += angularAcceleration * dt;
+        
+        
+         rotation += angularVelocity * dt + (angularAcceleration * .5f * dt * dt);
+         angularVelocity += angularAcceleration * dt;
+      
+        
     }
 
     void Start()
     {
+        position = this.transform.position;
         setMass(startingMass);
         calculateMomentOfInertia(Shape);
     }
@@ -303,14 +327,22 @@ public class Particle2D : MonoBehaviour
                 updateRotEulerExplicit(Time.fixedDeltaTime);
                 updateAngularAcceleration();
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                if (rotation != 0)
+                {
+                    Debug.Log("Rotation: " + rotation);
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
+                
             }
             else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
                 updateRotKinematic(Time.fixedDeltaTime);
                 updateAngularAcceleration();
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                if (rotation != 0)
+                {
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
             }
         }
         else if (IntegrationMethod == PositionFunction.PositionKinematic)
@@ -326,8 +358,10 @@ public class Particle2D : MonoBehaviour
                 updateRotEulerExplicit(Time.fixedDeltaTime);
                 updateAngularAcceleration();
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
-
+                if (rotation != 0)
+                {
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
             }
             else if (RotationUpdateMethod == RotationFunction.RotationKinematic)
             {
@@ -335,8 +369,10 @@ public class Particle2D : MonoBehaviour
                 updateAngularAcceleration();
 
 
-                transform.eulerAngles = new Vector3(0f, 0f, rotation);
-
+                if (rotation != 0)
+                {
+                    transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                }
             }
         }
 
@@ -347,6 +383,84 @@ public class Particle2D : MonoBehaviour
             addTorque(t_Position, t_Force);
         }
         
+        if(SHIP_MODE)
+        {
+            //F_gravity: f = mg
+            Vector2 shipGravity = ForceGenerator.generateForce_Gravity(mass, -1.625f, Vector2.up);  //I USED A DIFFERENT GRAVITY, THE MOONS GRAVITY
+            Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
+            Vector2 normal = ForceGenerator.GenerateForce_normal(shipGravity, surfaceNormalUnit);
+
+            addForce(shipGravity);
+
+            //addForce(normal);     //find a way to add normal force only when colliding with ground
+
+            //this is shit and is temporary
+            
+            
+            //this normal calc aint workin
+            float RotZOBB = this.transform.eulerAngles.z * Mathf.Deg2Rad;
+            Vector2 xNormOBB = new Vector2(Mathf.Cos(RotZOBB), Mathf.Sin(RotZOBB));
+            Vector2 yNormOBB = new Vector2(-Mathf.Sin(RotZOBB), Mathf.Cos(RotZOBB));
+
+            Debug.Log("xNorm = " + xNormOBB);
+            Debug.Log("yNorm = " + yNormOBB);
+
+            Vector2 elevationForce =  yNormOBB * elevationThrust;//new Vector2(0.0f, 20.0f);// * yNormOBB;
+            Vector2 lateralForce = xNormOBB * lateralThrust;//new Vector2(4.0f, 0.0f);// * xNormOBB;
+
+            //Vector2 elevationForce = new Vector2(yNormOBB.x * elevationThrust, yNormOBB.y);
+            //Vector2 lateralForce = new Vector2(xNormOBB.x , xNormOBB.y * lateralThrust);
+
+            //Vector2 elevationForce = new Vector2(0.0f, elevationThrust);// * yNormOBB;
+            //Vector2 lateralForce = new Vector2(lateralThrust, 0.0f);// * xNormOBB;
+
+            //Debug.Log("rotation " + rotation);
+
+            //Yaw control (isnt it pitch though? yaw would be on the Y axis which just pointlessly spins it)
+            if (Input.GetKey(KeyCode.Q))
+            {
+                addTorque(t_Position, -t_Force);
+            }
+            else if (Input.GetKey(KeyCode.E))
+            {
+                addTorque(t_Position, t_Force);
+            }
+
+            //range restrictions
+            if (rotation >= 90)
+            {
+                rotation = 89;
+                angularVelocity = 0;
+            }
+
+            if (rotation <= -90)
+            {
+                rotation = -89;
+                angularVelocity = 0;
+            }
+
+
+            //Elevation control
+            if (Input.GetKey(KeyCode.W))
+            {
+                addForce(elevationForce);
+            }
+            if(Input.GetKey(KeyCode.S))
+            {
+                addForce(-elevationForce);
+            }
+
+            // Lateral control
+            if (Input.GetKey(KeyCode.A))
+            {
+                addForce(-lateralForce);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                addForce(lateralForce);
+            }
+
+        }
 
 
         //Step 4
@@ -368,17 +482,20 @@ public class Particle2D : MonoBehaviour
         //Vector2 gravity = mass * new Vector2(0.0f, -9.871f);
         //addForce(f_gravity);
 
-        //Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
+        Vector2 gravity = ForceGenerator.generateForce_Gravity(mass, -9.871f, Vector2.up);
         //Vector2 surfaceNormalUnit = new Vector2(Mathf.Sin(surfaceTransform.eulerAngles.z), Mathf.Cos(surfaceTransform.eulerAngles.z));
         //Vector2 normal = ForceGenerator.GenerateForce_normal(gravity, surfaceNormalUnit);
 
         //Vector2 drag = ForceGenerator.GenerateForce_drag(velocity, fluidVelocity, fluidDensity, objectAreaXSection, dragCoefficient);
-        
 
-        //addForce(gravity);
+        if (gravityOn)
+        {
+            addForce(gravity);
+        }
+        
         //addForce(drag);
 
-                                        //******** Block on a slanted surface ********
+        //******** Block on a slanted surface ********
         //if(gameObject.name == "SlideCube") // Demostrating Gravity, Normal (As Sliding) and Friction forces
         //{
         //    //addForce(gravity);
@@ -404,6 +521,6 @@ public class Particle2D : MonoBehaviour
         //    //Velocity is taken fronm the particle properties and is integrated by the script, 
         //    //while fluid density & velocity are public variables that default to Earth air with no wind
         //}
-        
+
     }
 }

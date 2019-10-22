@@ -9,18 +9,6 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
 
     public ObjectBoundingBoxHull2D(): base(CollisionHullType2D.Hull_OBB) { }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
    
 
     public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
@@ -43,8 +31,6 @@ public class ObjectBoundingBoxHull2D : CollisionHull2D
         //2) find max and min of [??]
 
         //3) Call testaabb again
-
-
         return false;
     }
 

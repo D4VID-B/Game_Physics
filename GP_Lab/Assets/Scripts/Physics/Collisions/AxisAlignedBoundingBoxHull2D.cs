@@ -7,18 +7,16 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
 
     public AxisAlignedBoundingBoxHull2D() : base(CollisionHullType2D.Hull_AABB) { }
 
+    public AxisAlignedBoundingBoxHull2D(ObjectBoundingBoxHull2D temp) : base(CollisionHullType2D.Hull_AABB) 
+    {
+        length = temp.length;
+        height = temp.height;
+        this.transform.position = temp.transform.position;
+    }
+
+
     public float length;
     public float height;
-
-    public CollisionHull2D AABB;
-    public CollisionHull2D OBB;
-    public CollisionHull2D Circle;
-    public Material success, fail;
-
-    void Update()
-    {
-       
-    }
 
 
 
@@ -87,6 +85,7 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         if (colOnY && colOnX)
         {
             return true;
+            
         }
         else
         {
@@ -132,9 +131,6 @@ public class AxisAlignedBoundingBoxHull2D : CollisionHull2D
         //2) find max and min of [??]
 
         //3) Call testaabb again
-
-
-
 
         return false;
     }
