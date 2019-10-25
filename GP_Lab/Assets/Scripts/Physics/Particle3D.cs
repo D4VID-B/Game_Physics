@@ -91,8 +91,23 @@ public class Particle3D : MonoBehaviour
 
         //to add the effects of two quaternions together, you multiply them
         //      though this seems to be more like:  rotation = (rotation + angularVelocity) * dt
-        rotation = multiplyQuatNum(multiplyQuatVector(rotation, angularVelocity), dt);
+
+
+        // 1/2 * w * q.nrm
+        Quaternion temp = multiplyQuatNum(multiplyQuatVector(rotation.normalized, angularVelocity), dt * 0.5f);
+
+        //componant wise addition
+        rotation = new Quaternion((rotation.normalized.x + temp.x), (rotation.normalized.y + temp.y), (rotation.normalized.z + temp.z), (rotation.normalized.w + temp.w));
+
+        rotation = rotation.normalized;
+
+        //integrate
+        //normalize
+        //integrate
+
+
         
+
         angularVelocity += angularAcceleration * dt;
     }
 
@@ -190,13 +205,13 @@ public class Particle3D : MonoBehaviour
             transform.position = position;
 
             //Rotations
-            //if (RotationUpdateMethod == RotationFunction.RotationEuler)
-            //{
-            //    updateRotEulerExplicit(Time.fixedDeltaTime);
+            if (RotationUpdateMethod == RotationFunction.RotationEuler)
+            {
+                updateRotEulerExplicit(Time.fixedDeltaTime);
 
-            //        transform.eulerAngles = new Vector3(0f, 0f, rotation);
+                transform.rotation = rotation;
                 
-            //}
+            }
             
         }
         else if (IntegrationMethod == PositionFunction.PositionKinematic)
@@ -206,14 +221,14 @@ public class Particle3D : MonoBehaviour
             transform.position = position;
 
             //Rotations
-            //if (RotationUpdateMethod == RotationFunction.RotationEuler)
-            //{
-            //    updateRotEulerExplicit(Time.fixedDeltaTime);
+            if (RotationUpdateMethod == RotationFunction.RotationEuler)
+            {
+                updateRotEulerExplicit(Time.fixedDeltaTime);
 
-            //    transform.eulerAngles = new Vector3(0f, 0f, rotation);
-                
-            //}
-            
+                transform.rotation = rotation;
+
+            }
+
         }
 
     }
