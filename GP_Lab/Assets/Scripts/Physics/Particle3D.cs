@@ -101,7 +101,7 @@ public class Particle3D : MonoBehaviour
 
 
         // 1/2 * w * q.nrm
-        Quaternion temp = multiplyQuatNum(multiplyQuatVector(rotation.normalized, angularVelocity), dt * 0.5f);
+        Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
 
         //componant wise addition
         rotation = new Quaternion((rotation.normalized.x + temp.x), (rotation.normalized.y + temp.y), (rotation.normalized.z + temp.z), (rotation.normalized.w + temp.w));
@@ -111,10 +111,6 @@ public class Particle3D : MonoBehaviour
         //integrate
         //normalize
         //integrate
-
-
-        
-
         angularVelocity += angularAcceleration * dt;
     }
 
