@@ -98,8 +98,23 @@ public class Particle3D : MonoBehaviour
 
         //to add the effects of two quaternions together, you multiply them
         //      though this seems to be more like:  rotation = (rotation + angularVelocity) * dt
-        //rotation = multiplyQuatNum(multiplyQuatVector(rotation, angularVelocity), dt);
+
+
+        // 1/2 * w * q.nrm
+        Quaternion temp = multiplyQuatNum(multiplyQuatVector(rotation.normalized, angularVelocity), dt * 0.5f);
+
+        //componant wise addition
+        rotation = new Quaternion((rotation.normalized.x + temp.x), (rotation.normalized.y + temp.y), (rotation.normalized.z + temp.z), (rotation.normalized.w + temp.w));
+
+        rotation = rotation.normalized;
+
+        //integrate
+        //normalize
+        //integrate
+
+
         
+
         angularVelocity += angularAcceleration * dt;
     }
 
