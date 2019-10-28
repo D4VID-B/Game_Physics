@@ -160,6 +160,9 @@ MonoBehaviour:
   angularAcceleration: {x: 0, y: 0, z: 0}
   torque: {x: 0, y: 0, z: 0}
   startingMass: 0
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 1, y: 0, z: 1}
+  useAngularVelocityInsteadOfAcceleration: 1
   IntegrationMethod: 0
   RotationUpdateMethod: 0
   MovementType: 0
