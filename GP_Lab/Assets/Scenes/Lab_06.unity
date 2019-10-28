@@ -157,7 +157,7 @@ MonoBehaviour:
   acceleration: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   angularVelocity: {x: 0, y: 0, z: 0}
-  angularAcceleration: {x: 0, y: 0, z: 10}
+  angularAcceleration: {x: 0, y: 0, z: 0}
   torque: {x: 0, y: 0, z: 0}
   startingMass: 0
   IntegrationMethod: 0
