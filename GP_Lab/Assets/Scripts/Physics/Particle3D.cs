@@ -198,21 +198,21 @@ public class Particle3D : MonoBehaviour
         //                                    -quat.x * vect.x - quat.y * vect.y - quat.z * vect.z + 0);
 
 
-        Quaternion result = new Quaternion(0 + vect.x * quat.w + vect.y * quat.z - vect.z * quat.y,
-                                            0 - vect.x * quat.z + vect.y * quat.w + vect.z * quat.x,
-                                             0 + vect.x * quat.y - vect.y * quat.x + vect.z * quat.w,
-                                                0 - vect.x * quat.x - vect.y * quat.y - vect.z * quat.z);
+        Quaternion result = new Quaternion(0 + vector.x * quat.w + vector.y * quat.z - vector.z * quat.y,
+                                            0 - vector.x * quat.z + vector.y * quat.w + vector.z * quat.x,
+                                             0 + vector.x * quat.y - vector.y * quat.x + vector.z * quat.w,
+                                                0 - vector.x * quat.x - vector.y * quat.y - vector.z * quat.z);
 
         //Approach 02
         //Quaternion result = new Quaternion(-(quaternion.x * vector.x), -(quaternion.y * vector.y), -(quaternion.z * vector.z), 0);
 
-        Debug.Log("Vector 3 is: " + vector);
-        Debug.Log("Quaternion is: " + quat);
+       // Debug.Log("Vector 3 is: " + vector);
+        //Debug.Log("Quaternion is: " + quat);
         //Approach 03
-        Vector3 quatVec = new Vector3(quat.x, quat.y, quat.z);
-        float real =  -Vector3.Dot(vector, quatVec);
-        Vector3 tempVec = Vector3.Cross((quat.w * vector) + vector, quatVec);
-        Quaternion result = new Quaternion(tempVec.x, tempVec.y, tempVec.z, real);
+        //Vector3 quatVec = new Vector3(quat.x, quat.y, quat.z);
+        //float real =  -Vector3.Dot(vector, quatVec);
+        //Vector3 tempVec = Vector3.Cross((quat.w * vector) + vector, quatVec);
+        //Quaternion result = new Quaternion(tempVec.x, tempVec.y, tempVec.z, real);
 
         return result;
     }
