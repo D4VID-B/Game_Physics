@@ -148,7 +148,7 @@ public class Particle3D : MonoBehaviour
     /// <summary>
     /// Muliply a 3D Vector by a Quaternion. Returns the resulting quaternion.
     /// </summary>
-    public Quaternion multiplyVectorByQuaternion(Vector3 vect, Quaternion quat)
+    public Quaternion multiplyVectorByQuaternion(Vector3 vector, Quaternion quat)
     {
         //not the same as rotating, so dont do those steps
 
@@ -195,10 +195,12 @@ public class Particle3D : MonoBehaviour
         //Approach 02
         //Quaternion result = new Quaternion(-(quaternion.x * vector.x), -(quaternion.y * vector.y), -(quaternion.z * vector.z), 0);
 
+        Debug.Log("Vector 3 is: " + vector);
+        Debug.Log("Quaternion is: " + quat);
         //Approach 03
         Vector3 quatVec = new Vector3(quat.x, quat.y, quat.z);
-        float real =  -Vector3.Dot(vect, quatVec);
-        Vector3 tempVec = Vector3.Cross( (quat.w * vect) + quatVec, vect);
+        float real =  -Vector3.Dot(vector, quatVec);
+        Vector3 tempVec = Vector3.Cross((quat.w * vector) + vector, quatVec);
         Quaternion result = new Quaternion(tempVec.x, tempVec.y, tempVec.z, real);
 
         return result;
@@ -229,8 +231,11 @@ public class Particle3D : MonoBehaviour
             {
                 updateRotEulerExplicit(Time.fixedDeltaTime);
 
+                Debug.Log("Rotaton calculated: " + rotation);
+
                 transform.rotation = rotation;
 
+                Debug.Log("Object Rotation" + transform.rotation);
             }
 
         }

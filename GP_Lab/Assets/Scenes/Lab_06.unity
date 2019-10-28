@@ -129,10 +129,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 445195694}
+  - component: {fileID: 445195690}
   - component: {fileID: 445195693}
   - component: {fileID: 445195692}
   - component: {fileID: 445195691}
-  - component: {fileID: 445195690}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -157,7 +157,7 @@ MonoBehaviour:
   acceleration: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   angularVelocity: {x: 0, y: 0, z: 0}
-  angularAcceleration: {x: 0, y: 0, z: 10}
+  angularAcceleration: {x: 1, y: 0, z: 0}
   torque: {x: 0, y: 0, z: 0}
   startingMass: 0
   IntegrationMethod: 0
