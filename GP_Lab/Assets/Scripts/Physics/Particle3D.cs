@@ -22,6 +22,10 @@ public class Particle3D : MonoBehaviour
     public float startingMass;
     float mass, massInv;
 
+    [Header("Demo: Sin Spin")]
+    public Vector3 spinAngularAcceleration;
+    public Vector3 spinAngularVelocity;
+    public bool useAngularVelocityInsteadOfAcceleration;
 
     #endregion
 
@@ -228,8 +232,24 @@ public class Particle3D : MonoBehaviour
         setMass(startingMass);
     }
 
+    void DemoChoice()
+    {
+
+    }
+
     void FixedUpdate()
     {
+
+        float sinTime = Mathf.Sin(Time.time);
+
+        if(!useAngularVelocityInsteadOfAcceleration)
+        {
+            angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
+        }
+        else
+        {
+            angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
+        }
 
         //Lab 01 & Lab 02 - Step 3
         if (IntegrationMethod == PositionFunction.PositionEuler)
