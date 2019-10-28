@@ -101,12 +101,17 @@ public class Particle3D : MonoBehaviour
 
 
         // 1/2 * w * q.nrm
-        Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
+        //Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
+        Quaternion temp = multiplyScalarByQuaternion(dt, multiplyScalarByQuaternion(0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized)));
+
+
+        Debug.Log("multVectByQuat: " + multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
+        Debug.Log("Temp: " + temp);
 
         //componant wise addition
         rotation = new Quaternion((rotation.normalized.x + temp.x), (rotation.normalized.y + temp.y), (rotation.normalized.z + temp.z), (rotation.normalized.w + temp.w));
 
-        rotation = rotation.normalized;
+        //rotation = rotation.normalized;
 
         //integrate
         //normalize
@@ -192,6 +197,12 @@ public class Particle3D : MonoBehaviour
         //                                    quat.x * vect.y - quat.y * vect.x + 0 + quat.w * vect.z,
         //                                    -quat.x * vect.x - quat.y * vect.y - quat.z * vect.z + 0);
 
+
+        Quaternion result = new Quaternion(0 + vect.x * quat.w + vect.y * quat.z - vect.z * quat.y,
+                                            0 - vect.x * quat.z + vect.y * quat.w + vect.z * quat.x,
+                                             0 + vect.x * quat.y - vect.y * quat.x + vect.z * quat.w,
+                                                0 - vect.x * quat.x - vect.y * quat.y - vect.z * quat.z);
+
         //Approach 02
         //Quaternion result = new Quaternion(-(quaternion.x * vector.x), -(quaternion.y * vector.y), -(quaternion.z * vector.z), 0);
 
@@ -219,6 +230,7 @@ public class Particle3D : MonoBehaviour
 
     void FixedUpdate()
     {
+
         //Lab 01 & Lab 02 - Step 3
         if (IntegrationMethod == PositionFunction.PositionEuler)
         {
