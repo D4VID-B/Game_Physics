@@ -14,13 +14,17 @@ public class Particle3D : MonoBehaviour
     [Header("Rotation")]
     public Quaternion rotation;
     public Vector3 angularVelocity;
-    public Vector3 angularAcceleration;
-    public Vector3 torque;
 
-    //Lab02 - Step 1
+
     [Header("Mass")]
     public float startingMass;
     float mass, massInv;
+
+    [Header("Angular Dynamics")]
+    Matrix4x4 worldTransform, inverseWorldTransform;
+    Vector3 worldCoM, localCoM;
+    Matrix4x4 localTensor, worldTensor;
+    Vector3 torque, angularAcceleration;
 
     [Header("Demo: Sin Spin")]
     public Vector3 spinAngularAcceleration;
@@ -59,7 +63,59 @@ public class Particle3D : MonoBehaviour
     public RotationFunction RotationUpdateMethod;
     public UpdateFormula MovementType;
 
+    public enum Shape3D
+    {
+        Solid_Sphere,
+        Hollow_Sphere,
+        Solid_Cuboid,
+        Hollow_Cuboid,
+        Solid_Cylinder,
+        Solid_Cone
+
+    }
+    public Shape3D Shape;
+
     #endregion
+
+    Matrix4x4 setTensor(Shape3D theShape)
+    {
+        switch(theShape)
+        {
+            case Shape3D.Solid_Sphere:
+                {
+                    /*
+                     * 
+                     * 
+                     * 
+                     * 
+                     */
+                    return localTensor;
+                }
+            case Shape3D.Hollow_Sphere:
+                {
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cuboid:
+                {
+                    return localTensor;
+                }
+            case Shape3D.Hollow_Cuboid:
+                {
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cylinder:
+                {
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cone:
+                {
+                    return localTensor;
+                }
+        }
+
+        //Switch somehow failed - return "zero"
+        return Matrix4x4.identity; 
+    }
 
 
 #region Mass
@@ -225,11 +281,13 @@ public class Particle3D : MonoBehaviour
 
         return result;
     }
+    #endregion
+
+#region Lab07
+
 #endregion
 
-
-
-#region Runtime
+    #region Runtime
 
     void Start()
     {
