@@ -351,6 +351,22 @@ public class Particle3D : MonoBehaviour
             velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
         }
 
+        /*
+         var a: Vector3;
+         var b: Vector3;
+         var c: Vector3;
+
+         var side1: Vector3 = b - a;
+         var side2: Vector3 = c - a;
+
+        var norm: Vector3 = Vector3.Cross(side1, side2);
+
+        https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
+        */
+
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
+
+
         //Lab 01 & Lab 02 - Step 3
         if (IntegrationMethod == PositionFunction.PositionEuler)
         {
