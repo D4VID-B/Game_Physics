@@ -27,10 +27,15 @@ public class Particle3D : MonoBehaviour
     public Vector3 spinAngularVelocity;
     public bool useAngularVelocityInsteadOfAcceleration;
 
+    [Header("Demo: Sin Move")]
+    public Vector3 moveAcceleration;
+    public Vector3 moveVelocity;
+    public bool useVelocityInsteadOfAcceleration;
+
     #endregion
 
 
-#region Enums
+    #region Enums
     public enum PositionFunction
     {
         PositionEuler,
@@ -247,6 +252,15 @@ public class Particle3D : MonoBehaviour
         else
         {
             angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
+        }
+
+        if (!useVelocityInsteadOfAcceleration)
+        {
+            acceleration = new Vector3(sinTime * moveAcceleration.x, sinTime * moveAcceleration.y, sinTime * moveAcceleration.z);
+        }
+        else
+        {
+            velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
         }
 
         //Lab 01 & Lab 02 - Step 3
