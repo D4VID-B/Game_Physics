@@ -23,7 +23,7 @@ public class Particle3D : MonoBehaviour
     [Header("Angular Dynamics")]
     Matrix4x4 worldTransform, inverseWorldTransform;
     Vector3 worldCoM, localCoM;
-    Matrix4x4 localTensor, worldTensor;
+    Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity;
     Vector3 torque, angularAcceleration;
 
     [Header("Demo: Sin Spin")]
@@ -84,31 +84,59 @@ public class Particle3D : MonoBehaviour
             case Shape3D.Solid_Sphere:
                 {
                     /*
-                     * 
-                     * 
-                     * 
-                     * 
+                     * I = [ 2/5 * mass * (radius*radius)   0   0]
+                     *     [ 0   2/5 * mass * (radius*radius)   0]
+                     *     [ 0   0   2/5 * mass * (radius*radius)]
                      */
                     return localTensor;
                 }
             case Shape3D.Hollow_Sphere:
                 {
+                    /*
+                     * I = [ 2/3 * mass * (radius*radius)   0   0]
+                     *     [ 0   2/3 * mass * (radius*radius)   0]
+                     *     [ 0   0   2/3 * mass * (radius*radius)]
+                     */
                     return localTensor;
                 }
             case Shape3D.Solid_Cuboid:
                 {
+                    /*
+                     * I = [ 1/12*mass*((dy*dy) + (dz*dz))  0   0]
+                     *     [ 0  1/12*mass*((dx*dx) + (dz*dz))   0]
+                     *     [ 0  0   1/12*mass*((dx*dx) + (dy*dy))]
+                     *  dx, dy, dz = extents along the axis
+                     */
+
+                    localTensor.m00 = 1f / 12f * mass * ((1*1)+(1*1));
+                    //localTensor.m11
+                    //localTensor.m32
+
                     return localTensor;
                 }
             case Shape3D.Hollow_Cuboid:
                 {
+                    /*
+                     * 
+                     */
                     return localTensor;
                 }
             case Shape3D.Solid_Cylinder:
                 {
+                    /*
+                     * I = [ 1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0   0]
+                     *     [ 0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0]
+                     *     [ 0   0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)]
+                     */
                     return localTensor;
                 }
             case Shape3D.Solid_Cone:
                 {
+                    /*
+                     * I = [ 3/80 * mass * (height * height) + 3/20 * mass * (radius*radius)   0   0]
+                     *     [ 0   3/10 * mass * (radius*radius)   0]
+                     *     [ 0   0   3/5 * mass * (height * height) + 3/20 * mass * (radius*radius)]
+                     */
                     return localTensor;
                 }
         }
