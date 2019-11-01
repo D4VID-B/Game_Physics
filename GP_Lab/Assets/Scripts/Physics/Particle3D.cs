@@ -25,6 +25,8 @@ public class Particle3D : MonoBehaviour
     Vector3 worldCoM, localCoM;
     Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity;
     Vector3 torque, angularAcceleration;
+    float radius, height;
+    float x_extent, y_extent, z_extent;
 
     [Header("Demo: Sin Spin")]
     public Vector3 spinAngularAcceleration;
@@ -83,24 +85,41 @@ public class Particle3D : MonoBehaviour
         {
             case Shape3D.Solid_Sphere:
                 {
+                    localTensor = Matrix4x4.identity;
                     /*
                      * I = [ 2/5 * mass * (radius*radius)   0   0]
                      *     [ 0   2/5 * mass * (radius*radius)   0]
                      *     [ 0   0   2/5 * mass * (radius*radius)]
                      */
+
+                    localTensor.m00 = 2f / 5f * mass * (radius * radius);
+                    localTensor.m11 = 2f / 5f * mass * (radius * radius);
+                    localTensor.m22 = 2f / 5f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
                     return localTensor;
                 }
             case Shape3D.Hollow_Sphere:
                 {
+                    localTensor = Matrix4x4.identity;
+
                     /*
                      * I = [ 2/3 * mass * (radius*radius)   0   0]
                      *     [ 0   2/3 * mass * (radius*radius)   0]
                      *     [ 0   0   2/3 * mass * (radius*radius)]
                      */
+
+                    localTensor.m00 = 2f / 3f * mass * (radius * radius);
+                    localTensor.m11 = 2f / 3f * mass * (radius * radius);
+                    localTensor.m22 = 2f / 3f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
                     return localTensor;
                 }
             case Shape3D.Solid_Cuboid:
                 {
+                    localTensor = Matrix4x4.identity;
+
                     /*
                      * I = [ 1/12*mass*((dy*dy) + (dz*dz))  0   0]
                      *     [ 0  1/12*mass*((dx*dx) + (dz*dz))   0]
@@ -108,26 +127,46 @@ public class Particle3D : MonoBehaviour
                      *  dx, dy, dz = extents along the axis
                      */
 
-                    localTensor.m00 = 1f / 12f * mass * ((1*1)+(1*1));
-                    //localTensor.m11
-                    //localTensor.m32
+                    localTensor.m00 = 1f / 12f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
+                    localTensor.m11 = 1f / 12f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
+                    localTensor.m22 = 1f / 12f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
+                    localTensor.m33 = 0;
 
                     return localTensor;
                 }
             case Shape3D.Hollow_Cuboid:
                 {
+                    localTensor = Matrix4x4.identity;
+
                     /*
-                     * 
+                     * I = [5/3 * mass * ((dy^2) + (dz^2))  0  0]
+                     *     [0  5/3 * mass * ((dx^2) + (dz^2))  0]
+                     *     [0  0  5/3 * mass * ((dx^2) + (dy^2))]
+                     *     width = dx; height = dy; depth = dz;
                      */
+
+                    localTensor.m00 = 5 / 3 * mass * ((y_extent * y_extent) + (z_extent * z_extent));
+                    localTensor.m11 = 5 / 3 * mass * ((x_extent * x_extent) + (z_extent * z_extent));
+                    localTensor.m22 = 5 / 3 * mass * ((x_extent * x_extent) + (y_extent * y_extent));
+                    localTensor.m33 = 0;
+
                     return localTensor;
                 }
             case Shape3D.Solid_Cylinder:
                 {
+
                     /*
                      * I = [ 1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0   0]
                      *     [ 0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0]
                      *     [ 0   0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)]
                      */
+                    localTensor = Matrix4x4.identity;
+
+                    localTensor.m00 = 1f / 12f * mass * (height * height) + 1f / 4f * mass * (radius * radius);
+                    localTensor.m11 = 1f / 12f * mass * (height * height) + 1f / 4f * mass * (radius * radius);
+                    localTensor.m22 = 1f / 12f * mass * (height * height) + 1f / 4f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
                     return localTensor;
                 }
             case Shape3D.Solid_Cone:
@@ -137,6 +176,13 @@ public class Particle3D : MonoBehaviour
                      *     [ 0   3/10 * mass * (radius*radius)   0]
                      *     [ 0   0   3/5 * mass * (height * height) + 3/20 * mass * (radius*radius)]
                      */
+                    localTensor = Matrix4x4.identity;
+                    localTensor.m00 = 3f / 80f * mass * (height * height) + 3f / 20f * mass * (radius * radius);
+                    localTensor.m11 = 3f / 20f * mass * (radius * radius);
+                    localTensor.m22 = 3f / 5f * mass * (height * height) + 3f / 20f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+
                     return localTensor;
                 }
         }
