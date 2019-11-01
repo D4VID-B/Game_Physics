@@ -14,16 +14,16 @@ public class Particle3D : MonoBehaviour
     [Header("Rotation")]
     public Quaternion rotation;
     public Vector3 angularVelocity;
-
+    
 
     [Header("Mass")]
     public float startingMass;
     float mass, massInv;
 
     [Header("Angular Dynamics")]
-    Matrix4x4 worldTransform, inverseWorldTransform;
+    Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 worldCoM, localCoM;
-    Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity;
+    Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
     Vector3 torque, angularAcceleration;
     float radius, height;
     float x_extent, y_extent, z_extent;
@@ -78,118 +78,6 @@ public class Particle3D : MonoBehaviour
     public Shape3D Shape;
 
     #endregion
-
-    Matrix4x4 setTensor(Shape3D theShape)
-    {
-        switch(theShape)
-        {
-            case Shape3D.Solid_Sphere:
-                {
-                    localTensor = Matrix4x4.identity;
-                    /*
-                     * I = [ 2/5 * mass * (radius*radius)   0   0]
-                     *     [ 0   2/5 * mass * (radius*radius)   0]
-                     *     [ 0   0   2/5 * mass * (radius*radius)]
-                     */
-
-                    localTensor.m00 = 2f / 5f * mass * (radius * radius);
-                    localTensor.m11 = 2f / 5f * mass * (radius * radius);
-                    localTensor.m22 = 2f / 5f * mass * (radius * radius);
-                    localTensor.m33 = 0;
-
-                    return localTensor;
-                }
-            case Shape3D.Hollow_Sphere:
-                {
-                    localTensor = Matrix4x4.identity;
-
-                    /*
-                     * I = [ 2/3 * mass * (radius*radius)   0   0]
-                     *     [ 0   2/3 * mass * (radius*radius)   0]
-                     *     [ 0   0   2/3 * mass * (radius*radius)]
-                     */
-
-                    localTensor.m00 = 2f / 3f * mass * (radius * radius);
-                    localTensor.m11 = 2f / 3f * mass * (radius * radius);
-                    localTensor.m22 = 2f / 3f * mass * (radius * radius);
-                    localTensor.m33 = 0;
-
-                    return localTensor;
-                }
-            case Shape3D.Solid_Cuboid:
-                {
-                    localTensor = Matrix4x4.identity;
-
-                    /*
-                     * I = [ 1/12*mass*((dy*dy) + (dz*dz))  0   0]
-                     *     [ 0  1/12*mass*((dx*dx) + (dz*dz))   0]
-                     *     [ 0  0   1/12*mass*((dx*dx) + (dy*dy))]
-                     *  dx, dy, dz = extents along the axis
-                     */
-
-                    localTensor.m00 = 1f / 12f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
-                    localTensor.m11 = 1f / 12f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
-                    localTensor.m22 = 1f / 12f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
-                    localTensor.m33 = 0;
-
-                    return localTensor;
-                }
-            case Shape3D.Hollow_Cuboid:
-                {
-                    localTensor = Matrix4x4.identity;
-
-                    /*
-                     * I = [5/3 * mass * ((dy^2) + (dz^2))  0  0]
-                     *     [0  5/3 * mass * ((dx^2) + (dz^2))  0]
-                     *     [0  0  5/3 * mass * ((dx^2) + (dy^2))]
-                     *     width = dx; height = dy; depth = dz;
-                     */
-
-                    localTensor.m00 = 5 / 3 * mass * ((y_extent * y_extent) + (z_extent * z_extent));
-                    localTensor.m11 = 5 / 3 * mass * ((x_extent * x_extent) + (z_extent * z_extent));
-                    localTensor.m22 = 5 / 3 * mass * ((x_extent * x_extent) + (y_extent * y_extent));
-                    localTensor.m33 = 0;
-
-                    return localTensor;
-                }
-            case Shape3D.Solid_Cylinder:
-                {
-
-                    /*
-                     * I = [ 1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0   0]
-                     *     [ 0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0]
-                     *     [ 0   0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)]
-                     */
-                    localTensor = Matrix4x4.identity;
-
-                    localTensor.m00 = 1f / 12f * mass * (height * height) + 1f / 4f * mass * (radius * radius);
-                    localTensor.m11 = 1f / 12f * mass * (height * height) + 1f / 4f * mass * (radius * radius);
-                    localTensor.m22 = 1f / 12f * mass * (height * height) + 1f / 4f * mass * (radius * radius);
-                    localTensor.m33 = 0;
-
-                    return localTensor;
-                }
-            case Shape3D.Solid_Cone:
-                {
-                    /*
-                     * I = [ 3/80 * mass * (height * height) + 3/20 * mass * (radius*radius)   0   0]
-                     *     [ 0   3/10 * mass * (radius*radius)   0]
-                     *     [ 0   0   3/5 * mass * (height * height) + 3/20 * mass * (radius*radius)]
-                     */
-                    localTensor = Matrix4x4.identity;
-                    localTensor.m00 = 3f / 80f * mass * (height * height) + 3f / 20f * mass * (radius * radius);
-                    localTensor.m11 = 3f / 20f * mass * (radius * radius);
-                    localTensor.m22 = 3f / 5f * mass * (height * height) + 3f / 20f * mass * (radius * radius);
-                    localTensor.m33 = 0;
-
-
-                    return localTensor;
-                }
-        }
-
-        //Switch somehow failed - return "zero"
-        return Matrix4x4.identity; 
-    }
 
 
 #region Mass
@@ -356,9 +244,129 @@ public class Particle3D : MonoBehaviour
     }
     #endregion
 
-#region Lab07
+    #region Lab07
+    Matrix4x4 setTensor(Shape3D theShape)
+    {
+        switch (theShape)
+        {
+            case Shape3D.Solid_Sphere:
+                {
+                    localTensor = Matrix4x4.identity;
+                    /*
+                     * I = [ 2/5 * mass * (radius*radius)   0   0]
+                     *     [ 0   2/5 * mass * (radius*radius)   0]
+                     *     [ 0   0   2/5 * mass * (radius*radius)]
+                     */
 
-#endregion
+                    localTensor.m00 = 0.4f * mass * (radius * radius);
+                    localTensor.m11 = 0.4f * mass * (radius * radius);
+                    localTensor.m22 = 0.4f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Hollow_Sphere:
+                {
+                    localTensor = Matrix4x4.identity;
+
+                    /*
+                     * I = [ 2/3 * mass * (radius*radius)   0   0]
+                     *     [ 0   2/3 * mass * (radius*radius)   0]
+                     *     [ 0   0   2/3 * mass * (radius*radius)]
+                     */
+
+                    localTensor.m22 = 0.67f * mass * (radius * radius);
+                    localTensor.m00 = 0.67f * mass * (radius * radius);
+                    localTensor.m11 = 0.67f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cuboid:
+                {
+                    localTensor = Matrix4x4.identity;
+
+                    /*
+                     * I = [ 1/12*mass*((dy*dy) + (dz*dz))  0   0]
+                     *     [ 0  1/12*mass*((dx*dx) + (dz*dz))   0]
+                     *     [ 0  0   1/12*mass*((dx*dx) + (dy*dy))]
+                     *  dx, dy, dz = extents along the axis
+                     */
+
+                    localTensor.m00 = 0.083f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
+                    localTensor.m11 = 0.083f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
+                    localTensor.m22 = 0.083f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Hollow_Cuboid:
+                {
+                    localTensor = Matrix4x4.identity;
+
+                    /*
+                     * I = [5/3 * mass * ((dy^2) + (dz^2))  0  0]
+                     *     [0  5/3 * mass * ((dx^2) + (dz^2))  0]
+                     *     [0  0  5/3 * mass * ((dx^2) + (dy^2))]
+                     *     width = dx; height = dy; depth = dz;
+                     */
+
+                    localTensor.m00 = 1.67f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
+                    localTensor.m11 = 1.67f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
+                    localTensor.m22 = 1.67f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cylinder:
+                {
+
+                    /*
+                     * I = [ 1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0   0]
+                     *     [ 0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0]
+                     *     [ 0   0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)]
+                     */
+                    localTensor = Matrix4x4.identity;
+
+                    localTensor.m00 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
+                    localTensor.m11 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
+                    localTensor.m22 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cone:
+                {
+                    /*
+                     * I = [ 3/80 * mass * (height * height) + 3/20 * mass * (radius*radius)   0   0]
+                     *     [ 0   3/10 * mass * (radius*radius)   0]
+                     *     [ 0   0   3/5 * mass * (height * height) + 3/20 * mass * (radius*radius)]
+                     */
+                    localTensor = Matrix4x4.identity;
+                    localTensor.m00 = 0.0375f * mass * (height * height) + 0.15f * mass * (radius * radius);
+                    localTensor.m11 = 0.15f * mass * (radius * radius);
+                    localTensor.m22 = 0.6f * mass * (height * height) + 0.15f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+
+                    return localTensor;
+                }
+        }
+
+        //Switch somehow failed - return "zero"
+        return Matrix4x4.identity;
+    }
+
+    Vector3 convertToAngularFromTorque(Vector3 torque)
+    {
+        Vector3 angularA;
+
+        angularA = worldTensor * torque;
+
+        return angularA;
+    }
+
+    #endregion
 
     #region Runtime
 
@@ -368,9 +376,10 @@ public class Particle3D : MonoBehaviour
         setMass(startingMass);
     }
 
-    void DemoChoice()
+    void Update()
     {
-
+        //Update world CoM
+        //Update world Inertia Tensors
     }
 
     void FixedUpdate()
