@@ -194,17 +194,16 @@ public class Particle3D : MonoBehaviour
 
 
         // 1/2 * w * q.nrm
-        //Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
-        Quaternion temp = multiplyScalarByQuaternion(dt, multiplyScalarByQuaternion(0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized)));
+        Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation));
 
 
-        Debug.Log("multVectByQuat: " + multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
+        Debug.Log("multVectByQuat: " + multiplyVectorByQuaternion(angularVelocity, rotation));
         Debug.Log("Temp: " + temp);
 
         //componant wise addition
-        rotation = new Quaternion((rotation.normalized.x + temp.x), (rotation.normalized.y + temp.y), (rotation.normalized.z + temp.z), (rotation.normalized.w + temp.w));
+        rotation = new Quaternion((rotation.x + temp.x), (rotation.y + temp.y), (rotation.z + temp.z), (rotation.w + temp.w));
 
-        //rotation = rotation.normalized;
+        rotation = rotation.normalized;
 
         //integrate
         //normalize
