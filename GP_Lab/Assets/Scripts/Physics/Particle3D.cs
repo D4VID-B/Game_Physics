@@ -379,7 +379,11 @@ public class Particle3D : MonoBehaviour
     void Update()
     {
         //Update world CoM
-        //Update world Inertia Tensors
+        Vector4 temp = localCoM;
+        //worldCoM = worldTransform * temp * inverseWorldTransform;
+        
+        //Update world Inertia Tensors - Temporary location
+        worldTensor = worldTransform * localTensor * inverseWorldTransform;
     }
 
     void FixedUpdate()
