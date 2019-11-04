@@ -374,12 +374,64 @@ public class Particle3D : MonoBehaviour
         return Matrix4x4.identity;
     }
 
+    Matrix4x4 worldTransformToMatrix()
+    {
+        //all of these are local values
+
+        //span (Tr, Ty, Tz, Position)
+
+        Matrix4x4 final;
+        final.m00 = this.transform.right.x;
+        final.m01 = this.transform.up.x;
+        final.m02 = this.transform.forward.x;
+        final.m03 = this.transform.position.x;
+        final.m10 = this.transform.right.y;
+        final.m11 = this.transform.up.y;
+        final.m12 = this.transform.forward.y;
+        final.m13 = this.transform.position.y;
+        final.m20 = this.transform.right.z;
+        final.m21 = this.transform.up.z;
+        final.m22 = this.transform.forward.z;
+        final.m23 = this.transform.position.z;
+        final.m30 = 0;
+        final.m31 = 0;
+        final.m32 = 0;
+        final.m33 = 1;  //homogeneous coord
+
+        return final;
+    }
+
+    Matrix4x4 localTransformToMatrix()
+    {
+        Matrix4x4 final;
+        
+        final.m00 = ;
+        final.m01 = ;
+        final.m02 = ;
+        final.m03 = ;
+        final.m10 = ;
+        final.m11 = ;
+        final.m12 = ;
+        final.m13 = ;
+        final.m20 = ;
+        final.m21 = ;
+        final.m22 = ;
+        final.m23 = ;
+        final.m30 = 0;
+        final.m31 = 0;
+        final.m32 = 0;
+        final.m33 = 1;  //homogeneous coord
+
+        return final;
+    }
+
     Vector3 convertToAngularFromTorque(Vector3 torque)
     {
         Vector3 angularA;
 
         angularA = worldTensor * torque;
 
+        
         return angularA;
     }
 
@@ -484,6 +536,10 @@ public class Particle3D : MonoBehaviour
         }
 
     }
+
+
+    
+
 #endregion
 
 }
