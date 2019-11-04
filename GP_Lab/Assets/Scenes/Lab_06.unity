@@ -157,13 +157,18 @@ MonoBehaviour:
   acceleration: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   angularVelocity: {x: 0, y: 0, z: 0}
-  startingMass: 0
-  spinAngularAcceleration: {x: 1, y: 1, z: 0}
+  startingMass: 1
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
   moveAcceleration: {x: 0, y: 0, z: 0}
-  moveVelocity: {x: 1, y: 0, z: 0}
-  useVelocityInsteadOfAcceleration: 1
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 1
+  height: 1
+  x_extent: 1
+  y_extent: 1
+  z_extent: 1
   IntegrationMethod: 0
   RotationUpdateMethod: 0
   MovementType: 0
