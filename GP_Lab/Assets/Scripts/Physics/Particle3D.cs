@@ -24,7 +24,7 @@ public class Particle3D : MonoBehaviour
     /// Angular Dynamics
     /// </summary>
     Matrix4x4 worldTransform, inverseWorldTransform; 
-    Vector3 worldCoM, localCoM;
+    Vector3 localCoM, worldCoM;
     Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
     Vector3 torque, angularAcceleration;
     Vector3 momentArm;
@@ -456,16 +456,13 @@ public class Particle3D : MonoBehaviour
 
     void Start()
     {
+        worldCoM = localCoM + transform.position;
         position = this.transform.position;
         setMass(startingMass);
     }
 
     void Update()
-    {
-        //Update world CoM
-        Vector4 temp = localCoM;
-        
-        
+    {   
         //Update world Inertia Tensors - Temporary location
         worldTensor = worldTransform * localTensor * inverseWorldTransform;
     }
