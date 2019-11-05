@@ -165,7 +165,7 @@ public class Particle2D : MonoBehaviour
 
     void updateAngularAcceleration()
     {
-        Debug.Log("f_torque = " + f_Torque + "   inv = " + invMomentOfInertia);
+        //Debug.Log("f_torque = " + f_Torque + "   inv = " + invMomentOfInertia);
         angularAcceleration = f_Torque * invMomentOfInertia;
         f_Torque = 0.0f;
     }
