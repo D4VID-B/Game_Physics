@@ -481,7 +481,7 @@ public class Particle3D : MonoBehaviour
 
     Vector2 calculateTorque(float magnitude, Vector4 mForce)
     {
-        return mForce * magnitude;
+        return mForce.normalized * magnitude;
     }
 
     void checkKeys()
