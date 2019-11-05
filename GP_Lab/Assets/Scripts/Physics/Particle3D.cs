@@ -26,7 +26,8 @@ public class Particle3D : MonoBehaviour
     Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 localCoM, worldCoM;
     Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
-    Vector3 torque, angularAcceleration;
+    Vector3 angularAcceleration;
+    public Vector4 torque;
     Vector3 momentArm;
     
 
@@ -469,11 +470,43 @@ public class Particle3D : MonoBehaviour
         return angularA;
     }
 
-    Vector3 calculateTorque(Vector3 ma, Vector3 nForce)
+    Vector4 calculateTorque(Vector3 ma, Vector3 nForce)
     {
         return Vector3.Cross(ma, nForce).normalized;
     }
 
+    void checkKeys()
+    {
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            torque.y++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            torque.y--;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            torque.x++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            torque.x--;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            torque.z++;
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            torque.z--;
+        }
+    }
     #endregion
 
     #region Runtime
@@ -489,6 +522,7 @@ public class Particle3D : MonoBehaviour
     {   
         //Update world Inertia Tensors - Temporary location
         worldTensor = worldTransform * localTensor * inverseWorldTransform;
+        checkKeys();
     }
 
     void FixedUpdate()
