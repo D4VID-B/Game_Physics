@@ -426,6 +426,30 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
+    Matrix4x4 wordlTransformMatAttemptTwo()
+    {
+        Matrix4x4 final;
+
+        final.m00 = 1 - 2 * rotation.y * rotation.y - 2 * rotation.z * rotation.z;
+        final.m01 = 2 * rotation.x * rotation.y - 2 * rotation.w * rotation.z;
+        final.m02 = 2 * rotation.x * rotation.z + 2 * rotation.w * rotation.y;
+        final.m03 = position.x;
+        final.m10 = 2 * rotation.x * rotation.y + 2 * rotation.w * rotation.z;
+        final.m11 = 1 - 2 * rotation.x * rotation.x - 2 * rotation.z * rotation.z;
+        final.m12 = 2 * rotation.y * rotation.z - 2 * rotation.w * rotation.x;
+        final.m13 = position.y;
+        final.m20 = 2 * rotation.x * rotation.z - 2 * rotation.w * rotation.y;
+        final.m21 = 2 * rotation.y * rotation.z + 2 * rotation.w * rotation.x;
+        final.m22 = 1 - 2 * rotation.x * rotation.x - 2 * rotation.y * rotation.y;
+        final.m23 = position.z;
+        final.m30 = 0;
+        final.m31 = 0;
+        final.m32 = 0;
+        final.m33 = 1;  //homogeneous coord
+
+        return final;
+    }
+
     Matrix4x4 inverseMat4(Matrix4x4 mat)
     {
         Matrix4x4 inverse;
