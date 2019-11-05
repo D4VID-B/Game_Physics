@@ -9,8 +9,8 @@ public abstract class CollisionHull3D : MonoBehaviour
     {
         public struct Contact
         {
-            public Vector2 point; //Point of contact
-            public Vector2 normal; //sin() cos() of position
+            public Vector3 point; //Point of contact
+            public Vector3 normal; //sin() cos() of position
         }
 
         //Collision event
@@ -52,29 +52,17 @@ public abstract class CollisionHull3D : MonoBehaviour
     {
         if(shouldChange)
         {
-            //Debug.Log("Previous material: " + obj.GetComponent<Renderer>().material);
             obj.GetComponent<MeshRenderer>().material.color = Color.green;
-            //Debug.Log("New material: " + obj.GetComponent<Renderer>().material);
         }
 
-        //if(!shouldChange)
-        //{
-        //    obj.GetComponent<MeshRenderer>().material.color = Color.red;
-        //}
+
         
 
     }
 
     public static bool TestCollision(CollisionHull3D a, CollisionHull3D b, ref Collision c)
     {
-        //if a is cirlce and b is also circle
-        //call the circel-circle function
-
-        //if a is a circle and b is an AABB
-        //call the 
-
-        //Debug.Log("CH2D a: " + a + "  CH2D b: " + b);
-
+        
         //You need the nine conditions seperately, you cant even use or statements
         //the original way this was set up, if a was circ and b was AABB, then there wasn't a condition for a to be AABB and b to be circ (which matters for the return)
 
@@ -136,10 +124,11 @@ public abstract class CollisionHull3D : MonoBehaviour
     public static void updateCollision(ref Collision col, float coeff)
     {
         col.restitution = coeff;
-        col.closingVelocity = -col.restitution * ((col.a.GetComponent<Particle2D>().velocity - col.b.GetComponent<Particle2D>().velocity) * col.contacts[0].normal);
+        col.closingVelocity = -col.restitution * Vector3.Scale((col.a.GetComponent<Particle3D>().velocity - col.b.GetComponent<Particle3D>().velocity), col.contacts[0].normal);
+        
 
-        col.a.GetComponent<Particle2D>().velocity = col.closingVelocity * 1/col.a.GetComponent<Particle2D>().startingMass;//Inverse mass   
-        col.b.GetComponent<Particle2D>().velocity = -col.closingVelocity * 1/col.b.GetComponent<Particle2D>().startingMass;
+        col.a.GetComponent<Particle3D>().velocity = col.closingVelocity * 1/col.a.GetComponent<Particle3D>().startingMass;//Inverse mass   
+        col.b.GetComponent<Particle3D>().velocity = -col.closingVelocity * 1/col.b.GetComponent<Particle3D>().startingMass;
     }
 
     /*

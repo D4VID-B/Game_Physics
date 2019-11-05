@@ -7,16 +7,18 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
     public AxisAlignedBoundingBoxHull3D() : base(CollisionHullType3D.Hull_AABB) { }
 
-    public AxisAlignedBoundingBoxHull3D(ObjectBoundingBoxHull2D temp) : base(CollisionHullType3D.Hull_AABB) 
+    public AxisAlignedBoundingBoxHull3D(ObjectBoundingBoxHull3D temp) : base(CollisionHullType3D.Hull_AABB) 
     {
         length = temp.length;
         height = temp.height;
+        depth = temp.depth;
         this.transform.position = temp.transform.position;
     }
 
 
     public float length;
     public float height;
+    public float depth;
 
 
 
@@ -45,32 +47,11 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
         //4) Repeat 2 & 3 for the y axis
 
-        ////Finding corners/Max-Min of box
-        ////bottom left
-        //float box_X = box.transform.position.x - box.length * 0.5f;
-        //float box_Y = box.transform.position.y - box.height * 0.5f;
-        //Vector2 box_bottomLeft = new Vector2(box_X, box_Y);
-
-        ////top right
-        //box_X = box.transform.position.x + box.length * 0.5f;
-        //box_Y = box.transform.position.y + box.height * 0.5f;
-        //Vector2 box_topRight = new Vector2(box_X, box_Y);
-
-        ////Finding corners of this
-        ////bottom left
-        //float this_X = transform.position.x - length * 0.5f;
-        //float this_Y = transform.position.y - height * 0.5f;
-        //Vector2 this_bottomLeft = new Vector2(this_X, this_Y);
-
-        ////top right
-        //this_X = transform.position.x + length * 0.5f;
-        //this_Y = transform.position.y + height * 0.5f;
-        //Vector2 this_topRight = new Vector2(this_X, this_Y);
-
 
         //AABB, finding corners(sides) in if()
         bool colOnX = false;
         bool colOnY = false;
+        bool colOnZ = false;
 
         if (this.transform.position.x + (this.length * 0.5f) >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= this.transform.position.x - (this.length * 0.5f))
         {
@@ -82,7 +63,12 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
             colOnY = true;
         }
 
-        if (colOnY && colOnX)
+        if(this.transform.position.z + (this.depth * 0.5f) >= box.transform.position.z - (box.depth * 0.5f) && box.transform.position.z + (box.depth * 0.5f) >= this.transform.position.z - (this.depth * 0.5f))
+        {
+            colOnZ = true;
+        }
+
+        if (colOnY && colOnX && colOnZ)
         {
             return true;
             
@@ -104,27 +90,30 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
         //bottom left
         float box_X = box.transform.position.x - box.length * 0.5f;
         float box_Y = box.transform.position.y - box.height * 0.5f;
-        Vector2 box_bottomLeft = new Vector2(box_X, box_Y);
+        float box_Z = box.transform.position.z - box.depth * 0.5f;
+        Vector3 box_bottomLeft = new Vector3(box_X, box_Y, box_Z);
 
         //top right
         box_X = box.transform.position.x + box.length * 0.5f;
         box_Y = box.transform.position.y + box.height * 0.5f;
-        Vector2 box_topRight = new Vector2(box_X, box_Y);
+        box_Z = box.transform.position.z + box.depth * 0.5f;
+
+        Vector3 box_topRight = new Vector3(box_X, box_Y, box_Z);
 
         //Finding corners of this
         //bottom left
         float this_X = transform.position.x - length * 0.5f;
         float this_Y = transform.position.y - height * 0.5f;
-        Vector2 this_bottomLeft = new Vector2(this_X, this_Y);
+        float this_Z = transform.position.z - depth * 0.5f;
+
+        Vector3 this_bottomLeft = new Vector3(this_X, this_Y, this_Z);
 
         //top right
         this_X = transform.position.x + length * 0.5f;
         this_Y = transform.position.y + height * 0.5f;
-        Vector2 this_topRight = new Vector2(this_X, this_Y);
+        this_Z = transform.position.z + depth * 0.5f;
 
-        //TestCollisionVsAABB();
-        //box.TestCollisionVsAABB(this);
-
+        Vector3 this_topRight = new Vector3(this_X, this_Y, this_Z);
         //Second: transform this into OBB space, find max extents, repat AABB
         //1) transform into OBB space:
 

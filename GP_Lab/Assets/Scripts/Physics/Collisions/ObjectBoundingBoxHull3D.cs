@@ -6,6 +6,7 @@ public class ObjectBoundingBoxHull3D : CollisionHull3D
 {
     public float length;
     public float height;
+    public float depth;
 
     public ObjectBoundingBoxHull3D(): base(CollisionHullType3D.Hull_OBB) { }
 
