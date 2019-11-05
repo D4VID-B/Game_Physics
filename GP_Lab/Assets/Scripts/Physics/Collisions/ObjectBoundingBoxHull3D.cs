@@ -7,21 +7,21 @@ public class ObjectBoundingBoxHull3D : CollisionHull3D
     public float length;
     public float height;
 
-    public ObjectBoundingBoxHull2D(): base(CollisionHullType2D.Hull_OBB) { }
+    public ObjectBoundingBoxHull3D(): base(CollisionHullType3D.Hull_OBB) { }
 
    
 
-    public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
+    public override bool TestCollisionVsCircle(CircleHull3D circle, ref Collision c)
     {
         return circle.TestCollisionVsOBB(this, ref c);
     }
 
-    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
+    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull3D box, ref Collision c)
     {
         return box.TestCollisionVsOBB(this, ref c);
     }
 
-    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
+    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull3D box, ref Collision c)
     {
         //AABB-OBB part 2 twice:
 

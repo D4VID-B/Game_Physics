@@ -20,14 +20,14 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
 
 
-    public override bool TestCollisionVsCircle(CircleHull2D circle, ref Collision c)
+    public override bool TestCollisionVsCircle(CircleHull3D circle, ref Collision c)
     {
         //Call circle, flip arguments <=== ///What does this mean\\\?
         
         return circle.TestCollisionVsAABB(this, ref c);
     }
 
-    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull2D box, ref Collision c)
+    public override bool TestCollisionVsAABB(AxisAlignedBoundingBoxHull3D box, ref Collision c)
     {
         //on each axis, max extent of one < min extent of other
         //
@@ -94,7 +94,7 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
     }
 
-    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull2D box, ref Collision c)
+    public override bool TestCollisionVsOBB(ObjectBoundingBoxHull3D box, ref Collision c)
     {
         //same as above twice:
         //first: find max extents of OBB, do AABB vs this
