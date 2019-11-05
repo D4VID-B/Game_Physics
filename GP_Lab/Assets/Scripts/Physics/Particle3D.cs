@@ -374,13 +374,14 @@ public class Particle3D : MonoBehaviour
         return Matrix4x4.identity;
     }
 
-    Matrix4x4 worldTransformToMatrix()
+    Matrix4x4 worldTransformMatrix()
     {
         //all of these are local values
 
         //span (Tr, Ty, Tz, Position)
 
         Matrix4x4 final;
+
         final.m00 = this.transform.right.x;
         final.m01 = this.transform.up.x;
         final.m02 = this.transform.forward.x;
@@ -401,28 +402,37 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
-    Matrix4x4 localTransformToMatrix()
+    Matrix4x4 localTransformMatrix()
     {
         Matrix4x4 final;
         
-        final.m00 = ;
-        final.m01 = ;
-        final.m02 = ;
-        final.m03 = ;
-        final.m10 = ;
-        final.m11 = ;
-        final.m12 = ;
-        final.m13 = ;
-        final.m20 = ;
-        final.m21 = ;
-        final.m22 = ;
-        final.m23 = ;
+        final.m00 = (this.transform.localScale.x) * (rotation.w * rotation.w + rotation.x * rotation.x - rotation.y * rotation.y - rotation.z * rotation.z);
+        final.m01 = 2 * (rotation.x * rotation.y - rotation.w * rotation.z);
+        final.m02 = 2 * (rotation.x * rotation.z + rotation.w * rotation.y);
+        final.m03 = position.x;
+        final.m10 = 2 * (rotation.x * rotation.y + rotation.w * rotation.z);
+        final.m11 = (this.transform.localScale.y) * (rotation.w * rotation.w - rotation.x * rotation.x + rotation.y * rotation.y - rotation.z * rotation.z);
+        final.m12 = 2 * (rotation.y * rotation.z - rotation.w  * rotation.x);
+        final.m13 = position.y;
+        final.m20 = 2 * (rotation.x * rotation.z - rotation.w * rotation.y);
+        final.m21 = 2 * (rotation.y * rotation.z + rotation.w * rotation.x);
+        final.m22 = (this.transform.localScale.z) * (rotation.w * rotation.w - rotation.x * rotation.x - rotation.y * rotation.y + rotation.z * rotation.z);
+        final.m23 = position.z;
         final.m30 = 0;
         final.m31 = 0;
         final.m32 = 0;
         final.m33 = 1;  //homogeneous coord
 
         return final;
+    }
+
+    Matrix4x4 inverseMat4(Matrix4x4 mat)
+    {
+        Matrix4x4 inverse;
+
+        inverse = mat.inverse;
+
+        return inverse;
     }
 
     Vector3 convertToAngularFromTorque(Vector3 torque)
