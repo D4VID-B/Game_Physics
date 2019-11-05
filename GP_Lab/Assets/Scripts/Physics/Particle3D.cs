@@ -14,13 +14,23 @@ public class Particle3D : MonoBehaviour
     [Header("Rotation")]
     public Quaternion rotation;
     public Vector3 angularVelocity;
-    public Vector3 angularAcceleration;
-    public Vector3 torque;
+    
 
-    //Lab02 - Step 1
     [Header("Mass")]
     public float startingMass;
     float mass, massInv;
+
+    /// <summary>
+    /// Angular Dynamics
+    /// </summary>
+    Matrix4x4 worldTransform, inverseWorldTransform; 
+    Vector3 localCoM, worldCoM;
+    Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
+    Vector3 torque,  angularAcceleration;
+    public Vector4 torqueDirection;
+    public float torqueMag;
+    Vector3 momentArm;
+    
 
     [Header("Demo: Sin Spin")]
     public Vector3 spinAngularAcceleration;
@@ -31,6 +41,14 @@ public class Particle3D : MonoBehaviour
     public Vector3 moveAcceleration;
     public Vector3 moveVelocity;
     public bool useVelocityInsteadOfAcceleration;
+
+    [Header("Lab 07: AD Shape Parameters")]
+
+    [Range(0.0f, 3.0f)]
+    public float radius;
+    [Range(0.0f, 3.0f)]
+    public float height;
+    public float x_extent, y_extent, z_extent; //These are cuboid values
 
     #endregion
 
@@ -58,6 +76,18 @@ public class Particle3D : MonoBehaviour
     public PositionFunction IntegrationMethod;
     public RotationFunction RotationUpdateMethod;
     public UpdateFormula MovementType;
+
+    public enum Shape3D
+    {
+        Solid_Sphere,
+        Hollow_Sphere,
+        Solid_Cuboid,
+        Hollow_Cuboid,
+        Solid_Cylinder,
+        Solid_Cone
+
+    }
+    public Shape3D Shape;
 
     #endregion
 
@@ -110,17 +140,16 @@ public class Particle3D : MonoBehaviour
 
 
         // 1/2 * w * q.nrm
-        //Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
-        Quaternion temp = multiplyScalarByQuaternion(dt, multiplyScalarByQuaternion(0.5f, multiplyVectorByQuaternion(angularVelocity, rotation.normalized)));
+        Quaternion temp = multiplyScalarByQuaternion(dt * 0.5f, multiplyVectorByQuaternion(angularVelocity, rotation));
 
 
-        Debug.Log("multVectByQuat: " + multiplyVectorByQuaternion(angularVelocity, rotation.normalized));
-        Debug.Log("Temp: " + temp);
+        //Debug.Log("multVectByQuat: " + multiplyVectorByQuaternion(angularVelocity, rotation));
+        //Debug.Log("Temp: " + temp);
 
         //componant wise addition
-        rotation = new Quaternion((rotation.normalized.x + temp.x), (rotation.normalized.y + temp.y), (rotation.normalized.z + temp.z), (rotation.normalized.w + temp.w));
+        rotation = new Quaternion((rotation.x + temp.x), (rotation.y + temp.y), (rotation.z + temp.z), (rotation.w + temp.w));
 
-        //rotation = rotation.normalized;
+        rotation = rotation.normalized;
 
         //integrate
         //normalize
@@ -225,21 +254,284 @@ public class Particle3D : MonoBehaviour
 
         return result;
     }
-#endregion
+    #endregion
+
+    #region Lab07
+    Matrix4x4 setTensor(Shape3D theShape)
+    {
+        switch (theShape) 
+        {
+            case Shape3D.Solid_Sphere:
+                {
+                    localTensor = Matrix4x4.identity;
+                    localCoM = new Vector3(0.0f, 0.0f, 0.0f);
+                    /*
+                     * I = [ 2/5 * mass * (radius*radius)   0   0]
+                     *     [ 0   2/5 * mass * (radius*radius)   0]
+                     *     [ 0   0   2/5 * mass * (radius*radius)]
+                     */
+
+                    localTensor.m00 = 0.4f * mass * (radius * radius);
+                    localTensor.m11 = 0.4f * mass * (radius * radius);
+                    localTensor.m22 = 0.4f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Hollow_Sphere:
+                {
+                    localTensor = Matrix4x4.identity;
+                    localCoM = new Vector3(0.0f, 0.0f, 0.0f);
+
+                    /*
+                     * I = [ 2/3 * mass * (radius*radius)   0   0]
+                     *     [ 0   2/3 * mass * (radius*radius)   0]
+                     *     [ 0   0   2/3 * mass * (radius*radius)]
+                     */
+
+                    localTensor.m22 = 0.67f * mass * (radius * radius);
+                    localTensor.m00 = 0.67f * mass * (radius * radius);
+                    localTensor.m11 = 0.67f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cuboid:
+                {
+                    localTensor = Matrix4x4.identity;
+                    localCoM = new Vector3(0.0f, 0.0f, 0.0f);
+
+                    /*
+                     * I = [ 1/12*mass*((dy*dy) + (dz*dz))  0   0]
+                     *     [ 0  1/12*mass*((dx*dx) + (dz*dz))   0]
+                     *     [ 0  0   1/12*mass*((dx*dx) + (dy*dy))]
+                     *  dx, dy, dz = extents along the axis
+                     */
+
+                    localTensor.m00 = 0.083f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
+                    localTensor.m11 = 0.083f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
+                    localTensor.m22 = 0.083f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Hollow_Cuboid:
+                {
+                    localTensor = Matrix4x4.identity;
+                    localCoM = new Vector3(0.0f, 0.0f, 0.0f);
+
+                    /*
+                     * I = [5/3 * mass * ((dy^2) + (dz^2))  0  0]
+                     *     [0  5/3 * mass * ((dx^2) + (dz^2))  0]
+                     *     [0  0  5/3 * mass * ((dx^2) + (dy^2))]
+                     *     width = dx; height = dy; depth = dz;
+                     */
+
+                    localTensor.m00 = 1.67f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
+                    localTensor.m11 = 1.67f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
+                    localTensor.m22 = 1.67f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cylinder:
+                {
+
+                    /*
+                     * I = [ 1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0   0]
+                     *     [ 0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)   0]
+                     *     [ 0   0   1/12 * mass * (height * height) + 1/4 * mass * (radius*radius)]
+                     */
+                    localTensor = Matrix4x4.identity;
+                    localCoM = new Vector3(0.0f, 0.5f * height, 0.0f); //From: http://farside.ph.utexas.edu/teaching/301/lectures/node102.html
+
+                    localTensor.m00 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
+                    localTensor.m11 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
+                    localTensor.m22 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
+                    localTensor.m33 = 0;
+
+                    return localTensor;
+                }
+            case Shape3D.Solid_Cone:
+                {
+                    /*
+                     * I = [ 3/80 * mass * (height * height) + 3/20 * mass * (radius*radius)   0   0]
+                     *     [ 0   3/10 * mass * (radius*radius)   0]
+                     *     [ 0   0   3/5 * mass * (height * height) + 3/20 * mass * (radius*radius)]
+                     */
+                    localTensor = Matrix4x4.identity;
+                    localCoM = new Vector3(0.0f, 0.75f * height, 0.0f); //CoM is at 3/4 height -> using this: https://www.assignmentexpert.com/homework-answers/physics-answer-36570.pdf
+
+                    localTensor.m00 = 0.0375f * mass * (height * height) + 0.15f * mass * (radius * radius);
+                    localTensor.m11 = 0.15f * mass * (radius * radius);
+                    localTensor.m22 = 0.6f * mass * (height * height) + 0.15f * mass * (radius * radius);
+                    localTensor.m33 = 0;
 
 
+                    return localTensor;
+                }
+        }
 
-#region Runtime
+        //Switch somehow failed - return "zero"
+        return Matrix4x4.identity;
+    }
+    
+    //Matrix4x4 transformInvInertiaTensor()
+
+    Matrix4x4 worldTransformMatrix()
+    {
+        //all of these are local values
+
+        //span (Tr, Ty, Tz, Position)
+
+        Matrix4x4 final;
+
+        final.m00 = this.transform.right.x;
+        final.m01 = this.transform.up.x;
+        final.m02 = this.transform.forward.x;
+        final.m03 = this.transform.position.x;
+        final.m10 = this.transform.right.y;
+        final.m11 = this.transform.up.y;
+        final.m12 = this.transform.forward.y;
+        final.m13 = this.transform.position.y;
+        final.m20 = this.transform.right.z;
+        final.m21 = this.transform.up.z;
+        final.m22 = this.transform.forward.z;
+        final.m23 = this.transform.position.z;
+        final.m30 = 0;
+        final.m31 = 0;
+        final.m32 = 0;
+        final.m33 = 1;  //homogeneous coord
+
+        return final;
+    }
+
+    Matrix4x4 localTransformMatrix()
+    {
+        Matrix4x4 final;
+        
+        final.m00 = (this.transform.localScale.x) * (rotation.w * rotation.w + rotation.x * rotation.x - rotation.y * rotation.y - rotation.z * rotation.z);
+        final.m01 = 2 * (rotation.x * rotation.y - rotation.w * rotation.z);
+        final.m02 = 2 * (rotation.x * rotation.z + rotation.w * rotation.y);
+        final.m03 = position.x;
+        final.m10 = 2 * (rotation.x * rotation.y + rotation.w * rotation.z);
+        final.m11 = (this.transform.localScale.y) * (rotation.w * rotation.w - rotation.x * rotation.x + rotation.y * rotation.y - rotation.z * rotation.z);
+        final.m12 = 2 * (rotation.y * rotation.z - rotation.w  * rotation.x);
+        final.m13 = position.y;
+        final.m20 = 2 * (rotation.x * rotation.z - rotation.w * rotation.y);
+        final.m21 = 2 * (rotation.y * rotation.z + rotation.w * rotation.x);
+        final.m22 = (this.transform.localScale.z) * (rotation.w * rotation.w - rotation.x * rotation.x - rotation.y * rotation.y + rotation.z * rotation.z);
+        final.m23 = position.z;
+        final.m30 = 0;
+        final.m31 = 0;
+        final.m32 = 0;
+        final.m33 = 1;  //homogeneous coord
+
+        return final;
+    }
+
+    Matrix4x4 worldTransformMatAttemptTwo()
+    {
+        Matrix4x4 final;
+
+        final.m00 = 1 - 2 * rotation.y * rotation.y - 2 * rotation.z * rotation.z;
+        final.m01 = 2 * rotation.x * rotation.y - 2 * rotation.w * rotation.z;
+        final.m02 = 2 * rotation.x * rotation.z + 2 * rotation.w * rotation.y;
+        final.m03 = position.x;
+        final.m10 = 2 * rotation.x * rotation.y + 2 * rotation.w * rotation.z;
+        final.m11 = 1 - 2 * rotation.x * rotation.x - 2 * rotation.z * rotation.z;
+        final.m12 = 2 * rotation.y * rotation.z - 2 * rotation.w * rotation.x;
+        final.m13 = position.y;
+        final.m20 = 2 * rotation.x * rotation.z - 2 * rotation.w * rotation.y;
+        final.m21 = 2 * rotation.y * rotation.z + 2 * rotation.w * rotation.x;
+        final.m22 = 1 - 2 * rotation.x * rotation.x - 2 * rotation.y * rotation.y;
+        final.m23 = position.z;
+        final.m30 = 0;
+        final.m31 = 0;
+        final.m32 = 0;
+        final.m33 = 1;  //homogeneous coord
+
+        return final;
+    }
+
+    Matrix4x4 inverseMat4(Matrix4x4 mat)
+    {
+        Matrix4x4 inverse;
+
+        inverse = mat.inverse;
+
+        return inverse;
+    }
+
+    Vector3 convertToAngularFromTorque(Vector3 mTorque)
+    {
+        Vector3 angularA;
+
+        angularA = worldTensor * mTorque;
+        //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
+
+        
+        return angularA;
+    }
+
+    Vector4 calculateTorque(Vector3 ma, Vector3 nForce)
+    {
+        return Vector3.Cross(ma, nForce.normalized);
+    }
+
+    Vector2 calculateTorque(float magnitude, Vector4 mForce)
+    {
+        return mForce.normalized * magnitude;
+    }
+
+    void checkKeys()
+    {
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            torque.y++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            torque.y--;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            torque.x++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            torque.x--;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            torque.z++;
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            torque.z--;
+        }
+    }
+    #endregion
+
+    #region Runtime
 
     void Start()
     {
+        worldCoM = localCoM + transform.position;
         position = this.transform.position;
+        
         setMass(startingMass);
     }
 
-    void DemoChoice()
-    {
-
+    void Update()
+    {   
+        //Update world Inertia Tensors - Temporary location
+        //worldTensor = worldTransform * localTensor * inverseWorldTransform;
     }
 
     void FixedUpdate()
@@ -265,7 +557,22 @@ public class Particle3D : MonoBehaviour
             velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
         }
 
-        //Lab 01 & Lab 02 - Step 3
+        /*
+         var a: Vector3;
+         var b: Vector3;
+         var c: Vector3;
+
+         var side1: Vector3 = b - a;
+         var side2: Vector3 = c - a;
+
+        var norm: Vector3 = Vector3.Cross(side1, side2);
+
+        https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
+        */
+
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
+
+
         if (IntegrationMethod == PositionFunction.PositionEuler)
         {
             updatePosEulerExplicit(Time.fixedDeltaTime);
@@ -277,11 +584,15 @@ public class Particle3D : MonoBehaviour
             {
                 updateRotEulerExplicit(Time.fixedDeltaTime);
 
-                Debug.Log("Rotaton calculated: " + rotation);
+                //Debug.Log("Rotaton calculated: " + rotation);
 
                 transform.rotation = rotation;
+                
+                
+                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
+                
 
-                Debug.Log("Object Rotation" + transform.rotation);
+                //Debug.Log("Object Rotation" + transform.rotation);
             }
 
         }
@@ -298,11 +609,17 @@ public class Particle3D : MonoBehaviour
 
                 transform.rotation = rotation;
 
+                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
+
             }
 
         }
 
     }
+
+
+    
+
 #endregion
 
 }
