@@ -26,7 +26,9 @@ public class Particle3D : MonoBehaviour
     Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 localCoM, worldCoM;
     Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
-    Vector3 torque, angularAcceleration;
+    Vector3 torque,  angularAcceleration;
+    public Vector4 torqueDirection;
+    public float torqueMag;
     Vector3 momentArm;
     
 
@@ -373,6 +375,8 @@ public class Particle3D : MonoBehaviour
         //Switch somehow failed - return "zero"
         return Matrix4x4.identity;
     }
+    
+    //Matrix4x4 transformInvInertiaTensor()
 
     Matrix4x4 worldTransformMatrix()
     {
@@ -426,7 +430,7 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
-    Matrix4x4 wordlTransformMatAttemptTwo()
+    Matrix4x4 worldTransformMatAttemptTwo()
     {
         Matrix4x4 final;
 
@@ -459,11 +463,12 @@ public class Particle3D : MonoBehaviour
         return inverse;
     }
 
-    Vector3 convertToAngularFromTorque(Vector3 torque)
+    Vector3 convertToAngularFromTorque(Vector3 mTorque)
     {
         Vector3 angularA;
 
-        angularA = worldTensor * torque;
+        angularA = worldTensor * mTorque;
+        //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
 
         
         return angularA;
@@ -471,7 +476,12 @@ public class Particle3D : MonoBehaviour
 
     Vector3 calculateTorque(Vector3 ma, Vector3 nForce)
     {
-        return Vector3.Cross(ma, nForce).normalized;
+        return Vector3.Cross(ma, nForce.normalized);
+    }
+
+    Vector2 calculateTorque(float magnitude, Vector4 mForce)
+    {
+        return mForce * magnitude;
     }
 
     #endregion
@@ -482,13 +492,14 @@ public class Particle3D : MonoBehaviour
     {
         worldCoM = localCoM + transform.position;
         position = this.transform.position;
+        
         setMass(startingMass);
     }
 
     void Update()
     {   
         //Update world Inertia Tensors - Temporary location
-        worldTensor = worldTransform * localTensor * inverseWorldTransform;
+        //worldTensor = worldTransform * localTensor * inverseWorldTransform;
     }
 
     void FixedUpdate()
@@ -544,6 +555,10 @@ public class Particle3D : MonoBehaviour
                 //Debug.Log("Rotaton calculated: " + rotation);
 
                 transform.rotation = rotation;
+                
+                
+                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
+                
 
                 //Debug.Log("Object Rotation" + transform.rotation);
             }
@@ -561,6 +576,8 @@ public class Particle3D : MonoBehaviour
                 updateRotEulerExplicit(Time.fixedDeltaTime);
 
                 transform.rotation = rotation;
+
+                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
 
             }
 
