@@ -26,9 +26,10 @@ public class Particle3D : MonoBehaviour
     Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 localCoM, worldCoM;
     Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
-    Vector3 torque,  angularAcceleration;
+    Vector3 torqueForce,  angularAcceleration;
     public Vector4 torqueDirection;
     public float torqueMag;
+    private Vector4 f_torque;
     Vector3 momentArm;
     
 
@@ -274,7 +275,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.4f * mass * (radius * radius);
                     localTensor.m11 = 0.4f * mass * (radius * radius);
                     localTensor.m22 = 0.4f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -292,7 +293,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m22 = 0.67f * mass * (radius * radius);
                     localTensor.m00 = 0.67f * mass * (radius * radius);
                     localTensor.m11 = 0.67f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -311,7 +312,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.083f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
                     localTensor.m11 = 0.083f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
                     localTensor.m22 = 0.083f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -330,7 +331,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 1.67f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
                     localTensor.m11 = 1.67f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
                     localTensor.m22 = 1.67f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -348,7 +349,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
                     localTensor.m11 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
                     localTensor.m22 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -365,7 +366,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.0375f * mass * (height * height) + 0.15f * mass * (radius * radius);
                     localTensor.m11 = 0.15f * mass * (radius * radius);
                     localTensor.m22 = 0.6f * mass * (height * height) + 0.15f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
 
                     return localTensor;
@@ -463,79 +464,73 @@ public class Particle3D : MonoBehaviour
         return inverse;
     }
 
-    Vector3 convertToAngularFromTorque(Vector3 mTorque)
+    Vector3 convertToAngularFromTorque()
     {
         Vector3 angularA;
 
-        angularA = worldTensor * mTorque;
+
+        //bruh you cant set a vector3 equal to a matrix
+        angularA = worldTensor * f_torque;
+
+        Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "angularA after tensor: \n" + angularA);
+
         //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
 
-        
         return angularA;
     }
 
-    Vector4 calculateTorque(Vector3 ma, Vector3 nForce)
+    Vector3 calculateTorque(Vector3 ma, Vector3 nForce)
     {
         return Vector3.Cross(ma, nForce.normalized);
     }
 
-    Vector2 calculateTorque(float magnitude, Vector4 mForce)
+    Vector3 calculateTorque(float magnitude, Vector4 mForce)
     {
-        return mForce.normalized * magnitude;
+        Vector3 final = mForce * magnitude;
+
+        Debug.Log("Input Torque: " + final);
+       
+        return final;
     }
 
-    void checkKeys()
+    void addTorque(Vector4 torqueToAdd)
     {
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            torque.y++;
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            torque.y--;
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            torque.x++;
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            torque.x--;
-        }
-
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            torque.z++;
-        }
-
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            torque.z--;
-        }
+        f_torque += torqueToAdd;
     }
+
+    void updateAngularAcceleration()
+    {
+        Debug.Log("WTM: \n" + worldTransformMatAttemptTwo() + "WTAinv: \n" + inverseMat4(worldTransformMatAttemptTwo()) + "localTensor: \n" + localTensor);
+        worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
+
+        Debug.Log("Final: \n" + convertToAngularFromTorque());
+        angularAcceleration = convertToAngularFromTorque();
+
+        //Vector4 worldTensorVector = worldTransformMatAttemptTwo() * localTensor * new Vector4(rotation.x, rotation.y, rotation.z, rotation.w);
+        //angularAcceleration = new Vector3(worldTensorVector.x * f_torque.x, worldTensorVector.y * f_torque.y, worldTensorVector.z * f_torque.z);
+
+
+        f_torque = Vector3.zero;
+    }
+
     #endregion
 
     #region Runtime
 
     void Start()
     {
-        worldCoM = localCoM + transform.position;
         position = this.transform.position;
-        
+
         setMass(startingMass);
+        setTensor(Shape);
+        worldCoM = localCoM + transform.position;
     }
 
-    void Update()
-    {   
-        //Update world Inertia Tensors - Temporary location
-        //worldTensor = worldTransform * localTensor * inverseWorldTransform;
-    }
 
     void FixedUpdate()
     {
+
+        
 
         float sinTime = Mathf.Sin(Time.time);
 
@@ -582,15 +577,12 @@ public class Particle3D : MonoBehaviour
             //Rotations
             if (RotationUpdateMethod == RotationFunction.RotationEuler)
             {
+                updateAngularAcceleration();
                 updateRotEulerExplicit(Time.fixedDeltaTime);
 
                 //Debug.Log("Rotaton calculated: " + rotation);
 
                 transform.rotation = rotation;
-                
-                
-                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
-                
 
                 //Debug.Log("Object Rotation" + transform.rotation);
             }
@@ -605,16 +597,20 @@ public class Particle3D : MonoBehaviour
             //Rotations
             if (RotationUpdateMethod == RotationFunction.RotationEuler)
             {
+                updateAngularAcceleration();
                 updateRotEulerExplicit(Time.fixedDeltaTime);
 
                 transform.rotation = rotation;
 
-                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
 
             }
 
         }
 
+        if (Input.GetKey(KeyCode.F))
+        {
+            addTorque(calculateTorque(torqueMag, torqueDirection));
+        }
     }
 
 
