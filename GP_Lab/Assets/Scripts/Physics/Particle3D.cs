@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Particle3D : MonoBehaviour
 {
-#region Variables
+    #region Variables
+    [Header("Switches")]
+    public bool shouldUpdateParticle = true;
+    public bool shouldUpdateRotation;
+    public bool shouldUpdatePosition;
+
     [Header("Position")]
     public Vector3 position;
     public Vector3 velocity;
@@ -529,88 +534,89 @@ public class Particle3D : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        
-
-        float sinTime = Mathf.Sin(Time.time);
-
-        if(!useAngularVelocityInsteadOfAcceleration)
+        if(shouldUpdateParticle)
         {
-            angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
-        }
-        else
-        {
-            angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
-        }
+            float sinTime = Mathf.Sin(Time.time);
 
-        if (!useVelocityInsteadOfAcceleration)
-        {
-            acceleration = new Vector3(sinTime * moveAcceleration.x, sinTime * moveAcceleration.y, sinTime * moveAcceleration.z);
-        }
-        else
-        {
-            velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
-        }
-
-        /*
-         var a: Vector3;
-         var b: Vector3;
-         var c: Vector3;
-
-         var side1: Vector3 = b - a;
-         var side2: Vector3 = c - a;
-
-        var norm: Vector3 = Vector3.Cross(side1, side2);
-
-        https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
-        */
-
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
-
-
-        if (IntegrationMethod == PositionFunction.PositionEuler)
-        {
-            updatePosEulerExplicit(Time.fixedDeltaTime);
-
-            transform.position = position;
-
-            //Rotations
-            if (RotationUpdateMethod == RotationFunction.RotationEuler)
+            if (!useAngularVelocityInsteadOfAcceleration)
             {
-                updateAngularAcceleration();
-                updateRotEulerExplicit(Time.fixedDeltaTime);
-
-                //Debug.Log("Rotaton calculated: " + rotation);
-
-                transform.rotation = rotation;
-
-                //Debug.Log("Object Rotation" + transform.rotation);
+                angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
+            }
+            else
+            {
+                angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
             }
 
-        }
-        else if (IntegrationMethod == PositionFunction.PositionKinematic)
-        {
-            updatePosKinematic(Time.fixedDeltaTime);
-
-            transform.position = position;
-
-            //Rotations
-            if (RotationUpdateMethod == RotationFunction.RotationEuler)
+            if (!useVelocityInsteadOfAcceleration)
             {
-                updateAngularAcceleration();
-                updateRotEulerExplicit(Time.fixedDeltaTime);
+                acceleration = new Vector3(sinTime * moveAcceleration.x, sinTime * moveAcceleration.y, sinTime * moveAcceleration.z);
+            }
+            else
+            {
+                velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
+            }
 
-                transform.rotation = rotation;
+            /*
+             var a: Vector3;
+             var b: Vector3;
+             var c: Vector3;
 
+             var side1: Vector3 = b - a;
+             var side2: Vector3 = c - a;
+
+            var norm: Vector3 = Vector3.Cross(side1, side2);
+
+            https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
+            */
+
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
+
+
+            if (IntegrationMethod == PositionFunction.PositionEuler)
+            {
+                updatePosEulerExplicit(Time.fixedDeltaTime);
+
+                transform.position = position;
+
+                //Rotations
+                if (RotationUpdateMethod == RotationFunction.RotationEuler)
+                {
+                    updateAngularAcceleration();
+                    updateRotEulerExplicit(Time.fixedDeltaTime);
+
+                    //Debug.Log("Rotaton calculated: " + rotation);
+
+                    transform.rotation = rotation;
+
+                    //Debug.Log("Object Rotation" + transform.rotation);
+                }
+
+            }
+            else if (IntegrationMethod == PositionFunction.PositionKinematic)
+            {
+                updatePosKinematic(Time.fixedDeltaTime);
+
+                transform.position = position;
+
+                //Rotations
+                if (RotationUpdateMethod == RotationFunction.RotationEuler)
+                {
+                    updateAngularAcceleration();
+                    updateRotEulerExplicit(Time.fixedDeltaTime);
+
+                    transform.rotation = rotation;
+
+
+                }
 
             }
 
+            if (Input.GetKey(KeyCode.F))
+            {
+                addTorque(calculateTorque(torqueMag, torqueDirection));
+            }
         }
 
-        if (Input.GetKey(KeyCode.F))
-        {
-            addTorque(calculateTorque(torqueMag, torqueDirection));
-        }
     }
 
 

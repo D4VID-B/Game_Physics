@@ -131,15 +131,6 @@ public class CollisionManager3D : MonoBehaviour
                             CollisionHull3D.changeColor(colliders[i].gameObject, true);
                             CollisionHull3D.changeColor(colliders[j].gameObject, true);
                         }
-
-                        //CollisionHull3D.resolveInterpenetration(ref desc);
-                        //CollisionHull3D.updateCollision(ref desc, coefficientOfRestitution);
-
-                        //Kill the player
-                        //GameObject.Find("CollisionManagerHost").GetComponent<GameManagerScript>().hitByAstroid = true;
-
-
-                        Debug.Log("Objects collided");
                     }
                     else
                     {

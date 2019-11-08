@@ -55,7 +55,10 @@ public abstract class CollisionHull3D : MonoBehaviour
             obj.GetComponent<MeshRenderer>().material.color = Color.green;
         }
 
-
+        if(shouldChange == false)
+        {
+            obj.GetComponent<MeshRenderer>().material.color = Color.red;
+        }
         
 
     }

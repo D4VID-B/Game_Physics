@@ -32,8 +32,6 @@ public class CircleHull3D : CollisionHull3D
         //5)    summ of radii ^2
         //6)    Test: dist^2 <= summ^2
 
-        //Debug.Log("CVC test start");
-
         Vector3 positionA = circle.transform.position;
         Vector3 positionB = this.transform.position;
 
@@ -52,8 +50,6 @@ public class CircleHull3D : CollisionHull3D
         }
         else
         {
-            //Debug.Log("CVC test fail");
-
             return false;
         }
     }
@@ -63,8 +59,6 @@ public class CircleHull3D : CollisionHull3D
         //Calculate closest point by clamping(??) center; closest point vs circle test
         //
         //1)
-
-        //Debug.Log("AABB v C test");
 
         Vector3 circCenter = this.transform.position;
         Vector3 boxCenter = box.transform.position;
@@ -88,38 +82,11 @@ public class CircleHull3D : CollisionHull3D
 
         if(dSq < (this.radius * this.radius))
         {
-            //Debug.Log("AABB v C pass");
-            hitExplode = true;
-
-            //Assign objects
-            col.a = this;
-            col.b = box;
-
-            Vector3 clamped = new Vector3(clampedX, clampedY, clampedZ);
-
-
-            //get the clamped combinded vector as the point to have norm from
-            Vector3 Point = (clamped + (distance.normalized * this.radius)) * 0.5f;
-
-            //take the centerpoint of the circle, subtract the point to get the norm (it may be point - circ)
-            //Vector2 norm = (circCenter - Point).normalized; //(same as distance)
-
-            //col.contacts[0].normal = norm;
-            col.contacts[0].normal = distance.normalized;
-
-            col.contacts[0].point = Point;
-
-            //radius of the circle minus the distance to the original point of entry
-            col.interpenDepth = (this.radius * this.radius) - dSq;
-           // col.interpenDepth = (this.radius + clamped.magnitude) - distance.magnitude;
-
 
             return true;
         }
         else
         {
-            //Debug.Log("AABB v C fail");
-
             return false;
         }
 

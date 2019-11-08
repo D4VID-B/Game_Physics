@@ -15,9 +15,11 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
         this.transform.position = temp.transform.position;
     }
 
-
+    [Range(0, 3)]
     public float length;
+    [Range(0, 3)]
     public float height;
+    [Range(0, 3)]
     public float depth;
 
 
