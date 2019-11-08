@@ -47,31 +47,6 @@ public class CircleHull3D : CollisionHull3D
 
         if (distance <= squaredSumOfRadii)
         {
-            //Debug.Log("CVC test pass");
-            //hitExplode = true;
-
-            //Assign objects
-            //col.a = this;
-            //col.b = circle;
-            
-
-
-            ////Calculate contact normal - is also the contact direction
-            //distance = Mathf.Sqrt(distance);
-            //col.contacts[0].normal = diff*(1/distance);
-
-            ////Calculate contact point => center of the overlap
-            ////take the diff
-            ////magnitude = distance
-            ////normalise by /magnitude
-            //Vector3 e0 = col.contacts[0].normal * -radius;
-            //Vector3 e1 = col.contacts[0].normal * circle.radius;
-            //col.contacts[0].point = (e0+e1)*0.5f;
-
-            ////Calculate interpenetration depth
-            ////subtract distance from sum of radii => interpen depth
-
-            //col.interpenDepth = sumOfRadii - distance;
 
             return true;
         }
