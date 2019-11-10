@@ -12,12 +12,12 @@ public class CircleHull3D : CollisionHull3D
     public float radius;
 
     public bool hitExplode;
-    //Collision col = null;
 
 
     void Start()
     {
         hitExplode = false;
+        
     }
 
 
@@ -100,8 +100,7 @@ public class CircleHull3D : CollisionHull3D
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
-        //Debug.Log("OBB v Circ Start");
-
+        
         //get the norms of the box
         float RotZOBB = box.transform.eulerAngles.z;
 

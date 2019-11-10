@@ -43,9 +43,50 @@ public abstract class CollisionHull3D : MonoBehaviour
 
     protected Particle3D particle;
 
+
+
+    #region World Transform Stuff
+
+
+    protected Matrix4x4 worldTransform, worldTransformInv;
+
+    /// <summary>
+    /// Change obb to .. the other obb's space (?)
+    /// </summary>
+    /// <param name="obb"></param>
+    /// <param name="obb2"></param>
+    protected void changeBasis(ObjectBoundingBoxHull3D obb, ObjectBoundingBoxHull3D obb2)
+    {
+
+    }
+
+    /// <summary>
+    /// Change obb to circle's space
+    /// </summary>
+    /// <param name="obb"></param>
+    /// <param name="circle"></param>
+    protected void changeBasis(ObjectBoundingBoxHull3D obb, CircleHull3D circle)
+    {
+
+    }
+
+    /// <summary>
+    /// Change obb to the aabb's space
+    /// </summary>
+    /// <param name="obb"></param>
+    /// <param name="aabb"></param>
+    protected void changeBasis(ObjectBoundingBoxHull3D obb, AxisAlignedBoundingBoxHull3D aabb)
+    {
+        
+    }
+    #endregion
+
     void Start()
     {
         particle = GetComponent<Particle3D>();
+
+        worldTransform = particle.worldTransformMatAttemptTwo();
+        worldTransformInv = particle.inverseMat4(worldTransform);
     }
 
     public static void changeColor(GameObject obj,  bool shouldChange)

@@ -262,7 +262,7 @@ public class Particle3D : MonoBehaviour
     }
     #endregion
 
-    #region Lab07
+#region Lab07
     Matrix4x4 setTensor(Shape3D theShape)
     {
         switch (theShape) 
@@ -436,7 +436,7 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
-    Matrix4x4 worldTransformMatAttemptTwo()
+    public Matrix4x4 worldTransformMatAttemptTwo()
     {
         Matrix4x4 final;
 
@@ -460,7 +460,7 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
-    Matrix4x4 inverseMat4(Matrix4x4 mat)
+    public Matrix4x4 inverseMat4(Matrix4x4 mat)
     {
         Matrix4x4 inverse;
 
@@ -547,7 +547,7 @@ public class Particle3D : MonoBehaviour
         f_torque = Vector3.zero;
     }
 
-    #endregion
+#endregion
 
     #region Runtime
 
