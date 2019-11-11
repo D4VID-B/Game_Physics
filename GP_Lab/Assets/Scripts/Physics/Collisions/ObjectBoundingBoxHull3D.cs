@@ -32,6 +32,11 @@ public class ObjectBoundingBoxHull3D : CollisionHull3D
         //2) find max and min of [??]
 
         //3) Call testaabb again
+
+        changeBasis(box, this);
+
+
+
         return false;
     }
 

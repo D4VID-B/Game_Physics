@@ -88,6 +88,8 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
         //first: find max extents of OBB, do AABB vs this
         //call test aabb
 
+        changeBasis(box, this);
+
         //Finding corners/Max-Min of box
         //bottom left
         float box_X = box.transform.position.x - box.length * 0.5f;

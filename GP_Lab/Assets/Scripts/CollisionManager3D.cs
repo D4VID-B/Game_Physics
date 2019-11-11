@@ -128,6 +128,7 @@ public class CollisionManager3D : MonoBehaviour
                     {
                         if (shouldChangeColor)
                         {
+                            Debug.Log("turn fucking green");
                             CollisionHull3D.changeColor(colliders[i].gameObject, true);
                             CollisionHull3D.changeColor(colliders[j].gameObject, true);
                         }
