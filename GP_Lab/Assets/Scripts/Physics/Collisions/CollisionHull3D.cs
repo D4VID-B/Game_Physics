@@ -51,13 +51,17 @@ public abstract class CollisionHull3D : MonoBehaviour
     protected Matrix4x4 worldTransform, worldTransformInv;
 
     /// <summary>
-    /// Change obb to .. the other obb's space (?)
+    /// Change first parameter obb to second paramter obb's space
     /// </summary>
     /// <param name="obb"></param>
     /// <param name="obb2"></param>
     protected void changeBasis(ObjectBoundingBoxHull3D obb, ObjectBoundingBoxHull3D obb2)
     {
+        //assume the first param is this collisionHullObjects obb
 
+        //Particle3D  secParamP3D = obb2.gameObject.GetComponent<Particle3D>();
+
+        obb.worldTransform = obb2.worldTransform * obb.worldTransform * obb2.worldTransformInv;
     }
 
     /// <summary>
@@ -67,7 +71,9 @@ public abstract class CollisionHull3D : MonoBehaviour
     /// <param name="circle"></param>
     protected void changeBasis(ObjectBoundingBoxHull3D obb, CircleHull3D circle)
     {
-
+        //Debug.Log("before");
+        //obb.worldTransform = circle.worldTransform * obb.worldTransform * circle.worldTransformInv;
+        //circle.worldTransform = obb.worldTransformInv 
     }
 
     /// <summary>
@@ -77,7 +83,7 @@ public abstract class CollisionHull3D : MonoBehaviour
     /// <param name="aabb"></param>
     protected void changeBasis(ObjectBoundingBoxHull3D obb, AxisAlignedBoundingBoxHull3D aabb)
     {
-        
+        obb.worldTransform = aabb.worldTransform * obb.worldTransform * aabb.worldTransform;
     }
 #endregion
 
@@ -91,7 +97,7 @@ public abstract class CollisionHull3D : MonoBehaviour
 
     public static void changeColor(GameObject obj,  bool shouldChange)
     {
-        if(shouldChange)
+        if(shouldChange == true)
         {
             //Debug.Log("Color: " + obj.GetComponent<Renderer>().material.color);
             obj.GetComponent<Renderer>().material.color = Color.green;

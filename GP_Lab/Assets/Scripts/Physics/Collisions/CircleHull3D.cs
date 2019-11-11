@@ -43,6 +43,8 @@ public class CircleHull3D : CollisionHull3D
 
         float squaredSumOfRadii = sumOfRadii * sumOfRadii;
 
+        //Debug.Log("Dis: " + distance +"   sqSum: " + squaredSumOfRadii);
+
         if (distance <= squaredSumOfRadii)
         {
             //changeColor(this.gameObject, true);
@@ -63,6 +65,7 @@ public class CircleHull3D : CollisionHull3D
         //Calculate closest point by clamping(??) center; closest point vs circle test
         //
         //1)
+
 
         Vector3 circCenter = this.transform.position;
         Vector3 boxCenter = box.transform.position;
@@ -104,6 +107,9 @@ public class CircleHull3D : CollisionHull3D
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
+
+        changeBasis(box, this);
+        
         //get the norms of the box
         float RotZOBB = box.transform.eulerAngles.z;
 
@@ -111,6 +117,7 @@ public class CircleHull3D : CollisionHull3D
 
         Vector3 circCenter = this.transform.position;
         Vector3 boxCenter = box.transform.position;
+
 
         float subPosX = circCenter.x - box.transform.position.x;
         float subPosY = circCenter.y - box.transform.position.y;
@@ -132,6 +139,7 @@ public class CircleHull3D : CollisionHull3D
         float clampedX = Mathf.Clamp(circCenter.x, boxXMin, boxXMax);
         float clampedY = Mathf.Clamp(circCenter.y, boxYMin, boxYMax);
         float clampedZ = Mathf.Clamp(circCenter.z, boxZMin, boxZMax);
+        
 
         Vector3 distance = new Vector3(circCenter.x - clampedX, circCenter.y - clampedY, circCenter.z - clampedZ);
 
