@@ -211,6 +211,23 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
@@ -392,6 +409,23 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
@@ -557,6 +591,23 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
@@ -889,6 +940,23 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
@@ -1055,6 +1123,23 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
@@ -1162,6 +1247,23 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
@@ -1249,6 +1351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1771759666}
   - component: {fileID: 1771759665}
+  - component: {fileID: 1771759667}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1286,6 +1389,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1771759667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771759664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f2127a7e7cd25e4da0a86cc83fe25bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1994849431
 GameObject:
   m_ObjectHideFlags: 0

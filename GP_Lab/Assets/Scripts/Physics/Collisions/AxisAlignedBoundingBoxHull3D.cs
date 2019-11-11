@@ -7,14 +7,6 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
     public AxisAlignedBoundingBoxHull3D() : base(CollisionHullType3D.Hull_AABB) { }
 
-    public AxisAlignedBoundingBoxHull3D(ObjectBoundingBoxHull3D temp) : base(CollisionHullType3D.Hull_AABB) 
-    {
-        length = temp.length;
-        height = temp.height;
-        depth = temp.depth;
-        this.transform.position = temp.transform.position;
-    }
-
     [Range(0, 3)]
     public float length;
     [Range(0, 3)]
@@ -35,7 +27,7 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
     {
         //on each axis, max extent of one < min extent of other
         //
-        //1) Find Max and Min of each box  <=== \\\*** HOW? ***///
+        //1) Find Max and Min of each box  
         //Max = 
         //Min = 
 
@@ -84,47 +76,30 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull3D box, ref Collision c)
     {
-        //same as above twice:
-        //first: find max extents of OBB, do AABB vs this
-        //call test aabb
+        /*
+        same as above twice:
+        first: find max extents of OBB, do AABB vs this
+        call test aabb
 
-        changeBasis(box, this);
+        Second: transform this into OBB space, find max extents, repat AABB
+        1) transform into OBB space:
 
-        //Finding corners/Max-Min of box
-        //bottom left
-        float box_X = box.transform.position.x - box.length * 0.5f;
-        float box_Y = box.transform.position.y - box.height * 0.5f;
-        float box_Z = box.transform.position.z - box.depth * 0.5f;
-        Vector3 box_bottomLeft = new Vector3(box_X, box_Y, box_Z);
+        2) find max and min of [??]
 
-        //top right
-        box_X = box.transform.position.x + box.length * 0.5f;
-        box_Y = box.transform.position.y + box.height * 0.5f;
-        box_Z = box.transform.position.z + box.depth * 0.5f;
+        3) Call testaabb again
+        */
 
-        Vector3 box_topRight = new Vector3(box_X, box_Y, box_Z);
+        //change basis of box:
 
-        //Finding corners of this
-        //bottom left
-        float this_X = transform.position.x - length * 0.5f;
-        float this_Y = transform.position.y - height * 0.5f;
-        float this_Z = transform.position.z - depth * 0.5f;
+        Vector3 pos = box.transform.position;
+        Quaternion rot = box.transform.rotation;
+        Vector3 scl = box.transform.localScale;
 
-        Vector3 this_bottomLeft = new Vector3(this_X, this_Y, this_Z);
+        Vector3.Dot(pos, new Vector3(worldTransform.m03, worldTransform.m13, worldTransform.m23));
+        Vector3.Dot(scl, new Vector3(worldTransform.m00, worldTransform.m11, worldTransform.m22));
 
-        //top right
-        this_X = transform.position.x + length * 0.5f;
-        this_Y = transform.position.y + height * 0.5f;
-        this_Z = transform.position.z + depth * 0.5f;
-
-        Vector3 this_topRight = new Vector3(this_X, this_Y, this_Z);
-        //Second: transform this into OBB space, find max extents, repat AABB
-        //1) transform into OBB space:
-
-        //2) find max and min of [??]
-
-        //3) Call testaabb again
-
+        //Call the AABB - AABB test
+        //return TestCollisionVsAABB((AxisAlignedBoundingBoxHull3D)box, ref c);
         return false;
     }
 
