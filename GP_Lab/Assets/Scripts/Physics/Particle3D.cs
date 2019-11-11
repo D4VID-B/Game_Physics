@@ -28,7 +28,7 @@ public class Particle3D : MonoBehaviour
     /// <summary>
     /// Angular Dynamics
     /// </summary>
-    Matrix4x4 worldTransform, inverseWorldTransform; 
+    public Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 localCoM, worldCoM;
     Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
     Vector3 torqueForce,  angularAcceleration;

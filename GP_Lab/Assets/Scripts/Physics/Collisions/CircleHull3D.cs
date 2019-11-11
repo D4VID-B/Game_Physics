@@ -45,11 +45,15 @@ public class CircleHull3D : CollisionHull3D
 
         if (distance <= squaredSumOfRadii)
         {
-
+            //changeColor(this.gameObject, true);
+            //changeColor(circle.gameObject, true);
+            //Debug.Log("Changing color!");
             return true;
         }
         else
         {
+            //changeColor(this.gameObject, false);
+            //changeColor(circle.gameObject, false);
             return false;
         }
     }
@@ -100,7 +104,6 @@ public class CircleHull3D : CollisionHull3D
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
-        
         //get the norms of the box
         float RotZOBB = box.transform.eulerAngles.z;
 

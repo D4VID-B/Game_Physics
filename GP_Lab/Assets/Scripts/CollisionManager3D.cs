@@ -14,10 +14,8 @@ public class CollisionManager3D : MonoBehaviour
     public List<CollisionHull3D> colliders;
     List<GameObject> rootObjects;
 
-    public Material success, fail;
-
     public bool enableManager = true;
-    public bool shouldChangeColor;
+    public bool shouldChangeColor = true;
 
     Camera cm;
 
@@ -35,7 +33,6 @@ public class CollisionManager3D : MonoBehaviour
         currentScene.GetRootGameObjects(rootObjects);
 
         cm = Camera.main;
-
 
         findHulls();
     }

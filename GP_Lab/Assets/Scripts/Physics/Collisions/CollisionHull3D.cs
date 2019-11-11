@@ -45,7 +45,7 @@ public abstract class CollisionHull3D : MonoBehaviour
 
 
 
-    #region World Transform Stuff
+#region World Transform Stuff
 
 
     protected Matrix4x4 worldTransform, worldTransformInv;
@@ -79,26 +79,28 @@ public abstract class CollisionHull3D : MonoBehaviour
     {
         
     }
-    #endregion
+#endregion
 
     void Start()
     {
         particle = GetComponent<Particle3D>();
 
-        worldTransform = particle.worldTransformMatAttemptTwo();
-        worldTransformInv = particle.inverseMat4(worldTransform);
+        worldTransform = particle.worldTransform;
+        worldTransformInv = particle.inverseWorldTransform;
     }
 
     public static void changeColor(GameObject obj,  bool shouldChange)
     {
         if(shouldChange)
         {
-            obj.GetComponent<MeshRenderer>().material.color = Color.green;
+            //Debug.Log("Color: " + obj.GetComponent<Renderer>().material.color);
+            obj.GetComponent<Renderer>().material.color = Color.green;
+            //obj.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+            //Debug.Log("Color: " + obj.GetComponent<Renderer>().material.color);
         }
-
-        if(shouldChange == false)
+        else
         {
-            obj.GetComponent<MeshRenderer>().material.color = Color.red;
+            obj.GetComponent<Renderer>().material.color = Color.red;
         }
         
 
