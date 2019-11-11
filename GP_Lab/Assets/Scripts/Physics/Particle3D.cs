@@ -28,9 +28,10 @@ public class Particle3D : MonoBehaviour
     /// <summary>
     /// Angular Dynamics
     /// </summary>
-    Matrix4x4 worldTransform, inverseWorldTransform; 
+    public Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 localCoM, worldCoM;
-    Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
+    Matrix4x4 localTensor = Matrix4x4.identity;
+    public Matrix4x4 worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
     Vector3 torqueForce,  angularAcceleration;
     public Vector4 torqueDirection;
     public float torqueMag;
@@ -506,7 +507,7 @@ public class Particle3D : MonoBehaviour
     void updateAngularAcceleration()
     {
         //Debug.Log("WTM: \n" + worldTransformMatAttemptTwo() + "WTAinv: \n" + inverseMat4(worldTransformMatAttemptTwo()) + "localTensor: \n" + localTensor);
-        Matrix4x4 WTMAT = worldTransformMatAttemptTwo();
+        worldTransform = worldTransformMatAttemptTwo();
 
         Matrix4x4 invLT = localTensor;
         invLT.m00 = 1 / localTensor.m00;
@@ -514,25 +515,25 @@ public class Particle3D : MonoBehaviour
         invLT.m22 = 1 / localTensor.m22;
         //invLT.m33 = 1 / localTensor.m33;
 
-        Matrix4x4 invWTMAT;
-        invWTMAT.m00 = WTMAT.m00;
-        invWTMAT.m01 = WTMAT.m10;
-        invWTMAT.m02 = WTMAT.m20;
-        invWTMAT.m03 = WTMAT.m30;
-        invWTMAT.m10 = WTMAT.m01;
-        invWTMAT.m11 = WTMAT.m11;
-        invWTMAT.m12 = WTMAT.m21;
-        invWTMAT.m13 = WTMAT.m31;
-        invWTMAT.m20 = WTMAT.m02;
-        invWTMAT.m21 = WTMAT.m12;
-        invWTMAT.m22 = WTMAT.m22;
-        invWTMAT.m23 = WTMAT.m32;
-        invWTMAT.m30 = WTMAT.m03;
-        invWTMAT.m31 = WTMAT.m13;
-        invWTMAT.m32 = WTMAT.m23;
-        invWTMAT.m33 = WTMAT.m33;
+        
+        inverseWorldTransform.m00 = worldTransform.m00;
+        inverseWorldTransform.m01 = worldTransform.m10;
+        inverseWorldTransform.m02 = worldTransform.m20;
+        inverseWorldTransform.m03 = worldTransform.m30;
+        inverseWorldTransform.m10 = worldTransform.m01;
+        inverseWorldTransform.m11 = worldTransform.m11;
+        inverseWorldTransform.m12 = worldTransform.m21;
+        inverseWorldTransform.m13 = worldTransform.m31;
+        inverseWorldTransform.m20 = worldTransform.m02;
+        inverseWorldTransform.m21 = worldTransform.m12;
+        inverseWorldTransform.m22 = worldTransform.m22;
+        inverseWorldTransform.m23 = worldTransform.m32;
+        inverseWorldTransform.m30 = worldTransform.m03;
+        inverseWorldTransform.m31 = worldTransform.m13;
+        inverseWorldTransform.m32 = worldTransform.m23;
+        inverseWorldTransform.m33 = worldTransform.m33;
 
-        worldTensor = WTMAT * invLT * invWTMAT;
+        worldTensor = worldTransform * invLT * inverseWorldTransform;
 
         //Debug.Log("Final: \n" + convertToAngularFromTorque());
         angularAcceleration = convertToAngularFromTorque();
