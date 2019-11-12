@@ -1,0 +1,7 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  Foo.cpp
+  MyPlugIn.cpp
+  Unity_C++_Integration.cpp
+  Generating Code...
+  Unity_C++_Integration.vcxproj -> C:\Users\david\Documents\Game_Physics\PlugIns\Unity_C++_Integration\Debug\Unity_C++_Integration.dll
