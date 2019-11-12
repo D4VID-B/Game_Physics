@@ -190,40 +190,72 @@ public class CircleHull3D : CollisionHull3D
 
         //Debug.Log("DistanceMag: " + distance.magnitude + "   rad: " + this.radius);
 
-        if (distance.magnitude < this.radius)
+        //if (distance.magnitude < this.radius)
+        //{
+        //    /*
+        //    //Debug.Log("OBB v C pass");
+        //    hitExplode = true;
+
+        //    //Assign objects
+        //    col.a = this;
+        //    col.b = box;
+
+        //    Vector3 clamped = new Vector3(clampedX, clampedY, clampedZ);
+
+        //    //get the clamped combinded vector as the point to have norm from
+        //    Vector3 Point = (clamped + (distance.normalized * this.radius)) * 0.5f;
+
+
+        //    //col.contacts[0].normal = norm;
+        //    col.contacts[0].normal = distance.normalized;
+        //    col.contacts[0].point = Point;
+
+        //    //radius of the circle minus the distance to the original point of entry
+        //    col.interpenDepth = (this.radius * this.radius) - dSq;
+
+        //    */
+
+        //    return true;
+        //}
+        //else
+        //{
+        //    //Debug.Log("OBB v C fail");
+
+        //    return false;
+        //}
+
+        //Circle-AABB Test:
+
+        Vector3 circCenter = this.transform.position;
+        Vector3 boxCenter = box.transform.position;
+        
+        boxXMin = box.transform.position.x - (box.length * 0.5f);
+        boxYMin = box.transform.position.y - (box.height * 0.5f);
+        boxZMin = box.transform.position.z - (box.depth * 0.5f);
+
+        boxXMax = box.transform.position.x + (box.length * 0.5f);
+        boxYMax = box.transform.position.y + (box.height * 0.5f);
+        boxZMax = box.transform.position.z + (box.depth * 0.5f);
+
+
+        clampedX = Mathf.Clamp(circCenter.x, boxXMin, boxXMax);
+        clampedY = Mathf.Clamp(circCenter.y, boxYMin, boxYMax);
+        clampedZ = Mathf.Clamp(circCenter.z, boxZMin, boxZMax);
+
+        distance = new Vector3(circCenter.x - clampedX, circCenter.y - clampedY, circCenter.z - clampedZ);
+
+        dSq = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
+
+        if (dSq < (this.radius * this.radius))
         {
-            /*
-            //Debug.Log("OBB v C pass");
-            hitExplode = true;
-
-            //Assign objects
-            col.a = this;
-            col.b = box;
-
-            Vector3 clamped = new Vector3(clampedX, clampedY, clampedZ);
-
-            //get the clamped combinded vector as the point to have norm from
-            Vector3 Point = (clamped + (distance.normalized * this.radius)) * 0.5f;
-
-
-            //col.contacts[0].normal = norm;
-            col.contacts[0].normal = distance.normalized;
-            col.contacts[0].point = Point;
-
-            //radius of the circle minus the distance to the original point of entry
-            col.interpenDepth = (this.radius * this.radius) - dSq;
-
-            */
 
             return true;
         }
         else
         {
-            //Debug.Log("OBB v C fail");
-
             return false;
         }
-                
+
     }
 
 }

@@ -91,16 +91,37 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
         //change basis of box:
 
-        Vector3 pos = box.transform.position;
-        Quaternion rot = box.transform.rotation;
-        Vector3 scl = box.transform.localScale;
+        //AABB Test:
 
-        Vector3.Dot(pos, new Vector3(worldTransform.m03, worldTransform.m13, worldTransform.m23));
-        Vector3.Dot(scl, new Vector3(worldTransform.m00, worldTransform.m11, worldTransform.m22));
+        bool colOnX = false;
+        bool colOnY = false;
+        bool colOnZ = false;
 
-        //Call the AABB - AABB test
-        //return TestCollisionVsAABB((AxisAlignedBoundingBoxHull3D)box, ref c);
-        return false;
+        if (this.transform.position.x + (this.length * 0.5f) >= box.transform.position.x - (box.length * 0.5f) && box.transform.position.x + (box.length * 0.5f) >= this.transform.position.x - (this.length * 0.5f))
+        {
+            colOnX = true;
+        }
+
+        if (this.transform.position.y + (this.height * 0.5f) >= box.transform.position.y - (box.length * 0.5f) && box.transform.position.y + (box.height * 0.5f) >= this.transform.position.y - (this.length * 0.5f))
+        {
+            colOnY = true;
+        }
+
+        if (this.transform.position.z + (this.depth * 0.5f) >= box.transform.position.z - (box.depth * 0.5f) && box.transform.position.z + (box.depth * 0.5f) >= this.transform.position.z - (this.depth * 0.5f))
+        {
+            colOnZ = true;
+        }
+
+        if (colOnY && colOnX && colOnZ)
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
 }
