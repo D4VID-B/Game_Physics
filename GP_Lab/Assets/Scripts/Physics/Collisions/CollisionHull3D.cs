@@ -45,8 +45,7 @@ public abstract class CollisionHull3D : MonoBehaviour
 
 
 
-#region World Transform Stuff
-
+    #region World Transform Stuff
 
     public Matrix4x4 worldTransform, worldTransformInv;
 
@@ -101,7 +100,7 @@ public abstract class CollisionHull3D : MonoBehaviour
 
     public static void changeColor(GameObject obj,  bool shouldChange)
     {
-        if(shouldChange == true)
+        if(shouldChange)
         {
             //Debug.Log("Color: " + obj.GetComponent<Renderer>().material.color);
             obj.GetComponent<Renderer>().material.color = Color.green;
@@ -155,11 +154,13 @@ public abstract class CollisionHull3D : MonoBehaviour
         else if (a.type == CollisionHull3D.CollisionHullType3D.Hull_AABB && b.type == CollisionHull3D.CollisionHullType3D.Hull_OBB)
         {
             return ((AxisAlignedBoundingBoxHull3D)a).TestCollisionVsOBB((ObjectBoundingBoxHull3D)b, ref c);
+
         }
 
         else if (b.type == CollisionHull3D.CollisionHullType3D.Hull_AABB && a.type == CollisionHull3D.CollisionHullType3D.Hull_OBB)
         {
             return ((AxisAlignedBoundingBoxHull3D)b).TestCollisionVsOBB((ObjectBoundingBoxHull3D)a, ref c);
+
         }
 
         else if (a.type == CollisionHull3D.CollisionHullType3D.Hull_OBB && b.type == CollisionHull3D.CollisionHullType3D.Hull_OBB)

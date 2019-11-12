@@ -24,18 +24,19 @@ public class ObjectBoundingBoxHull3D : CollisionHull3D
 
     public override bool TestCollisionVsOBB(ObjectBoundingBoxHull3D box, ref Collision c)
     {
-        //AABB-OBB part 2 twice:
+        /*
+        AABB-OBB part 2 twice:
 
-        //Second: transform this into OBB space, find max extents, repat AABB
-        //1) transform into OBB space:
+        Second: transform this into OBB space, find max extents, repat AABB
+        1) transform into OBB space:
 
-        //2) find max and min of [??]
+        2) find max and min of [??]
 
-        //3) Call testaabb again
-
-        changeBasis(box, this);
-
-
+        3) Call testaabb again
+        */
+       
+        //Convert one of the obbs (prob "this") through change of basis
+        //call testAABBOBB w/ this and box
 
         return false;
     }
