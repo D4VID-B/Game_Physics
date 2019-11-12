@@ -48,7 +48,7 @@ public abstract class CollisionHull3D : MonoBehaviour
 #region World Transform Stuff
 
 
-    protected Matrix4x4 worldTransform, worldTransformInv;
+    public Matrix4x4 worldTransform, worldTransformInv;
 
     /// <summary>
     /// Change first parameter obb to second paramter obb's space
@@ -61,7 +61,7 @@ public abstract class CollisionHull3D : MonoBehaviour
 
         //Particle3D  secParamP3D = obb2.gameObject.GetComponent<Particle3D>();
 
-        obb.worldTransform = obb2.worldTransform * obb.worldTransform * obb2.worldTransformInv;
+       // obb.worldTransform = obb2.worldTransform * obb.worldTransform * obb2.worldTransformInv;
     }
 
     /// <summary>
@@ -83,16 +83,20 @@ public abstract class CollisionHull3D : MonoBehaviour
     /// <param name="aabb"></param>
     protected void changeBasis(ObjectBoundingBoxHull3D obb, AxisAlignedBoundingBoxHull3D aabb)
     {
-        obb.worldTransform = aabb.worldTransform * obb.worldTransform * aabb.worldTransform;
+        //obb.worldTransform = aabb.worldTransform * obb.worldTransform * aabb.worldTransform;
     }
 #endregion
 
     void Start()
     {
-        particle = GetComponent<Particle3D>();
+        particle = this.gameObject.GetComponent<Particle3D>();
 
-        worldTransform = particle.worldTransform;
-        worldTransformInv = particle.inverseWorldTransform;
+    }
+
+    void Update()
+    {
+        //worldTransform = particle.worldTransform;
+        //worldTransformInv = particle.inverseWorldTransform;
     }
 
     public static void changeColor(GameObject obj,  bool shouldChange)

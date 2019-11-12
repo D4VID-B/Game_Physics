@@ -7,8 +7,6 @@ public class Particle3D : MonoBehaviour
     #region Variables
     [Header("Switches")]
     public bool shouldUpdateParticle = true;
-    public bool shouldUpdateRotation;
-    public bool shouldUpdatePosition;
 
     [Header("Position")]
     public Vector3 position;
@@ -126,12 +124,15 @@ public class Particle3D : MonoBehaviour
 
         //v(t+dt) = v(t) + a(t)dt
         velocity += acceleration * dt;
+
+        //Debug.Log("Position: " + position + "   Velocity: " + velocity);
     }
 
     void updatePosKinematic(float dt)
     {
         position += velocity * dt + (acceleration * .5f) * dt * dt;
         velocity += acceleration * dt;
+        
     }
 
     void updateRotEulerExplicit(float dt)
@@ -478,7 +479,7 @@ public class Particle3D : MonoBehaviour
         //bruh you cant set a vector3 equal to a matrix
         angularA = worldTensor * f_torque;
 
-        Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "angularA after tensor: \n" + angularA);
+        //Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "angularA after tensor: \n" + angularA);
 
         //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
 
@@ -504,9 +505,8 @@ public class Particle3D : MonoBehaviour
         f_torque += torqueToAdd;
     }
 
-    void updateAngularAcceleration()
+    void updateTensorsAndTransforms()
     {
-        //Debug.Log("WTM: \n" + worldTransformMatAttemptTwo() + "WTAinv: \n" + inverseMat4(worldTransformMatAttemptTwo()) + "localTensor: \n" + localTensor);
         worldTransform = worldTransformMatAttemptTwo();
 
         Matrix4x4 invLT = localTensor;
@@ -515,7 +515,7 @@ public class Particle3D : MonoBehaviour
         invLT.m22 = 1 / localTensor.m22;
         //invLT.m33 = 1 / localTensor.m33;
 
-        
+
         inverseWorldTransform.m00 = worldTransform.m00;
         inverseWorldTransform.m01 = worldTransform.m10;
         inverseWorldTransform.m02 = worldTransform.m20;
@@ -534,17 +534,12 @@ public class Particle3D : MonoBehaviour
         inverseWorldTransform.m33 = worldTransform.m33;
 
         worldTensor = worldTransform * invLT * inverseWorldTransform;
+    }
 
-        //Debug.Log("Final: \n" + convertToAngularFromTorque());
+    void updateAngularAcceleration()
+    {
+        updateTensorsAndTransforms();
         angularAcceleration = convertToAngularFromTorque();
-
-        //Quaternion transposed
-        //Vector4 worldTensorVector = worldTransformMatAttemptTwo() * localTensor * new Vector4(rotation.x, rotation.y, rotation.z, rotation.w);
-
-        //component-wise
-        //angularAcceleration = new Vector3(worldTensorVector.x * f_torque.x, worldTensorVector.y * f_torque.y, worldTensorVector.z * f_torque.z);
-
-
         f_torque = Vector3.zero;
     }
 
@@ -555,6 +550,7 @@ public class Particle3D : MonoBehaviour
     void Start()
     {
         position = this.transform.position;
+        rotation = this.transform.rotation;
 
         setMass(startingMass);
         setTensor(Shape);
@@ -564,10 +560,12 @@ public class Particle3D : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if(shouldUpdateParticle)
         {
-            float sinTime = Mathf.Sin(Time.time);
+            //float sinTime = Mathf.Sin(Time.time);
 
+            /*
             if (!useAngularVelocityInsteadOfAcceleration)
             {
                 angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
@@ -585,6 +583,7 @@ public class Particle3D : MonoBehaviour
             {
                 velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
             }
+            */
 
             /*
              var a: Vector3;
@@ -599,7 +598,7 @@ public class Particle3D : MonoBehaviour
             https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
             */
 
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
 
 
             if (IntegrationMethod == PositionFunction.PositionEuler)
@@ -607,6 +606,7 @@ public class Particle3D : MonoBehaviour
                 updatePosEulerExplicit(Time.fixedDeltaTime);
 
                 transform.position = position;
+                
 
                 //Rotations
                 if (RotationUpdateMethod == RotationFunction.RotationEuler)
@@ -651,11 +651,13 @@ public class Particle3D : MonoBehaviour
         {
             addTorque(calculateTorque(torqueMag, torqueDirection));
         }
+
+
     }
 
 
-    
 
-#endregion
+
+    #endregion
 
 }
