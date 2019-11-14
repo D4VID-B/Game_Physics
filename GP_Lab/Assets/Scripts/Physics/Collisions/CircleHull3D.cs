@@ -134,6 +134,8 @@ public class CircleHull3D : CollisionHull3D
         float boxYMax = (box.transform.position.y + (box.height * 0.5f));
         float boxZMax = (box.transform.position.z + (box.depth * 0.5f)); 
         
+        
+
         //float boxXMin = (box.transform.position.x - ((new Vector3(boxMAT.m00, boxMAT.m10, boxMAT.m20)).magnitude) * 0.5f);
         //float boxYMin = (box.transform.position.y - ((new Vector3(boxMAT.m10, boxMAT.m11, boxMAT.m12)).magnitude) * 0.5f);
         //float boxZMin = (box.transform.position.z - ((new Vector3(boxMAT.m20, boxMAT.m21, boxMAT.m22)).magnitude) * 0.5f);
@@ -147,8 +149,20 @@ public class CircleHull3D : CollisionHull3D
 
         //ADJUST POINTS BASED ON ROTATIONMATRIX OF BOX
 
-        //Vector3 mins = new Vector3(boxXMin, boxYMin, boxZMin);
-        //Vector3 maxs = new Vector3(boxXMax, boxYMax, boxZMax);
+        Vector3 mins = new Vector3(boxXMin, boxYMin, boxZMin);
+        Vector3 maxs = new Vector3(boxXMax, boxYMax, boxZMax);
+
+        Matrix4x4 minMAT = Matrix4x4.zero;
+        minMAT.m03 = mins.x;
+        minMAT.m13 = mins.y;
+        minMAT.m23 = mins.z;
+
+        Matrix4x4 maxMat = Matrix4x4.zero;
+        maxMat.m03 = maxs.x;
+        maxMat.m13 = maxs.y;
+        maxMat.m23 = maxs.z;
+
+        
 
         //Vector3 rotatedMins = boxMAT * mins;
         //Vector3 rotatedMaxs = boxMAT * maxs;
