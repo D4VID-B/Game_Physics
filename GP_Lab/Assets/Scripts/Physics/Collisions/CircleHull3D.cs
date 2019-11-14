@@ -155,6 +155,18 @@ public class CircleHull3D : CollisionHull3D
 
 
         /*
+         Vector4 boxXminVect = new Vector4(boxXMin, 0, 0, 1.0f);
+        Vector4 boxYminVect = new Vector4(0, boxYMin, 0, 1.0f);
+        Vector4 boxZminVect = new Vector4(0, 0, boxZMin, 1.0f);
+
+        Vector4 boxXmaxVect = new Vector4(boxXMax, 0, 0, 1.0f);
+        Vector4 boxYmaxVect = new Vector4(0, boxYMax, 0, 1.0f);
+        Vector4 boxZmaxVect = new Vector4(0, 0, boxZMax, 1.0f);
+         */
+
+        Matrix4x4 boxMATinv = box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
+        Matrix4x4 circMATinv = this.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
+
         boxXminVect = boxMAT * boxXminVect;
         boxYminVect = boxMAT * boxYminVect;
         boxZminVect = boxMAT * boxZminVect;
@@ -163,6 +175,26 @@ public class CircleHull3D : CollisionHull3D
         boxYmaxVect = boxMAT * boxYmaxVect;
         boxZmaxVect = boxMAT * boxZmaxVect;
 
+
+        Debug.DrawRay(boxXminVect, boxXminVect.normalized * 0.1f, Color.red);
+        Debug.DrawRay(boxYminVect, boxYminVect.normalized * 0.1f, Color.green);
+        Debug.DrawRay(boxZminVect, boxZminVect.normalized * 0.1f, Color.blue);
+
+        Debug.DrawRay(boxXmaxVect, boxXmaxVect.normalized * 0.1f, Color.red);
+        Debug.DrawRay(boxYmaxVect, boxYmaxVect.normalized * 0.1f, Color.green);
+        Debug.DrawRay(boxZmaxVect, boxZmaxVect.normalized * 0.1f, Color.blue);
+
+
+        /*
+        Debug.DrawRay(box.transform.position, boxXmaxVect, Color.red);
+        Debug.DrawRay(box.transform.position, boxYmaxVect, Color.green);
+        Debug.DrawRay(box.transform.position, boxZmaxVect, Color.blue);
+
+        Debug.DrawRay(box.transform.position, boxXminVect, Color.red);
+        Debug.DrawRay(box.transform.position, boxYminVect, Color.green);
+        Debug.DrawRay(box.transform.position, boxZminVect, Color.blue);
+        */
+        /*
 
         float clampedX = Mathf.Clamp(sphereCenterPoint.x, boxXminVect.x, boxXmaxVect.x);
         float clampedY = Mathf.Clamp(sphereCenterPoint.y, boxYminVect.y, boxYmaxVect.y);
