@@ -107,7 +107,7 @@ public class CircleHull3D : CollisionHull3D
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
-        Debug.Log("BoxWorldTransfer: \n" + box.gameObject.GetComponent<Particle3D>().worldTransform + "circWorldTransform: \n" + this.gameObject.GetComponent<Particle3D>().worldTransform + "boxInvWorld: \n" + box.gameObject.GetComponent<Particle3D>().inverseWorldTransform);
+        //Debug.Log("BoxWorldTransfer: \n" + box.gameObject.GetComponent<Particle3D>().worldTransform + "circWorldTransform: \n" + this.gameObject.GetComponent<Particle3D>().worldTransform + "boxInvWorld: \n" + box.gameObject.GetComponent<Particle3D>().inverseWorldTransform);
 
         Matrix4x4 sphereCenter = this.gameObject.GetComponent<Particle3D>().worldTransform; // * box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
         //Matrix4x4 sphereCenter = box.gameObject.GetComponent<Particle3D>().worldTransform * this.gameObject.GetComponent<Particle3D>().worldTransform * box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
@@ -132,9 +132,9 @@ public class CircleHull3D : CollisionHull3D
 
         float boxXMax = (box.transform.position.x + (box.length * 0.5f));
         float boxYMax = (box.transform.position.y + (box.height * 0.5f));
-        float boxZMax = (box.transform.position.z + (box.depth * 0.5f)); 
-        
-        
+        float boxZMax = (box.transform.position.z + (box.depth * 0.5f));
+
+
 
         //float boxXMin = (box.transform.position.x - ((new Vector3(boxMAT.m00, boxMAT.m10, boxMAT.m20)).magnitude) * 0.5f);
         //float boxYMin = (box.transform.position.y - ((new Vector3(boxMAT.m10, boxMAT.m11, boxMAT.m12)).magnitude) * 0.5f);
@@ -145,67 +145,80 @@ public class CircleHull3D : CollisionHull3D
         //float boxZMax = (box.transform.position.z + ((new Vector3(boxMAT.m20, boxMAT.m21, boxMAT.m22)).magnitude) * 0.5f);
 
 
+        Vector4 boxXminVect = new Vector4(boxXMin, box.transform.position.y, box.transform.position.z, 1.0f);
+        Vector4 boxYminVect = new Vector4(box.transform.position.x, boxYMin, box.transform.position.z, 1.0f);
+        Vector4 boxZminVect = new Vector4(box.transform.position.x, box.transform.position.y, boxZMin, 1.0f);
+
+        Vector4 boxXmaxVect = new Vector4(boxXMax, box.transform.position.y, box.transform.position.z, 1.0f);
+        Vector4 boxYmaxVect = new Vector4(box.transform.position.x, boxYMax, box.transform.position.z, 1.0f);
+        Vector4 boxZmaxVect = new Vector4(box.transform.position.x, box.transform.position.y, boxZMax, 1.0f);
+
+
+        /*
+        boxXminVect = boxMAT * boxXminVect;
+        boxYminVect = boxMAT * boxYminVect;
+        boxZminVect = boxMAT * boxZminVect;
+
+        boxXmaxVect = boxMAT * boxXmaxVect;
+        boxYmaxVect = boxMAT * boxYmaxVect;
+        boxZmaxVect = boxMAT * boxZmaxVect;
+
+
+        float clampedX = Mathf.Clamp(sphereCenterPoint.x, boxXminVect.x, boxXmaxVect.x);
+        float clampedY = Mathf.Clamp(sphereCenterPoint.y, boxYminVect.y, boxYmaxVect.y);
+        float clampedZ = Mathf.Clamp(sphereCenterPoint.z, boxZminVect.z, boxZmaxVect.z);
+        
+        //this no work
+        Vector4 mins = boxMAT * new Vector4(boxXMin, boxYMin, boxZMin, 1.0f);
+        Vector4 maxs = boxMAT * new Vector4(boxXMax, boxYMax, boxZMax, 1.0f);
+
+        float clampedX = Mathf.Clamp(sphereCenterPoint.x, mins.x, maxs.x);
+        float clampedY = Mathf.Clamp(sphereCenterPoint.y, mins.y, maxs.y);
+        float clampedZ = Mathf.Clamp(sphereCenterPoint.z, mins.z, maxs.z);
+
+         */
+
 
 
         //ADJUST POINTS BASED ON ROTATIONMATRIX OF BOX
 
-        Vector3 mins = new Vector3(boxXMin, boxYMin, boxZMin);
-        Vector3 maxs = new Vector3(boxXMax, boxYMax, boxZMax);
-
-        Matrix4x4 minMAT = Matrix4x4.zero;
-        minMAT.m03 = mins.x;
-        minMAT.m13 = mins.y;
-        minMAT.m23 = mins.z;
-
-        Matrix4x4 maxMat = Matrix4x4.zero;
-        maxMat.m03 = maxs.x;
-        maxMat.m13 = maxs.y;
-        maxMat.m23 = maxs.z;
-
-        
-
-        //Vector3 rotatedMins = boxMAT * mins;
-        //Vector3 rotatedMaxs = boxMAT * maxs;
 
         //clamped values
         float clampedX = Mathf.Clamp(sphereCenterPoint.x, boxXMin, boxXMax);
         float clampedY = Mathf.Clamp(sphereCenterPoint.y, boxYMin, boxYMax);
         float clampedZ = Mathf.Clamp(sphereCenterPoint.z, boxZMin, boxZMax);
 
-        //this fucking failed
+        Vector4 clampedXYZ = new Vector4(clampedX, clampedY, clampedZ, 1.0f);
+        
+        /*
+        clampedXYZ = (boxMAT * this.gameObject.GetComponent<Particle3D>().inverseWorldTransform * box.gameObject.GetComponent<Particle3D>().inverseWorldTransform).MultiplyVector(clampedXYZ);
+        Vector3 distance = new Vector3(sphereCenterPoint.x - clampedXYZ.x, sphereCenterPoint.y - clampedXYZ.y, sphereCenterPoint.z - clampedXYZ.z);
+        */
+
         //float clampedX = Mathf.Clamp(sphereCenterPoint.x, rotatedMins.x, rotatedMaxs.x);
         //float clampedY = Mathf.Clamp(sphereCenterPoint.y, rotatedMins.y, rotatedMaxs.y);
         //float clampedZ = Mathf.Clamp(sphereCenterPoint.z, rotatedMins.z, rotatedMaxs.z);
 
-        //rotate the clamped values maybe?
-        //Vector3 clampedVals = new Vector3(clampedX, clampedY, clampedZ);
-
-        //Matrix4x4 clampedMat = Matrix4x4.zero;
-        //clampedMat.m00 = clampedVals.x;
-        //clampedMat.m11 = clampedVals.y;
-        //clampedMat.m22 = clampedVals.z;
-
-
-        //clampedMat = boxMAT * clampedMat * box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
+        
 
         Vector3 distance = new Vector3(sphereCenterPoint.x - clampedX, sphereCenterPoint.y - clampedY, sphereCenterPoint.z - clampedZ);
+        
         //Vector3 distance = new Vector3(sphereCenterPoint.x - clampedVals.x, sphereCenterPoint.y - clampedVals.y, sphereCenterPoint.z - clampedVals.z);
-        //Vector3 distance = new Vector3(sphereCenterPoint.x - clampedMat.m00, sphereCenterPoint.y - clampedMat.m11, sphereCenterPoint.z - clampedMat.m22);
 
         float dSq = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
 
-        float d = distance.x + distance.y + distance.z;
-        d = Mathf.Abs(d);
+        //float d = distance.x + distance.y + distance.z;
+        //d = Mathf.Abs(d);
 
         //Debug.Log("Distance: " + distance + "  d: " + d + "  dSq: " + dSq + "  R: " + this.radius + "  R2: " + this.radius * this.radius);
 
-        Debug.DrawRay(new Vector3(clampedX, clampedY, clampedZ), distance * (this.radius / distance.magnitude), Color.green);
+        Debug.DrawRay(clampedXYZ, distance, Color.green);
         //Debug.DrawRay(new Vector3(clampedMat.m00, clampedMat.m11, clampedMat.m22), distance * (this.radius / distance.magnitude), Color.green);
 
         //Debug.Log("DistanceMag: " + distance.magnitude + "   rad: " + this.radius);
 
-        //if (distance.magnitude < this.radius)
-        //{
+        if (dSq < this.radius * this.radius)
+        {
         //    /*
         //    //Debug.Log("OBB v C pass");
         //    hitExplode = true;
@@ -229,17 +242,18 @@ public class CircleHull3D : CollisionHull3D
 
         //    */
 
-        //    return true;
-        //}
-        //else
-        //{
+            return true;
+        }
+        else
+        {
         //    //Debug.Log("OBB v C fail");
 
-        //    return false;
-        //}
+            return false;
+        }
 
         //Circle-AABB Test:
 
+        /*
         Vector3 circCenter = this.transform.position;
         Vector3 boxCenter = box.transform.position;
         
@@ -269,7 +283,7 @@ public class CircleHull3D : CollisionHull3D
         {
             return false;
         }
-
+        */
     }
 
 }
