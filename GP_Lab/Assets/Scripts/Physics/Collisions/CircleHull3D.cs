@@ -107,23 +107,24 @@ public class CircleHull3D : CollisionHull3D
         //1) this.position is now * -box.position 
         //2) call testAABB with box
 
+        Matrix4x4 boxMAT = box.gameObject.GetComponent<Particle3D>().worldTransform;
+        Matrix4x4 circMAT = this.gameObject.GetComponent<Particle3D>().worldTransform;
+        Matrix4x4 boxMATinv = box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
+        Matrix4x4 circMATinv = this.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
+
         //Debug.Log("BoxWorldTransfer: \n" + box.gameObject.GetComponent<Particle3D>().worldTransform + "circWorldTransform: \n" + this.gameObject.GetComponent<Particle3D>().worldTransform + "boxInvWorld: \n" + box.gameObject.GetComponent<Particle3D>().inverseWorldTransform);
 
-        Matrix4x4 sphereCenter = this.gameObject.GetComponent<Particle3D>().worldTransform; // * box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
-        //Matrix4x4 sphereCenter = box.gameObject.GetComponent<Particle3D>().worldTransform * this.gameObject.GetComponent<Particle3D>().worldTransform * box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
-        
-        //Matrix4x4 sphereCenter = this.gameObject.GetComponent<Particle3D>().worldTransform;
-        //Debug.Log(sphereCenter);
+        Matrix4x4 sphereCenter = circMAT;
+        Vector4 sphereCenterPoint = new Vector4(sphereCenter.m03, sphereCenter.m13, sphereCenter.m23, 1.0f);
+        sphereCenterPoint = new Vector4(sphereCenterPoint.x - box.transform.position.x, sphereCenterPoint.y - box.transform.position.y, sphereCenterPoint.z - box.transform.position.z, 1.0f);
+        sphereCenterPoint = boxMAT * sphereCenterPoint;
 
-        Vector3 sphereCenterPoint = new Vector3(sphereCenter.m03, sphereCenter.m13, sphereCenter.m23);
-        //Vector3 sphereCenterPoint = sphereCenter * new Vector3(this.gameObject.GetComponent<Particle3D>().worldTransform.m03, this.gameObject.GetComponent<Particle3D>().worldTransform.m13, this.gameObject.GetComponent<Particle3D>().worldTransform.m23);
- 
         //Debug.Log("SCP: " + sphereCenterPoint);
 
 
         Debug.DrawRay(sphereCenterPoint, new Vector3(1.0f, 0.0f, 0.0f) * 0.5f, Color.blue);
 
-        Matrix4x4 boxMAT = box.gameObject.GetComponent<Particle3D>().worldTransform;
+
 
         //positions of points (THIS ASSUMES THE GOD DAMN BOX IS AABB, how do we use the rotMat of boxWorldTransform to adjust this)
         float boxXMin = (box.transform.position.x - (box.length * 0.5f));
@@ -133,86 +134,6 @@ public class CircleHull3D : CollisionHull3D
         float boxXMax = (box.transform.position.x + (box.length * 0.5f));
         float boxYMax = (box.transform.position.y + (box.height * 0.5f));
         float boxZMax = (box.transform.position.z + (box.depth * 0.5f));
-
-
-
-        //float boxXMin = (box.transform.position.x - ((new Vector3(boxMAT.m00, boxMAT.m10, boxMAT.m20)).magnitude) * 0.5f);
-        //float boxYMin = (box.transform.position.y - ((new Vector3(boxMAT.m10, boxMAT.m11, boxMAT.m12)).magnitude) * 0.5f);
-        //float boxZMin = (box.transform.position.z - ((new Vector3(boxMAT.m20, boxMAT.m21, boxMAT.m22)).magnitude) * 0.5f);
-
-        //float boxXMax = (box.transform.position.x + ((new Vector3(boxMAT.m00, boxMAT.m10, boxMAT.m20)).magnitude) * 0.5f);
-        //float boxYMax = (box.transform.position.y + ((new Vector3(boxMAT.m10, boxMAT.m11, boxMAT.m12)).magnitude) * 0.5f);
-        //float boxZMax = (box.transform.position.z + ((new Vector3(boxMAT.m20, boxMAT.m21, boxMAT.m22)).magnitude) * 0.5f);
-
-
-        Vector4 boxXminVect = new Vector4(boxXMin, box.transform.position.y, box.transform.position.z, 1.0f);
-        Vector4 boxYminVect = new Vector4(box.transform.position.x, boxYMin, box.transform.position.z, 1.0f);
-        Vector4 boxZminVect = new Vector4(box.transform.position.x, box.transform.position.y, boxZMin, 1.0f);
-
-        Vector4 boxXmaxVect = new Vector4(boxXMax, box.transform.position.y, box.transform.position.z, 1.0f);
-        Vector4 boxYmaxVect = new Vector4(box.transform.position.x, boxYMax, box.transform.position.z, 1.0f);
-        Vector4 boxZmaxVect = new Vector4(box.transform.position.x, box.transform.position.y, boxZMax, 1.0f);
-
-
-        /*
-         Vector4 boxXminVect = new Vector4(boxXMin, 0, 0, 1.0f);
-        Vector4 boxYminVect = new Vector4(0, boxYMin, 0, 1.0f);
-        Vector4 boxZminVect = new Vector4(0, 0, boxZMin, 1.0f);
-
-        Vector4 boxXmaxVect = new Vector4(boxXMax, 0, 0, 1.0f);
-        Vector4 boxYmaxVect = new Vector4(0, boxYMax, 0, 1.0f);
-        Vector4 boxZmaxVect = new Vector4(0, 0, boxZMax, 1.0f);
-         */
-
-        Matrix4x4 boxMATinv = box.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
-        Matrix4x4 circMATinv = this.gameObject.GetComponent<Particle3D>().inverseWorldTransform;
-
-        boxXminVect = boxMAT * boxXminVect;
-        boxYminVect = boxMAT * boxYminVect;
-        boxZminVect = boxMAT * boxZminVect;
-
-        boxXmaxVect = boxMAT * boxXmaxVect;
-        boxYmaxVect = boxMAT * boxYmaxVect;
-        boxZmaxVect = boxMAT * boxZmaxVect;
-
-
-        Debug.DrawRay(boxXminVect, boxXminVect.normalized * 0.1f, Color.red);
-        Debug.DrawRay(boxYminVect, boxYminVect.normalized * 0.1f, Color.green);
-        Debug.DrawRay(boxZminVect, boxZminVect.normalized * 0.1f, Color.blue);
-
-        Debug.DrawRay(boxXmaxVect, boxXmaxVect.normalized * 0.1f, Color.red);
-        Debug.DrawRay(boxYmaxVect, boxYmaxVect.normalized * 0.1f, Color.green);
-        Debug.DrawRay(boxZmaxVect, boxZmaxVect.normalized * 0.1f, Color.blue);
-
-
-        /*
-        Debug.DrawRay(box.transform.position, boxXmaxVect, Color.red);
-        Debug.DrawRay(box.transform.position, boxYmaxVect, Color.green);
-        Debug.DrawRay(box.transform.position, boxZmaxVect, Color.blue);
-
-        Debug.DrawRay(box.transform.position, boxXminVect, Color.red);
-        Debug.DrawRay(box.transform.position, boxYminVect, Color.green);
-        Debug.DrawRay(box.transform.position, boxZminVect, Color.blue);
-        */
-        /*
-
-        float clampedX = Mathf.Clamp(sphereCenterPoint.x, boxXminVect.x, boxXmaxVect.x);
-        float clampedY = Mathf.Clamp(sphereCenterPoint.y, boxYminVect.y, boxYmaxVect.y);
-        float clampedZ = Mathf.Clamp(sphereCenterPoint.z, boxZminVect.z, boxZmaxVect.z);
-        
-        //this no work
-        Vector4 mins = boxMAT * new Vector4(boxXMin, boxYMin, boxZMin, 1.0f);
-        Vector4 maxs = boxMAT * new Vector4(boxXMax, boxYMax, boxZMax, 1.0f);
-
-        float clampedX = Mathf.Clamp(sphereCenterPoint.x, mins.x, maxs.x);
-        float clampedY = Mathf.Clamp(sphereCenterPoint.y, mins.y, maxs.y);
-        float clampedZ = Mathf.Clamp(sphereCenterPoint.z, mins.z, maxs.z);
-
-         */
-
-
-
-        //ADJUST POINTS BASED ON ROTATIONMATRIX OF BOX
 
 
         //clamped values
@@ -283,39 +204,7 @@ public class CircleHull3D : CollisionHull3D
             return false;
         }
 
-        //Circle-AABB Test:
-
-        /*
-        Vector3 circCenter = this.transform.position;
-        Vector3 boxCenter = box.transform.position;
         
-        boxXMin = box.transform.position.x - (box.length * 0.5f);
-        boxYMin = box.transform.position.y - (box.height * 0.5f);
-        boxZMin = box.transform.position.z - (box.depth * 0.5f);
-
-        boxXMax = box.transform.position.x + (box.length * 0.5f);
-        boxYMax = box.transform.position.y + (box.height * 0.5f);
-        boxZMax = box.transform.position.z + (box.depth * 0.5f);
-
-
-        clampedX = Mathf.Clamp(circCenter.x, boxXMin, boxXMax);
-        clampedY = Mathf.Clamp(circCenter.y, boxYMin, boxYMax);
-        clampedZ = Mathf.Clamp(circCenter.z, boxZMin, boxZMax);
-
-        distance = new Vector3(circCenter.x - clampedX, circCenter.y - clampedY, circCenter.z - clampedZ);
-
-        dSq = (distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z);
-
-        if (dSq < (this.radius * this.radius))
-        {
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        */
     }
 
 }

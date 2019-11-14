@@ -442,6 +442,7 @@ public class Particle3D : MonoBehaviour
     {
         Matrix4x4 final;
 
+
         final.m00 = 1 - 2 * rotation.y * rotation.y - 2 * rotation.z * rotation.z;
         final.m01 = 2 * rotation.x * rotation.y - 2 * rotation.w * rotation.z;
         final.m02 = 2 * rotation.x * rotation.z + 2 * rotation.w * rotation.y;
