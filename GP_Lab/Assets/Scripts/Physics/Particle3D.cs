@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Particle3D : MonoBehaviour
 {
-#region Variables
+    #region Variables
+    [Header("Switches")]
+    public bool shouldUpdateParticle = true;
+
     [Header("Position")]
     public Vector3 position;
     public Vector3 velocity;
@@ -23,12 +26,14 @@ public class Particle3D : MonoBehaviour
     /// <summary>
     /// Angular Dynamics
     /// </summary>
-    Matrix4x4 worldTransform, inverseWorldTransform; 
+    public Matrix4x4 worldTransform, inverseWorldTransform; 
     Vector3 localCoM, worldCoM;
-    Matrix4x4 localTensor = Matrix4x4.identity, worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
-    Vector3 torque,  angularAcceleration;
+    Matrix4x4 localTensor = Matrix4x4.identity;
+    public Matrix4x4 worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
+    Vector3 torqueForce,  angularAcceleration;
     public Vector4 torqueDirection;
     public float torqueMag;
+    private Vector4 f_torque;
     Vector3 momentArm;
     
 
@@ -119,12 +124,15 @@ public class Particle3D : MonoBehaviour
 
         //v(t+dt) = v(t) + a(t)dt
         velocity += acceleration * dt;
+
+        //Debug.Log("Position: " + position + "   Velocity: " + velocity);
     }
 
     void updatePosKinematic(float dt)
     {
         position += velocity * dt + (acceleration * .5f) * dt * dt;
         velocity += acceleration * dt;
+        
     }
 
     void updateRotEulerExplicit(float dt)
@@ -256,7 +264,7 @@ public class Particle3D : MonoBehaviour
     }
     #endregion
 
-    #region Lab07
+#region Lab07
     Matrix4x4 setTensor(Shape3D theShape)
     {
         switch (theShape) 
@@ -274,7 +282,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.4f * mass * (radius * radius);
                     localTensor.m11 = 0.4f * mass * (radius * radius);
                     localTensor.m22 = 0.4f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -292,7 +300,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m22 = 0.67f * mass * (radius * radius);
                     localTensor.m00 = 0.67f * mass * (radius * radius);
                     localTensor.m11 = 0.67f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -311,7 +319,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.083f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
                     localTensor.m11 = 0.083f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
                     localTensor.m22 = 0.083f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -330,7 +338,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 1.67f * mass * ((y_extent * y_extent) + (z_extent * z_extent));
                     localTensor.m11 = 1.67f * mass * ((x_extent * x_extent) + (z_extent * z_extent));
                     localTensor.m22 = 1.67f * mass * ((x_extent * x_extent) + (y_extent * y_extent));
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -348,7 +356,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
                     localTensor.m11 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
                     localTensor.m22 = 0.083f * mass * (height * height) + 0.25f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
                     return localTensor;
                 }
@@ -365,7 +373,7 @@ public class Particle3D : MonoBehaviour
                     localTensor.m00 = 0.0375f * mass * (height * height) + 0.15f * mass * (radius * radius);
                     localTensor.m11 = 0.15f * mass * (radius * radius);
                     localTensor.m22 = 0.6f * mass * (height * height) + 0.15f * mass * (radius * radius);
-                    localTensor.m33 = 0;
+                    localTensor.m33 = 1;
 
 
                     return localTensor;
@@ -430,9 +438,10 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
-    Matrix4x4 worldTransformMatAttemptTwo()
+    public Matrix4x4 worldTransformMatAttemptTwo()
     {
         Matrix4x4 final;
+
 
         final.m00 = 1 - 2 * rotation.y * rotation.y - 2 * rotation.z * rotation.z;
         final.m01 = 2 * rotation.x * rotation.y - 2 * rotation.w * rotation.z;
@@ -454,7 +463,7 @@ public class Particle3D : MonoBehaviour
         return final;
     }
 
-    Matrix4x4 inverseMat4(Matrix4x4 mat)
+    public Matrix4x4 inverseMat4(Matrix4x4 mat)
     {
         Matrix4x4 inverse;
 
@@ -463,163 +472,193 @@ public class Particle3D : MonoBehaviour
         return inverse;
     }
 
-    Vector3 convertToAngularFromTorque(Vector3 mTorque)
+    Vector3 convertToAngularFromTorque()
     {
         Vector3 angularA;
 
-        angularA = worldTensor * mTorque;
+
+        //bruh you cant set a vector3 equal to a matrix
+        angularA = worldTensor * f_torque;
+
+        //Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "angularA after tensor: \n" + angularA);
+
         //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
 
-        
         return angularA;
     }
 
-    Vector4 calculateTorque(Vector3 ma, Vector3 nForce)
+    Vector3 calculateTorque(Vector3 ma, Vector3 nForce)
     {
         return Vector3.Cross(ma, nForce.normalized);
     }
 
-    Vector2 calculateTorque(float magnitude, Vector4 mForce)
+    Vector3 calculateTorque(float magnitude, Vector4 mForce)
     {
-        return mForce.normalized * magnitude;
+        Vector3 final = mForce * magnitude;
+
+        Debug.Log("Input Torque: " + final);
+       
+        return final;
     }
 
-    void checkKeys()
+    void addTorque(Vector4 torqueToAdd)
     {
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            torque.y++;
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            torque.y--;
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            torque.x++;
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            torque.x--;
-        }
-
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            torque.z++;
-        }
-
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            torque.z--;
-        }
+        f_torque += torqueToAdd;
     }
-    #endregion
+
+    void updateTensorsAndTransforms()
+    {
+        worldTransform = worldTransformMatAttemptTwo();
+
+        Matrix4x4 invLT = localTensor;
+        invLT.m00 = 1 / localTensor.m00;
+        invLT.m11 = 1 / localTensor.m11;
+        invLT.m22 = 1 / localTensor.m22;
+        //invLT.m33 = 1 / localTensor.m33;
+
+
+        inverseWorldTransform.m00 = worldTransform.m00;
+        inverseWorldTransform.m01 = worldTransform.m10;
+        inverseWorldTransform.m02 = worldTransform.m20;
+        inverseWorldTransform.m03 = worldTransform.m30;
+        inverseWorldTransform.m10 = worldTransform.m01;
+        inverseWorldTransform.m11 = worldTransform.m11;
+        inverseWorldTransform.m12 = worldTransform.m21;
+        inverseWorldTransform.m13 = worldTransform.m31;
+        inverseWorldTransform.m20 = worldTransform.m02;
+        inverseWorldTransform.m21 = worldTransform.m12;
+        inverseWorldTransform.m22 = worldTransform.m22;
+        inverseWorldTransform.m23 = worldTransform.m32;
+        inverseWorldTransform.m30 = worldTransform.m03;
+        inverseWorldTransform.m31 = worldTransform.m13;
+        inverseWorldTransform.m32 = worldTransform.m23;
+        inverseWorldTransform.m33 = worldTransform.m33;
+
+        worldTensor = worldTransform * invLT * inverseWorldTransform;
+    }
+
+    void updateAngularAcceleration()
+    {
+        updateTensorsAndTransforms();
+        angularAcceleration = convertToAngularFromTorque();
+        f_torque = Vector3.zero;
+    }
+
+#endregion
 
     #region Runtime
 
     void Start()
     {
-        worldCoM = localCoM + transform.position;
         position = this.transform.position;
-        
+        rotation = this.transform.rotation;
+
         setMass(startingMass);
+        setTensor(Shape);
+        worldCoM = localCoM + transform.position;
     }
 
-    void Update()
-    {   
-        //Update world Inertia Tensors - Temporary location
-        //worldTensor = worldTransform * localTensor * inverseWorldTransform;
-    }
 
     void FixedUpdate()
     {
 
-        float sinTime = Mathf.Sin(Time.time);
-
-        if(!useAngularVelocityInsteadOfAcceleration)
+        if(shouldUpdateParticle)
         {
-            angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
-        }
-        else
-        {
-            angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
-        }
+            //float sinTime = Mathf.Sin(Time.time);
 
-        if (!useVelocityInsteadOfAcceleration)
-        {
-            acceleration = new Vector3(sinTime * moveAcceleration.x, sinTime * moveAcceleration.y, sinTime * moveAcceleration.z);
-        }
-        else
-        {
-            velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
-        }
-
-        /*
-         var a: Vector3;
-         var b: Vector3;
-         var c: Vector3;
-
-         var side1: Vector3 = b - a;
-         var side2: Vector3 = c - a;
-
-        var norm: Vector3 = Vector3.Cross(side1, side2);
-
-        https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
-        */
-
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
-
-
-        if (IntegrationMethod == PositionFunction.PositionEuler)
-        {
-            updatePosEulerExplicit(Time.fixedDeltaTime);
-
-            transform.position = position;
-
-            //Rotations
-            if (RotationUpdateMethod == RotationFunction.RotationEuler)
+            /*
+            if (!useAngularVelocityInsteadOfAcceleration)
             {
-                updateRotEulerExplicit(Time.fixedDeltaTime);
-
-                //Debug.Log("Rotaton calculated: " + rotation);
-
-                transform.rotation = rotation;
-                
-                
-                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
-                
-
-                //Debug.Log("Object Rotation" + transform.rotation);
+                angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
+            }
+            else
+            {
+                angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
             }
 
-        }
-        else if (IntegrationMethod == PositionFunction.PositionKinematic)
-        {
-            updatePosKinematic(Time.fixedDeltaTime);
-
-            transform.position = position;
-
-            //Rotations
-            if (RotationUpdateMethod == RotationFunction.RotationEuler)
+            if (!useVelocityInsteadOfAcceleration)
             {
-                updateRotEulerExplicit(Time.fixedDeltaTime);
+                acceleration = new Vector3(sinTime * moveAcceleration.x, sinTime * moveAcceleration.y, sinTime * moveAcceleration.z);
+            }
+            else
+            {
+                velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
+            }
+            */
 
-                transform.rotation = rotation;
+            /*
+             var a: Vector3;
+             var b: Vector3;
+             var c: Vector3;
 
-                worldTensor = worldTransformMatAttemptTwo() * localTensor * inverseMat4(worldTransformMatAttemptTwo());
+             var side1: Vector3 = b - a;
+             var side2: Vector3 = c - a;
+
+            var norm: Vector3 = Vector3.Cross(side1, side2);
+
+            https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
+            */
+
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.up) * 20, Color.green);
+
+
+            if (IntegrationMethod == PositionFunction.PositionEuler)
+            {
+                updatePosEulerExplicit(Time.fixedDeltaTime);
+
+                transform.position = position;
+                
+
+                //Rotations
+                if (RotationUpdateMethod == RotationFunction.RotationEuler)
+                {
+                    updateAngularAcceleration();
+                    updateRotEulerExplicit(Time.fixedDeltaTime);
+
+                    //Debug.Log("Rotaton calculated: " + rotation);
+
+                    transform.rotation = rotation;
+
+                    //Debug.Log("Object Rotation" + transform.rotation);
+                }
+
+            }
+            else if (IntegrationMethod == PositionFunction.PositionKinematic)
+            {
+                updatePosKinematic(Time.fixedDeltaTime);
+
+                transform.position = position;
+
+                //Rotations
+                if (RotationUpdateMethod == RotationFunction.RotationEuler)
+                {
+                    updateAngularAcceleration();
+                    updateRotEulerExplicit(Time.fixedDeltaTime);
+
+                    transform.rotation = rotation;
+
+
+                }
 
             }
 
+            if (Input.GetKey(KeyCode.F))
+            {
+                addTorque(calculateTorque(torqueMag, torqueDirection));
+            }
         }
+
+        if (Input.GetKey(KeyCode.X))
+        {
+            addTorque(calculateTorque(torqueMag, torqueDirection));
+        }
+
 
     }
 
 
-    
 
-#endregion
+
+    #endregion
 
 }
