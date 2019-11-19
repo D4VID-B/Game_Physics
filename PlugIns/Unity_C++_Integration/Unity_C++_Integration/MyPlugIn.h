@@ -10,9 +10,32 @@ extern "C"
 //Non-C/C++ stuff
 #endif // __cplusplus
 
-MYUNITYPLUGIN_SYMBOL int InitFoo(int f_new);
-MYUNITYPLUGIN_SYMBOL int DoFoo(int bar);
-MYUNITYPLUGIN_SYMBOL int TermFoo();
+//Construction
+MYUNITYPLUGIN_SYMBOL void InitObj();
+MYUNITYPLUGIN_SYMBOL void InitCircle();
+MYUNITYPLUGIN_SYMBOL void InitBox();
+
+//Object identification
+MYUNITYPLUGIN_SYMBOL int getObjID();
+MYUNITYPLUGIN_SYMBOL int getObjType();
+
+//Object Data Access
+MYUNITYPLUGIN_SYMBOL Vector3 getPosition();
+MYUNITYPLUGIN_SYMBOL Vector3 getRotation();
+MYUNITYPLUGIN_SYMBOL Vector3 getScale();
+MYUNITYPLUGIN_SYMBOL int getRadius();
+MYUNITYPLUGIN_SYMBOL Vector3 getDimentions();
+
+//Object Data Modification
+MYUNITYPLUGIN_SYMBOL void setPosition();
+MYUNITYPLUGIN_SYMBOL void setRotation();
+MYUNITYPLUGIN_SYMBOL void setScale();
+MYUNITYPLUGIN_SYMBOL void setRadius();
+MYUNITYPLUGIN_SYMBOL void setDimentions();
+
+//Pool Functions
+MYUNITYPLUGIN_SYMBOL int getNextFreeObj();
+MYUNITYPLUGIN_SYMBOL void clearPool();
 
 #ifdef __cplusplus
 }

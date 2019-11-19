@@ -6,13 +6,12 @@ class Pool
 {
 private:
 
-	Bullet mObjectPool[30];
-	Bullet mTheBullet;
+	Object mObjectPool[10];
+	Object mTheObject;
 
-	void addBullet(Bullet object, int i)
+	void addBullet(Object object, int i)
 	{
 		mObjectPool[i] = object;
-		//std::cout << "Add" << std::endl;
 	}
 
 public:
@@ -20,31 +19,19 @@ public:
 	Pool() {};
 	~Pool() {};
 
-	Pool::Pool(Sprite bulletSprite)
+	Object* getFreeObject()
 	{
-		mTheBullet = Bullet(bulletSprite);
+		Object* freeObj = nullptr;
 
 		for (int i = 0; i < 30; i++)
 		{
-
-			addBullet(mTheBullet, i);
-		}
-
-	}
-
-	Bullet* getFreeObject()
-	{
-		Bullet* freeShot = nullptr;
-
-		for (int i = 0; i < 30; i++)
-		{
-			if (!(mObjectPool[i].isInUse())) //Object is not in use
+			if (mObjectPool[i].isInUse() == true) //Object is not in use
 			{
-				freeShot = &mObjectPool[i];
+				freeObj = &mObjectPool[i];
 			}
 		}
 
-		return freeShot;
+		return freeObj;
 
 	}
 };
