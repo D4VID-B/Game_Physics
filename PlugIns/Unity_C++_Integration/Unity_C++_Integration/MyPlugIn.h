@@ -16,8 +16,9 @@ MYUNITYPLUGIN_SYMBOL void InitAndPushCircle(float rad, Vector3 pos, Vector3 rot,
 MYUNITYPLUGIN_SYMBOL void InitAndPushBox(float l, float w, float h, Vector3 pos, Vector3 rot, Vector3 scl);
 MYUNITYPLUGIN_SYMBOL void InitPool(int poolSize);
 
-//get array of objects to test for collisions
-MYUNITYPLUGIN_SYMBOL void updateCollisionsInPool();
+
+MYUNITYPLUGIN_SYMBOL void updateCollisionsInPool();	//either update collisions in pool (required collision data in here)
+MYUNITYPLUGIN_SYMBOL Object** getArrayOfCollisionsToTest(); //push out an array of collisions for unity to test
 
 
 //Object identification
