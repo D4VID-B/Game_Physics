@@ -40,11 +40,12 @@ protected:
 
 public:
 
-	Object(Vector3 pos, Vector3 rot, Vector3 scl) 
+	Object(Vector3 pos, Vector3 rot, Vector3 scl, int iD) 
 	{
 		mPosition = pos;
 		mRotation = rot;
 		mScale = scl;
+		mObjectID = iD;
 	}
 
 	int getType() { return mObjectType; }
@@ -79,8 +80,13 @@ public:
 
 	float getRadius() { return mRadius; }
 	void setRadius(float newRad) { mRadius = newRad; }
-
-	CircleCollider() { mObjectType = 1; }
+	
+	CircleCollider(float rad, int iD) 
+	{ 
+		mRadius = rad;
+		mObjectID = iD;
+		mObjectType = 1; 
+	}
 };
 
 class BoxCollider : public Object
@@ -102,7 +108,14 @@ public:
 	void setWidth(float newWdt) { mWidth = newWdt; }
 
 	BoxCollider() { mObjectType = 2; }
-	BoxCollider(float length, float height, float width) {}
+	BoxCollider(float length, float height, float width, int iD) 
+	{
+		mLength = length;
+		mHeight = height;
+		mWidth = width;
+		mObjectID = iD;
+		mObjectType = 2;
+	}
 };
 
 

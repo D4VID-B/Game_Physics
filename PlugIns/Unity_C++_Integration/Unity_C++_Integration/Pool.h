@@ -36,9 +36,9 @@ public:
 	{
 		Object* tempObj = nullptr;
 
-		for (int i = 0; i < mPoolSize; i++)
+		for (int i = 0; i < mObjectPool.size(); i++)
 		{
-			//update collision data
+			//update positionalData
 		}
 	}
 

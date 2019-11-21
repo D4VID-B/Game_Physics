@@ -48,8 +48,8 @@ void InitPool(int poolSize)
 	POOL = new Pool(poolSize);
 }
 
-void updateCollisionsInPool()
+bool** updateCollisionsInPool()
 {
-
+	POOL->updatePool();
 }
 

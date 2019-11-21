@@ -17,9 +17,11 @@ MYUNITYPLUGIN_SYMBOL void InitAndPushBox(float l, float w, float h, Vector3 pos,
 MYUNITYPLUGIN_SYMBOL void InitPool(int poolSize);
 
 
-MYUNITYPLUGIN_SYMBOL void updateCollisionsInPool();	//either update collisions in pool (required collision data in here)
+MYUNITYPLUGIN_SYMBOL bool** updateCollisionsInPool();	//either update collisions in pool (required collision data in here)
 MYUNITYPLUGIN_SYMBOL Object** getArrayOfCollisionsToTest(); //push out an array of collisions for unity to test
 
+
+MYUNITYPLUGIN_SYMBOL void updateObjectsInPool();
 
 //Object identification
 //MYUNITYPLUGIN_SYMBOL int getObjID();
