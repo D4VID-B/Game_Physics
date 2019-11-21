@@ -36,6 +36,19 @@ public:
 		mObjectPool.push_back(object);
 	}
 
+	int getObjectColor(int ID)
+	{
+		for (auto it = mObjectPool.begin(); it != mObjectPool.end(); ++it)
+		{
+			if ((*it).getID() == ID)
+			{
+				return (*it).color;
+			}
+		}
+
+		return -1;
+	}
+
 	void updatePool(int chunckSize)
 	{
 		/*if (numThreads == chunckSize)

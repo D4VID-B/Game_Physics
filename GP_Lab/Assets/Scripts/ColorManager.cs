@@ -8,21 +8,19 @@ public class ColorManager : MonoBehaviour
 
     Scene currentScene;
 
-    List<GameObject> rootObjects;
-
     public int delayCap = 25;
     private int delayIter = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        //MyUnityPlugin.InitPool();
+
 
         currentScene = SceneManager.GetActiveScene();
 
-        rootObjects = new List<GameObject>();
-        currentScene.GetRootGameObjects(rootObjects);
-
         findObj();
+
     }
 
     // Update is called once per frame
@@ -36,23 +34,36 @@ public class ColorManager : MonoBehaviour
         else
         {
             delayIter++;
-        }s
+        }
     }
 
 
     void updateColors()
     {
-        
+        //MyUnityPlugin.updateObjectsInPool(5);
+        //foreach(GameObject obj in currentScene.GetRootGameObjects())
+        //{
+        //    int temp = obj.GetComponent<ColorScript>().ID;
+        //    obj.GetComponent<ColorScript>().color = MyUnityPlugin.getObjColor(temp);
+
+        //}
     }
 
     void findObj()
     {
         int iterID = 0;
-        foreach (GameObject obj in rootObjects)
-        {
-            obj.GetComponent<ColorScript>().ID = iterID;
 
-            iterID++;
+
+        foreach (GameObject obj in currentScene.GetRootGameObjects())
+        {
+            if(obj.GetComponent<ColorScript>() != null)
+            {
+                obj.GetComponent<ColorScript>().ID = iterID;
+            }
+
+            //MyUnityPlugin.InitAndPushObj(obj.GetComponent<ColorScript>().ID);
+
+            ++iterID;
         }
     }
 }

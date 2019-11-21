@@ -18,7 +18,7 @@ void InitAndPushObj(int ID)
 }
 
 
-void InitPool(int poolSize)
+void InitPool()
 {
 	POOL = new Pool();
 }
@@ -26,6 +26,11 @@ void InitPool(int poolSize)
 void updateObjectsInPool(int chunkSize)
 {
 	POOL->updatePool(chunkSize);
+}
+
+int getObjColor(int ID)
+{
+	return POOL->getObjectColor(ID);
 }
 
 void addObjToPool(int ID)

@@ -1082,7 +1082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 0
-  ID: 1
+  ID: 0
 --- !u!1 &146447517
 GameObject:
   m_ObjectHideFlags: 0
@@ -9214,7 +9214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 0
-  ID: 4
+  ID: 0
 --- !u!1 &1409290146
 GameObject:
   m_ObjectHideFlags: 0
@@ -9438,6 +9438,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1442520266}
+  - component: {fileID: 1442520267}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -9459,6 +9460,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442520267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442520265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d7988314aa0a3438fda8173b837c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayCap: 25
 --- !u!1 &1501106302
 GameObject:
   m_ObjectHideFlags: 0
@@ -9565,7 +9579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 0
-  ID: 3
+  ID: 0
 --- !u!1 &1502006944
 GameObject:
   m_ObjectHideFlags: 0
@@ -11475,7 +11489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 0
-  ID: 2
+  ID: 0
 --- !u!1 &1823770345
 GameObject:
   m_ObjectHideFlags: 0

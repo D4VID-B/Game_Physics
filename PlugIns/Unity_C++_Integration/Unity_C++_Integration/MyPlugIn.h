@@ -12,7 +12,7 @@ extern "C"
 
 //Construction
 MYUNITYPLUGIN_SYMBOL void InitAndPushObj(int ID);
-MYUNITYPLUGIN_SYMBOL void InitPool(int poolSize);
+MYUNITYPLUGIN_SYMBOL void InitPool();
 
 
 //MYUNITYPLUGIN_SYMBOL bool** updateCollisionsInPool();	//either update collisions in pool (required collision data in here)
@@ -27,6 +27,7 @@ MYUNITYPLUGIN_SYMBOL int getObjID();
 //MYUNITYPLUGIN_SYMBOL Vector3 getScale(int ID);
 MYUNITYPLUGIN_SYMBOL int getRadius(int ID);
 //MYUNITYPLUGIN_SYMBOL Vector3 getDimentions(int ID);
+MYUNITYPLUGIN_SYMBOL int getObjColor(int ID);
 
 //Object Data Modification
 MYUNITYPLUGIN_SYMBOL void setPosition(int ID);
