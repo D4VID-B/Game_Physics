@@ -1,6 +1,5 @@
 #pragma once
 #include "Object.h"
-#include <vector>
 
 class Pool
 {
@@ -9,7 +8,7 @@ private:
 	Object mObjectPool[10];
 	Object mTheObject;
 
-	void addBullet(Object object, int i)
+	void addObject(Object object, int i)
 	{
 		mObjectPool[i] = object;
 	}
@@ -19,15 +18,15 @@ public:
 	Pool() {};
 	~Pool() {};
 
-	Object* getFreeObject()
+	Object getFreeObject()
 	{
-		Object* freeObj = nullptr;
+		Object freeObj;
 
 		for (int i = 0; i < 30; i++)
 		{
 			if (mObjectPool[i].isInUse() == true) //Object is not in use
 			{
-				freeObj = &mObjectPool[i];
+				freeObj = mObjectPool[i];
 			}
 		}
 
@@ -35,35 +34,3 @@ public:
 
 	}
 };
-
-
-//template<typename T>
-//class Pool : public Trackable
-//{
-//private:
-//
-//	T* objectPool;
-//
-//
-//public:
-//
-//	Pool::Pool(int size)
-//	{
-//		objectPool = new objectPool[size];
-//
-//		for (int i = 0; i < size; i++)
-//		{
-//
-//		}
-//	}
-//	
-//	bool isInUse(T object)
-//	{
-//
-//	}
-//
-//	T getFreeObject()
-//	{
-//
-//	}
-//};

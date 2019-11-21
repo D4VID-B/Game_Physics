@@ -35,6 +35,7 @@ MYUNITYPLUGIN_SYMBOL void setDimentions();
 
 //Pool Functions
 MYUNITYPLUGIN_SYMBOL int getNextFreeObj();
+MYUNITYPLUGIN_SYMBOL bool addObjToPool();
 MYUNITYPLUGIN_SYMBOL void clearPool();
 
 #ifdef __cplusplus
