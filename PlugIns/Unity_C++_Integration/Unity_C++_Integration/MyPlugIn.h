@@ -11,33 +11,37 @@ extern "C"
 #endif // __cplusplus
 
 //Construction
-MYUNITYPLUGIN_SYMBOL void InitObj(Vector3 pos, Vector3 rot, Vector3 scl);
-MYUNITYPLUGIN_SYMBOL void InitCircle(float rad, Vector3 pos, Vector3 rot, Vector3 scl);
-MYUNITYPLUGIN_SYMBOL void InitBox(float l, float w, float h, Vector3 pos, Vector3 rot, Vector3 scl);
+MYUNITYPLUGIN_SYMBOL void InitAndPushObj(Vector3 pos, Vector3 rot, Vector3 scl);
+MYUNITYPLUGIN_SYMBOL void InitAndPushCircle(float rad, Vector3 pos, Vector3 rot, Vector3 scl);
+MYUNITYPLUGIN_SYMBOL void InitAndPushBox(float l, float w, float h, Vector3 pos, Vector3 rot, Vector3 scl);
 MYUNITYPLUGIN_SYMBOL void InitPool(int poolSize);
 
+//get array of objects to test for collisions
+MYUNITYPLUGIN_SYMBOL void updateCollisionsInPool();
+
+
 //Object identification
-MYUNITYPLUGIN_SYMBOL int getObjID();
-MYUNITYPLUGIN_SYMBOL int getObjType();
+//MYUNITYPLUGIN_SYMBOL int getObjID();
+//MYUNITYPLUGIN_SYMBOL int getObjType();
 
 //Object Data Access
-MYUNITYPLUGIN_SYMBOL Vector3 getPosition();
-MYUNITYPLUGIN_SYMBOL Vector3 getRotation();
-MYUNITYPLUGIN_SYMBOL Vector3 getScale();
-MYUNITYPLUGIN_SYMBOL int getRadius();
-MYUNITYPLUGIN_SYMBOL Vector3 getDimentions();
+//MYUNITYPLUGIN_SYMBOL Vector3 getPosition();
+//MYUNITYPLUGIN_SYMBOL Vector3 getRotation();
+//MYUNITYPLUGIN_SYMBOL Vector3 getScale();
+//MYUNITYPLUGIN_SYMBOL int getRadius();
+//MYUNITYPLUGIN_SYMBOL Vector3 getDimentions();
 
 //Object Data Modification
-MYUNITYPLUGIN_SYMBOL void setPosition();
-MYUNITYPLUGIN_SYMBOL void setRotation();
-MYUNITYPLUGIN_SYMBOL void setScale();
-MYUNITYPLUGIN_SYMBOL void setRadius();
-MYUNITYPLUGIN_SYMBOL void setDimentions();
+//MYUNITYPLUGIN_SYMBOL void setPosition();
+//MYUNITYPLUGIN_SYMBOL void setRotation();
+//MYUNITYPLUGIN_SYMBOL void setScale();
+//MYUNITYPLUGIN_SYMBOL void setRadius();
+//MYUNITYPLUGIN_SYMBOL void setDimentions();
 
 //Pool Functions
-MYUNITYPLUGIN_SYMBOL int getNextFreeObj();
-MYUNITYPLUGIN_SYMBOL bool addObjToPool();
-MYUNITYPLUGIN_SYMBOL void clearPool();
+//MYUNITYPLUGIN_SYMBOL int getNextFreeObj();
+//MYUNITYPLUGIN_SYMBOL bool addObjToPool();
+//MYUNITYPLUGIN_SYMBOL void clearPool();
 
 #ifdef __cplusplus
 }

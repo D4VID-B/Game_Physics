@@ -7,25 +7,29 @@ class Pool
 private:
 
 	
-	std::vector<Object> mObjectPool;
-	//Object mObjectPool[10];
+	std::vector<Object*> mObjectPool;
 	Object mTheObject;
 	int mPoolSize;
-
-
-	void addObject(Object object, int i)
-	{
-		mObjectPool[i] = object;
-	}
 
 public:
 
 	Pool(int poolSize) { mPoolSize = poolSize; };
 	~Pool() {};
 
+	void addObject(Object* object)
+	{
+		//if we arent at capacity, fill the pool
+		if (mObjectPool.size() < mPoolSize)
+		{
+			mObjectPool.push_back(object);
+		}
+
+		//if we are at capacity the object wont be added
+	}
+
 	Object getFreeObject()
 	{
-		Object freeObj;
+		Object freeObj = NULL;
 
 		for (int i = 0; i < mPoolSize; i++)
 		{
