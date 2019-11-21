@@ -33,12 +33,19 @@ protected:
 	Vector3 mRotation;
 	Vector3 mScale;
 
-	int mObjectType;
+	int mObjectType = 0;
 	int mObjectID;
 
 	bool mActive = false;
 
 public:
+
+	Object(Vector3 pos, Vector3 rot, Vector3 scl) 
+	{
+		mPosition = pos;
+		mRotation = rot;
+		mScale = scl;
+	}
 
 	int getType() { return mObjectType; }
 	int getID() { return mObjectID; }
@@ -51,9 +58,9 @@ public:
 
 	void setPosition(Vector3 newPos) { mPosition = newPos; }
 
-	void setPosition(Vector3 newRot) { mRotation = newRot; }
+	void setRotation(Vector3 newRot) { mRotation = newRot; }
 
-	void setPosition(Vector3 newSc) { mScale = newSc; }
+	void setScale(Vector3 newSc) { mScale = newSc; }
 
 	bool isInUse() { return mActive; }
 };
@@ -80,9 +87,9 @@ class BoxCollider : public Object
 {
 private:
 
-	float mLength;
-	float mHeight;
-	float mWidth;
+	float mLength = 0;
+	float mHeight = 0;
+	float mWidth = 0;
 
 public:
 

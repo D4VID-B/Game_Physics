@@ -1,12 +1,17 @@
 #pragma once
 #include "Object.h"
+#include <vector>
 
 class Pool
 {
 private:
 
-	Object mObjectPool[10];
+	
+	std::vector<Object> mObjectPool;
+	//Object mObjectPool[10];
 	Object mTheObject;
+	int mPoolSize;
+
 
 	void addObject(Object object, int i)
 	{
@@ -15,14 +20,14 @@ private:
 
 public:
 
-	Pool() {};
+	Pool(int poolSize) { mPoolSize = poolSize; };
 	~Pool() {};
 
 	Object getFreeObject()
 	{
 		Object freeObj;
 
-		for (int i = 0; i < 30; i++)
+		for (int i = 0; i < mPoolSize; i++)
 		{
 			if (mObjectPool[i].isInUse() == true) //Object is not in use
 			{

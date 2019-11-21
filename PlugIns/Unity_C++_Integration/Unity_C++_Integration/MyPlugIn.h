@@ -11,9 +11,10 @@ extern "C"
 #endif // __cplusplus
 
 //Construction
-MYUNITYPLUGIN_SYMBOL void InitObj();
-MYUNITYPLUGIN_SYMBOL void InitCircle();
-MYUNITYPLUGIN_SYMBOL void InitBox();
+MYUNITYPLUGIN_SYMBOL void InitObj(Vector3 pos, Vector3 rot, Vector3 scl);
+MYUNITYPLUGIN_SYMBOL void InitCircle(float rad, Vector3 pos, Vector3 rot, Vector3 scl);
+MYUNITYPLUGIN_SYMBOL void InitBox(float l, float w, float h, Vector3 pos, Vector3 rot, Vector3 scl);
+MYUNITYPLUGIN_SYMBOL void InitPool(int poolSize);
 
 //Object identification
 MYUNITYPLUGIN_SYMBOL int getObjID();
