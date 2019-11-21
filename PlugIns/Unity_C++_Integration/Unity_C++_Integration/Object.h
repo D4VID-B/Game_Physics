@@ -61,13 +61,15 @@ class Object
 protected:
 
 	Transform mTransform;
-	CircleCollider c_Col;
-	BoxCollider b_Col;
+	//CircleCollider c_Col;
+	//BoxCollider b_Col;
 
 	int mObjectID;
-	int color = 0;
 
 public:
+
+	int color = 0;
+
 
 	Object(const Object &other)
 	{
@@ -81,15 +83,6 @@ public:
 	Object(int ID) { mObjectID = ID; }
 
 	Object(Vector3 pos, Vector3 rot, Vector3 scl, int iD, int colType) 
-	{
-		mTransform.setPosition(pos);
-		mTransform.setRotation(rot);
-		mTransform.setScale(scl);
-		mObjectID = iD;
-		color = colType; //Temporary
-	}
-
-	Object(Vector3 pos, Vector3 rot, Vector3 scl, int iD, int colType)
 	{
 		mTransform.setPosition(pos);
 		mTransform.setRotation(rot);

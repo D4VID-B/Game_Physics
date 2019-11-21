@@ -22,23 +22,23 @@ MYUNITYPLUGIN_SYMBOL void InitPool(int poolSize);
 MYUNITYPLUGIN_SYMBOL int getObjID();
 
 //Object Data Access
-//MYUNITYPLUGIN_SYMBOL Vector3 getPosition();
-//MYUNITYPLUGIN_SYMBOL Vector3 getRotation();
-//MYUNITYPLUGIN_SYMBOL Vector3 getScale();
-MYUNITYPLUGIN_SYMBOL int getRadius();
-//MYUNITYPLUGIN_SYMBOL Vector3 getDimentions();
+//MYUNITYPLUGIN_SYMBOL Vector3 getPosition(int ID);
+//MYUNITYPLUGIN_SYMBOL Vector3 getRotation(int ID);
+//MYUNITYPLUGIN_SYMBOL Vector3 getScale(int ID);
+MYUNITYPLUGIN_SYMBOL int getRadius(int ID);
+//MYUNITYPLUGIN_SYMBOL Vector3 getDimentions(int ID);
 
 //Object Data Modification
-MYUNITYPLUGIN_SYMBOL void setPosition();
-MYUNITYPLUGIN_SYMBOL void setRotation();
-MYUNITYPLUGIN_SYMBOL void setScale();
-MYUNITYPLUGIN_SYMBOL void setRadius();
-MYUNITYPLUGIN_SYMBOL void setDimentions();
+MYUNITYPLUGIN_SYMBOL void setPosition(int ID);
+MYUNITYPLUGIN_SYMBOL void setRotation(int ID);
+MYUNITYPLUGIN_SYMBOL void setScale(int ID);
+MYUNITYPLUGIN_SYMBOL void setRadius(int ID);
+MYUNITYPLUGIN_SYMBOL void setDimentions(int ID);
 
 //Pool Functions
 MYUNITYPLUGIN_SYMBOL void updateObjectsInPool(int chunkSize);
 MYUNITYPLUGIN_SYMBOL void addObjToPool(int ID);
-MYUNITYPLUGIN_SYMBOL void clearPool(int id);
+MYUNITYPLUGIN_SYMBOL void clearPool(int ID);
 
 #ifdef __cplusplus
 }

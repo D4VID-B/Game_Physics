@@ -32,3 +32,33 @@ void addObjToPool(int ID)
 {
 
 }
+
+int getObjectID()
+{
+	return -1;
+}
+
+void setPosition(int ID)
+{
+
+}
+
+void setRotation(int ID)
+{
+
+}
+
+void setScale(int ID)
+{
+
+}
+
+void setRadius(int ID)
+{
+
+}
+
+void setDimentions(int ID)
+{
+
+}
