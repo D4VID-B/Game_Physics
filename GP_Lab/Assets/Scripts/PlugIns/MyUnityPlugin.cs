@@ -18,4 +18,21 @@ public class MyUnityPlugin
     [DllImport("Unity_C++_Integration")]
 
     public static extern int TermFoo();
+
+
+    [DllImport("Unity_C++_Integration")]
+    public static extern void InitAndPush(int ID);
+
+
+    [DllImport("Unity_C++_Integration")]
+    public static extern void InitPool();
+
+
+    [DllImport("Unity_C++_Integration")]
+    public static extern void updateObjectsInPool(int chunkSize = 5);
+
+
+    [DllImport("Unity_C++_Integration")]
+    public static extern int getObjColor(int color);
+
 }
