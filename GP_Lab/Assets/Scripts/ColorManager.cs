@@ -41,11 +41,14 @@ public class ColorManager : MonoBehaviour
     void updateColors()
     {
         MyUnityPlugin.updateObjectsInPool(5);
+        
         foreach(GameObject obj in currentScene.GetRootGameObjects())
         {
-            int temp = obj.GetComponent<ColorScript>().ID;
-            obj.GetComponent<ColorScript>().color = MyUnityPlugin.getObjColor(temp);
-
+            if (obj.GetComponent<ColorScript>() != null)
+            {
+                int temp = obj.GetComponent<ColorScript>().ID;
+                obj.GetComponent<ColorScript>().color = MyUnityPlugin.getObjColor(temp);
+            }
         }
     }
 
@@ -59,10 +62,11 @@ public class ColorManager : MonoBehaviour
             if(obj.GetComponent<ColorScript>() != null)
             {
                 obj.GetComponent<ColorScript>().ID = iterID;
+                MyUnityPlugin.InitAndPushObj(obj.GetComponent<ColorScript>().ID);
+
                 ++iterID;
             }
 
-            MyUnityPlugin.InitAndPush(obj.GetComponent<ColorScript>().ID);
           
         }
     }
