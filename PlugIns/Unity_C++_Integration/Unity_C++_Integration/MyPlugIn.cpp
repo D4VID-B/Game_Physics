@@ -1,34 +1,69 @@
 #include "MyPlugIn.h"
 
 #include "Foo.h"
+#include "Object.h"
+#include "Pool.h"
 
-Foo* inst = 0;
+//using globals is wrong but this is basic ass shit (instead use singleton)
+Pool* POOL = nullptr;
 
-int InitFoo(int f_new)
+void InitAndPushObj(int ID)
 {
-	if (!inst)
+	Object newObj(ID);
+
+	if (POOL != nullptr)
 	{
-		inst = new Foo(f_new);
-		return 1;
+		POOL->addObject(newObj);
 	}
-	return 0;
 }
-int DoFoo(int bar)
+
+
+void InitPool()
 {
-	if (inst)
-	{
-		int result = inst->foo(bar);
-		return result;
-	}
-	return 0;
+	POOL = new Pool();
 }
-int TermFoo()
+
+void updateObjectsInPool(int chunkSize)
 {
-	if (inst)
-	{
-		delete inst;
-		inst = 0;
-		return 1;
-	}
-	return 0;
+	POOL->updatePool(chunkSize);
+}
+
+int getObjColor(int ID)
+{
+	return POOL->getObjectColor(ID);
+}
+
+void addObjToPool(int ID)
+{
+
+}
+
+int getObjectID()
+{
+	return -1;
+}
+
+void setPosition(int ID)
+{
+
+}
+
+void setRotation(int ID)
+{
+
+}
+
+void setScale(int ID)
+{
+
+}
+
+void setRadius(int ID)
+{
+
+}
+
+void setDimentions(int ID)
+{
+
 }

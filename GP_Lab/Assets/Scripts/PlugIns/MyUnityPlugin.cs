@@ -6,16 +6,18 @@ using System.Runtime.InteropServices;
 public class MyUnityPlugin
 {
     [DllImport("Unity_C++_Integration")]
-
-    public static extern int InitFoo(int f_new = 0);
-
-
-    [DllImport("Unity_C++_Integration")]
-
-    public static extern int DoFoo(int bar = 0);
+    public static extern void InitAndPushObj(int ID = 0);
 
 
     [DllImport("Unity_C++_Integration")]
+    public static extern void InitPool();
 
-    public static extern int TermFoo();
+
+    [DllImport("Unity_C++_Integration")]
+    public static extern void updateObjectsInPool(int chunkSize = 5);
+
+
+    [DllImport("Unity_C++_Integration")]
+    public static extern int getObjColor(int color = 0);
+
 }

@@ -1,82 +1,93 @@
 #pragma once
 #include "Object.h"
 #include <vector>
+#include <thread>
 
 class Pool
 {
 private:
 
-	Bullet mObjectPool[30];
-	Bullet mTheBullet;
+	std::vector<Object> mObjectPool;
+	static const int numThreads = 5;
 
-	void addBullet(Bullet object, int i)
-	{
-		mObjectPool[i] = object;
-		//std::cout << "Add" << std::endl;
-	}
+	//std::thread threadList[numThreads];
 
 public:
+
+
 
 	Pool() {};
 	~Pool() {};
 
-	Pool::Pool(Sprite bulletSprite)
+	/*void flipColor(Object obj)
 	{
-		mTheBullet = Bullet(bulletSprite);
-
-		for (int i = 0; i < 30; i++)
+		if (obj.color == 0)
 		{
-
-			addBullet(mTheBullet, i);
+			obj.color = 1;
 		}
+		else
+		{
+			obj.color = 0;
+		}
+	}*/
 
+	void addObject(Object object)
+	{
+		mObjectPool.push_back(object);
 	}
 
-	Bullet* getFreeObject()
+	int getObjectColor(int ID)
 	{
-		Bullet* freeShot = nullptr;
-
-		for (int i = 0; i < 30; i++)
+		for (auto it = mObjectPool.begin(); it != mObjectPool.end(); ++it)
 		{
-			if (!(mObjectPool[i].isInUse())) //Object is not in use
+			if ((*it).getID() == ID)
 			{
-				freeShot = &mObjectPool[i];
+				return (*it).color;
 			}
 		}
 
-		return freeShot;
-
+		return -1;
 	}
+
+	void updatePool(int chunckSize)
+	{
+		/*if (numThreads == chunckSize)
+		{
+
+			for (auto i = 0; i < chunckSize; ++i)
+			{
+				Object tmp;
+				threadList[i] = std::thread(&Pool::flipColor, mObjectPool.at(i));
+				
+			}
+
+			for (auto i = 0; i < chunckSize; ++i)
+			{
+				threadList[i].join();
+				Object temp = mObjectPool.at(i);
+				mObjectPool.erase(mObjectPool.begin());
+				mObjectPool.push_back(temp);
+
+			}
+
+		}
+		else
+		{*/
+			for (auto i = 0; i < chunckSize; ++i)
+			{
+				mObjectPool.at(i).flipColor();
+				Object temp = mObjectPool.at(i);
+				mObjectPool.erase(mObjectPool.begin());
+				mObjectPool.push_back(temp);
+			}
+		//}
+
+		
+	}
+
+	void clearPool()
+	{
+		mObjectPool.clear();
+	}
+
 };
-
-
-//template<typename T>
-//class Pool : public Trackable
-//{
-//private:
-//
-//	T* objectPool;
-//
-//
-//public:
-//
-//	Pool::Pool(int size)
-//	{
-//		objectPool = new objectPool[size];
-//
-//		for (int i = 0; i < size; i++)
-//		{
-//
-//		}
-//	}
-//	
-//	bool isInUse(T object)
-//	{
-//
-//	}
-//
-//	T getFreeObject()
-//	{
-//
-//	}
-//};

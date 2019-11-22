@@ -13,7 +13,7 @@ ExportedObj/
 .consulo/
 *.csproj
 *.unityproj
-*.sln
+#*.sln
 *.suo
 *.tmp
 *.user
@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+GP_Lab/GP_Lab.sln
+
+GP_Lab/GP_Lab_1.sln
