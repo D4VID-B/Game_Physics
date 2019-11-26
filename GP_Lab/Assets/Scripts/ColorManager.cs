@@ -9,6 +9,7 @@ public class ColorManager : MonoBehaviour
     Scene currentScene;
 
     public int delayCap = 25;
+    public int updateChunk = 5;
     private int delayIter = 0;
 
     // Start is called before the first frame update
@@ -40,13 +41,14 @@ public class ColorManager : MonoBehaviour
 
     void updateColors()
     {
-        MyUnityPlugin.updateObjectsInPool(5);
+        MyUnityPlugin.updateObjectsInPool(updateChunk);
         
         foreach(GameObject obj in currentScene.GetRootGameObjects())
         {
             if (obj.GetComponent<ColorScript>() != null)
             {
                 int temp = obj.GetComponent<ColorScript>().ID;
+
                 obj.GetComponent<ColorScript>().color = MyUnityPlugin.getObjColor(temp);
             }
         }

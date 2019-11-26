@@ -7,6 +7,7 @@ public class Particle3D : MonoBehaviour
     #region Variables
     [Header("Switches")]
     public bool shouldUpdateParticle = true;
+    public bool shipMode = false;
 
     [Header("Position")]
     public Vector3 position;
@@ -544,8 +545,102 @@ public class Particle3D : MonoBehaviour
         f_torque = Vector3.zero;
     }
 
-#endregion
+    #endregion
 
+    #region SHIP_MODE
+    public void addForce(Vector3 newForce)
+    {
+        //D'Alembert
+        force += newForce;
+    }
+
+    void updateAcceleration()
+    {
+        //Newton 2
+        acceleration = force * massInv;
+
+        force.Set(0.0f, 0.0f, 0.0f);
+    }
+
+    void updateShip()
+    {
+        float maxVel = 190.0f;
+        float maxReverseVelocity = 0.0f;
+
+        float forwardThrust = 10.0f;
+        float brakeThrust = 20.0f;
+
+        float rollMag =5.0f;
+        float yawMag = 5.0f;
+        float pitchMag = 5.0f;
+
+        Vector3 rollDir = new Vector3(1.0f, 0.0f, 0.0f);
+        Vector3 yawDir = new Vector3(0.0f, 0.0f, 1.0f);
+        Vector3 pitchDir = new Vector3(0.0f, 1.0f, 0.0f);
+
+
+        //add gravity
+        //addForce(ForceGenerator3D.generateForce_Gravity(mass, -9.8f, Vector3.up));
+
+        //grappling hook
+
+        //forward thrust
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            if(!(velocity.y >= maxVel))
+            {
+                addForce(new Vector3(0.0f, forwardThrust, 0.0f));
+            }
+        }
+
+        if(Input.GetKey(KeyCode.LeftControl))
+        {
+            if(!(velocity.y <= maxReverseVelocity))
+            {
+                addForce(new Vector3(0.0f, -brakeThrust, 0.0f));
+            }
+        }
+        
+
+        //pitch
+        if(Input.GetKey(KeyCode.W))
+        {
+            addTorque(calculateTorque(pitchMag, pitchDir));
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            addTorque(calculateTorque(-pitchMag, pitchDir));
+
+        }
+
+        //yaw
+        if (Input.GetKey(KeyCode.Q))
+        {
+            addTorque(calculateTorque(yawMag, yawDir));
+        }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            addTorque(calculateTorque(-yawMag, yawDir));
+        }
+
+
+        //roll
+        if (Input.GetKey(KeyCode.A))
+        {
+            addTorque(calculateTorque(rollMag, rollDir));
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            addTorque(calculateTorque(-rollMag, rollDir));
+        }
+
+    }
+
+    #endregion
+    
     #region Runtime
 
     void Start()
@@ -554,6 +649,7 @@ public class Particle3D : MonoBehaviour
         rotation = this.transform.rotation;
 
         setMass(startingMass);
+        massInv = 1 / startingMass;
         setTensor(Shape);
         worldCoM = localCoM + transform.position;
     }
@@ -564,27 +660,7 @@ public class Particle3D : MonoBehaviour
 
         if(shouldUpdateParticle)
         {
-            //float sinTime = Mathf.Sin(Time.time);
-
-            /*
-            if (!useAngularVelocityInsteadOfAcceleration)
-            {
-                angularAcceleration = new Vector3(sinTime * spinAngularAcceleration.x, sinTime * spinAngularAcceleration.y, sinTime * spinAngularAcceleration.z);
-            }
-            else
-            {
-                angularVelocity = new Vector3(sinTime * spinAngularVelocity.x, sinTime * spinAngularVelocity.y, sinTime * spinAngularVelocity.z);
-            }
-
-            if (!useVelocityInsteadOfAcceleration)
-            {
-                acceleration = new Vector3(sinTime * moveAcceleration.x, sinTime * moveAcceleration.y, sinTime * moveAcceleration.z);
-            }
-            else
-            {
-                velocity = new Vector3(sinTime * moveVelocity.x, sinTime * moveVelocity.y, sinTime * moveVelocity.z);
-            }
-            */
+            
 
             /*
              var a: Vector3;
@@ -605,6 +681,7 @@ public class Particle3D : MonoBehaviour
             if (IntegrationMethod == PositionFunction.PositionEuler)
             {
                 updatePosEulerExplicit(Time.fixedDeltaTime);
+                updateAcceleration();
 
                 transform.position = position;
                 
@@ -612,8 +689,8 @@ public class Particle3D : MonoBehaviour
                 //Rotations
                 if (RotationUpdateMethod == RotationFunction.RotationEuler)
                 {
-                    updateAngularAcceleration();
                     updateRotEulerExplicit(Time.fixedDeltaTime);
+                    updateAngularAcceleration();
 
                     //Debug.Log("Rotaton calculated: " + rotation);
 
@@ -626,34 +703,25 @@ public class Particle3D : MonoBehaviour
             else if (IntegrationMethod == PositionFunction.PositionKinematic)
             {
                 updatePosKinematic(Time.fixedDeltaTime);
+                updateAcceleration();
 
                 transform.position = position;
 
                 //Rotations
                 if (RotationUpdateMethod == RotationFunction.RotationEuler)
                 {
-                    updateAngularAcceleration();
                     updateRotEulerExplicit(Time.fixedDeltaTime);
+                    updateAngularAcceleration();
 
                     transform.rotation = rotation;
-
-
                 }
-
-            }
-
-            if (Input.GetKey(KeyCode.F))
-            {
-                addTorque(calculateTorque(torqueMag, torqueDirection));
             }
         }
 
-        if (Input.GetKey(KeyCode.X))
+        if(shipMode)
         {
-            addTorque(calculateTorque(torqueMag, torqueDirection));
+            updateShip();
         }
-
-
     }
 
 
