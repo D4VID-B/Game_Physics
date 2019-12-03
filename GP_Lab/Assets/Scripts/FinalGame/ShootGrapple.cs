@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class ShootGrapple : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
-    // Update is called once per frame
     void Update()
     {
-        
+        checkInput();
     }
+
+    void checkInput()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+
+        }
+    }
+
+    
 }

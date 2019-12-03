@@ -5,17 +5,6 @@ using UnityEngine;
 public class FuelPickup : MonoBehaviour
 {
 
-    public float test = 100f;
+    public float FUEL_VALUE = 50f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        test -= 0.1f;
-    }
 }

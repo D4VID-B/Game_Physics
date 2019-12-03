@@ -123,19 +123,33 @@ public class CollisionManager3D : MonoBehaviour
                 {
                     if (CollisionHull3D.TestCollision(colliders[i], colliders[j], ref desc))
                     {
-                        if (shouldChangeColor)
+                        //if (shouldChangeColor)
+                        //{
+                        //    CollisionHull3D.changeColor(colliders[i].gameObject, true);
+                        //    CollisionHull3D.changeColor(colliders[j].gameObject, true);
+                        //}
+
+                        if(colliders[i].GetComponent<FuelPickup>() != null || colliders[j].GetComponent<FuelPickup>() != null) //Picked up fuel
                         {
-                            CollisionHull3D.changeColor(colliders[i].gameObject, true);
-                            CollisionHull3D.changeColor(colliders[j].gameObject, true);
+                            GameObject.Find("Player").GetComponent<ShipFuel>().addFuel(colliders[i].GetComponent<FuelPickup>().FUEL_VALUE);
                         }
+                        else if(colliders[i].gameObject.tag == "Respawn" || colliders[j].gameObject.tag == "Respawn") //Hit the ground -> death scene
+                        {
+                            GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
+                        }
+                        else if(colliders[i].gameObject.tag == "Finish" || colliders[j].gameObject.tag == "Finish")//Reached the end of the level
+                        {
+                            GameObject.Find("Finish").GetComponent<SwitchScene>().Switch();
+                        }
+
                     }
                     else
                     {
-                        if (shouldChangeColor)
-                        {
-                            CollisionHull3D.changeColor(colliders[i].gameObject, false);
-                            CollisionHull3D.changeColor(colliders[j].gameObject, false);
-                        }
+                        //if (shouldChangeColor)
+                        //{
+                        //    CollisionHull3D.changeColor(colliders[i].gameObject, false);
+                        //    CollisionHull3D.changeColor(colliders[j].gameObject, false);
+                        //}
 
                     }
                 }
