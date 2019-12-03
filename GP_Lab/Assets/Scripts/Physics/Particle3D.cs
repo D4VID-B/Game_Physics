@@ -573,14 +573,14 @@ public class Particle3D : MonoBehaviour
         float maxVel = 190.0f;
         float maxReverseVelocity = 0.0f;
 
-        float forwardThrust = 500.0f;
-        float brakeThrust = 100.0f;
+        float forwardThrust = 4500.0f;
+        float brakeThrust = 5500.0f;
 
-        float rollMag =5.0f;
-        float yawMag = 5.0f;
-        float pitchMag = 5.0f;
+        float rollMag =20.0f;
+        float yawMag = 10.0f;
+        float pitchMag = 20.0f;
 
-        Vector3 hoverCompensation = Vector3.up * 200.0f;
+        Vector3 hoverCompensation = Vector3.up * 100.0f;
 
         Vector3 rollDir = this.transform.up; //new Vector3(0.0f, 0.0f, 1.0f);
         Vector3 yawDir = this.transform.forward;//new Vector3(0.0f, 1.0f, 0.0f);
@@ -598,38 +598,12 @@ public class Particle3D : MonoBehaviour
         //forward thrust
         if(Input.GetKey(KeyCode.LeftShift))
         {
-            /*
-            if(!(velocity.y >= maxVel))
-            {
-                addForce(new Vector3(0.0f, 0.0f, forwardThrust));
-                //addForce(Vector3.up * forwardThrust);
-            }
-            */
-            if(!(velocity.magnitude >= maxVel))
-            {
-                //addForce(this.transform.up * forwardThrust);
-                //addForce(hoverCompensation);
-            }
-
-
             addForce(this.transform.up * forwardThrust);
-            addForce(hoverCompensation);
+            //addForce(hoverCompensation);
         }
 
         if(Input.GetKey(KeyCode.LeftControl))
         {
-            /*
-            if(!(velocity.y <= maxReverseVelocity))
-            {
-                addForce(new Vector3(0.0f, 0.0f, -brakeThrust));
-                //addForce(Vector3.up * -brakeThrust);
-            }
-            */
-            if(!(velocity.magnitude <= maxReverseVelocity))
-            {
-                //addForce(this.transform.up * -brakeThrust);
-            }
-
             addForce(this.transform.up * -brakeThrust);
         }
         
@@ -639,6 +613,7 @@ public class Particle3D : MonoBehaviour
         {
             addTorque(calculateTorque(pitchMag, pitchDir));
         }
+        
         
 
         if (Input.GetKey(KeyCode.S))
@@ -670,7 +645,16 @@ public class Particle3D : MonoBehaviour
             addTorque(calculateTorque(-rollMag, rollDir));
         }
 
+        //fake retro thrust
+        if (angularVelocity.magnitude >= 0.0f)
+        {
+            addTorque(angularVelocity * -20);
+        }
 
+        if(velocity.magnitude >= 0.0f)
+        {
+            addForce(velocity * -20);
+        }
     }
 
     #endregion
