@@ -482,7 +482,7 @@ public class Particle3D : MonoBehaviour
         //bruh you cant set a vector3 equal to a matrix
         angularA = worldTensor * f_torque;
 
-        Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "\nangularA after tensor: \n" + angularA);
+        //Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "\nangularA after tensor: \n" + angularA);
 
         //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
 
@@ -498,7 +498,7 @@ public class Particle3D : MonoBehaviour
     {
         Vector3 final = mForce * magnitude;
 
-        Debug.Log("Input Torque: " + final);
+        //Debug.Log("Input Torque: " + final);
        
         return final;
     }
@@ -588,7 +588,7 @@ public class Particle3D : MonoBehaviour
 
 
         //add gravity
-        addForce(ForceGenerator3D.generateForce_Gravity(mass, -1.8f, Vector3.up));
+        //addForce(ForceGenerator3D.generateForce_Gravity(mass, -1.8f, Vector3.up));
 
         //addForce(ForceGenerator3D.GenerateForce_drag(velocity, Vector3.zero, 20.0f, 4.0f, 15.0f));
 
