@@ -92,4 +92,11 @@ public class ForceGenerator3D
 
         return springForce;
     }
+
+    public static Vector3 genereateImpulse(Vector3 direction, float forceMultiplier)
+    {
+        Vector3 impulse = new Vector3();
+
+        return impulse;
+    }
 }
