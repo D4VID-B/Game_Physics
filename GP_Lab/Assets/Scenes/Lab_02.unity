@@ -244,6 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevationThrust: 0
+  lateralThrust: 0
+  SHIP_MODE: 0
   position: {x: 0, y: -4}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
@@ -252,6 +255,15 @@ MonoBehaviour:
   angularAcceleration: 0
   accelerationValue: 0
   startingMass: 1
+  f_Torque: 0
+  t_Position: {x: 0, y: 0}
+  t_Force: {x: 0, y: 0}
+  radius: 0
+  i_Radius: 0
+  o_Radius: 0
+  height: 0
+  width: 0
+  length: 0
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
   dragCoefficient: 0
@@ -259,13 +271,7 @@ MonoBehaviour:
   spring_stiffness: 5
   spring_resting: 4
   surfaceTransform: {fileID: 401317099}
-  radius: 0
-  i_Radius: 0
-  o_Radius: 0
-  height: 0
-  width: 0
-  length: 0
-  f_Torque: 0
+  gravityOn: 1
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -377,6 +383,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevationThrust: 0
+  lateralThrust: 0
+  SHIP_MODE: 0
   position: {x: 5.5, y: 5}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
@@ -385,6 +394,15 @@ MonoBehaviour:
   angularAcceleration: 0
   accelerationValue: 0
   startingMass: 0.0001
+  f_Torque: 0
+  t_Position: {x: 0, y: 0}
+  t_Force: {x: 0, y: 0}
+  radius: 0
+  i_Radius: 0
+  o_Radius: 0
+  height: 0
+  width: 0
+  length: 0
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
   dragCoefficient: 1.28
@@ -392,13 +410,7 @@ MonoBehaviour:
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 401317099}
-  radius: 0
-  i_Radius: 0
-  o_Radius: 0
-  height: 0
-  width: 0
-  length: 0
-  f_Torque: 0
+  gravityOn: 0
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -684,6 +696,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevationThrust: 0
+  lateralThrust: 0
+  SHIP_MODE: 0
   position: {x: 5, y: 5}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
@@ -692,6 +707,15 @@ MonoBehaviour:
   angularAcceleration: 0
   accelerationValue: 0
   startingMass: 4.5
+  f_Torque: 0
+  t_Position: {x: 0, y: 0}
+  t_Force: {x: 0, y: 0}
+  radius: 0
+  i_Radius: 0
+  o_Radius: 0
+  height: 0
+  width: 0
+  length: 0
   fluidDensity: 1.225
   fluidVelocity: {x: 0, y: 0}
   dragCoefficient: 0.47
@@ -699,13 +723,7 @@ MonoBehaviour:
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 401317099}
-  radius: 0
-  i_Radius: 0
-  o_Radius: 0
-  height: 0
-  width: 0
-  length: 0
-  f_Torque: 0
+  gravityOn: 0
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0
@@ -817,6 +835,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f5389717a503d142b6d2c8bc1aeca20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevationThrust: 0
+  lateralThrust: 0
+  SHIP_MODE: 0
   position: {x: -2.358, y: 2.772}
   velocity: {x: 0, y: 0}
   acceleration: {x: 0, y: 0}
@@ -825,6 +846,15 @@ MonoBehaviour:
   angularAcceleration: 0
   accelerationValue: 0
   startingMass: 1
+  f_Torque: 0
+  t_Position: {x: 0, y: 0}
+  t_Force: {x: 0, y: 0}
+  radius: 0
+  i_Radius: 0
+  o_Radius: 0
+  height: 0
+  width: 0
+  length: 0
   fluidDensity: 0
   fluidVelocity: {x: 0, y: 0}
   dragCoefficient: 0
@@ -832,13 +862,7 @@ MonoBehaviour:
   spring_stiffness: 0
   spring_resting: 0
   surfaceTransform: {fileID: 401317099}
-  radius: 0
-  i_Radius: 0
-  o_Radius: 0
-  height: 0
-  width: 0
-  length: 0
-  f_Torque: 0
+  gravityOn: 0
   Shape: 0
   IntegrationMethod: 0
   RotationUpdateMethod: 0
