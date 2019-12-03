@@ -519,6 +519,8 @@ public class Particle3D : MonoBehaviour
         invLT.m33 = 1 / localTensor.m33;
 
 
+        //transpose worldTransform (doesnt work)
+        /*
         inverseWorldTransform.m00 = worldTransform.m00;
         inverseWorldTransform.m01 = worldTransform.m10;
         inverseWorldTransform.m02 = worldTransform.m20;
@@ -535,6 +537,9 @@ public class Particle3D : MonoBehaviour
         inverseWorldTransform.m31 = worldTransform.m13;
         inverseWorldTransform.m32 = worldTransform.m23;
         inverseWorldTransform.m33 = worldTransform.m33;
+        */
+
+        inverseWorldTransform = inverseMat4(worldTransform);
 
         worldTensor = worldTransform * invLT * inverseWorldTransform;
     }
@@ -568,23 +573,28 @@ public class Particle3D : MonoBehaviour
         float maxVel = 190.0f;
         float maxReverseVelocity = 0.0f;
 
-        float forwardThrust = 50.0f;
+        float forwardThrust = 500.0f;
         float brakeThrust = 100.0f;
 
         float rollMag =5.0f;
         float yawMag = 5.0f;
         float pitchMag = 5.0f;
 
-        Vector3 rollDir = new Vector3(0.0f, 0.0f, 1.0f);
-        Vector3 yawDir = new Vector3(0.0f, 1.0f, 0.0f);
-        Vector3 pitchDir = new Vector3(1.0f, 0.0f, 0.0f);
+        Vector3 hoverCompensation = Vector3.up * 200.0f;
+
+        Vector3 rollDir = this.transform.up; //new Vector3(0.0f, 0.0f, 1.0f);
+        Vector3 yawDir = this.transform.forward;//new Vector3(0.0f, 1.0f, 0.0f);
+        Vector3 pitchDir = this.transform.right; //new Vector3(1.0f, 0.0f, 0.0f);
 
 
         //add gravity
-        //addForce(ForceGenerator3D.generateForce_Gravity(mass, -9.8f, Vector3.up));
+        addForce(ForceGenerator3D.generateForce_Gravity(mass, -1.8f, Vector3.up));
+
+        //addForce(ForceGenerator3D.GenerateForce_drag(velocity, Vector3.zero, 20.0f, 4.0f, 15.0f));
 
         //grappling hook
 
+        Debug.DrawRay(this.transform.position, this.transform.up * 20, Color.red);
         //forward thrust
         if(Input.GetKey(KeyCode.LeftShift))
         {
@@ -597,13 +607,13 @@ public class Particle3D : MonoBehaviour
             */
             if(!(velocity.magnitude >= maxVel))
             {
-                //get direction ship is pointed in
-
-                //accelerate in that direction
+                //addForce(this.transform.up * forwardThrust);
+                //addForce(hoverCompensation);
             }
 
-            //addForce(new Vector3(rotation.x, rotation.y, rotation.z).normalized * forwardThrust);
 
+            addForce(this.transform.up * forwardThrust);
+            addForce(hoverCompensation);
         }
 
         if(Input.GetKey(KeyCode.LeftControl))
@@ -617,8 +627,10 @@ public class Particle3D : MonoBehaviour
             */
             if(!(velocity.magnitude <= maxReverseVelocity))
             {
-
+                //addForce(this.transform.up * -brakeThrust);
             }
+
+            addForce(this.transform.up * -brakeThrust);
         }
         
 
@@ -627,6 +639,7 @@ public class Particle3D : MonoBehaviour
         {
             addTorque(calculateTorque(pitchMag, pitchDir));
         }
+        
 
         if (Input.GetKey(KeyCode.S))
         {
@@ -637,12 +650,12 @@ public class Particle3D : MonoBehaviour
         //yaw
         if (Input.GetKey(KeyCode.Q))
         {
-            addTorque(calculateTorque(-yawMag, yawDir));
+            addTorque(calculateTorque(yawMag, yawDir));
         }
 
         if (Input.GetKey(KeyCode.E))
         {
-            addTorque(calculateTorque(yawMag, yawDir));
+            addTorque(calculateTorque(-yawMag, yawDir));
         }
 
 
@@ -656,6 +669,7 @@ public class Particle3D : MonoBehaviour
         {
             addTorque(calculateTorque(-rollMag, rollDir));
         }
+
 
     }
 
