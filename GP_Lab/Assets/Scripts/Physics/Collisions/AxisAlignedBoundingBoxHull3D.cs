@@ -7,18 +7,20 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
     public AxisAlignedBoundingBoxHull3D() : base(CollisionHullType3D.Hull_AABB) { }
 
-    [Range(0, 3)]
+    public const float maxRange = 100f;
+
+    [Range(0f, maxRange)]
     public float length;
-    [Range(0, 3)]
+    [Range(0f, maxRange)]
     public float height;
-    [Range(0, 3)]
+    [Range(0f, maxRange)]
     public float depth;
 
 
 
     public override bool TestCollisionVsCircle(CircleHull3D circle, ref Collision c)
     {
-        //Call circle, flip arguments <=== ///What does this mean\\\?
+        //Call circle, flip arguments 
         
         return circle.TestCollisionVsAABB(this, ref c);
     }

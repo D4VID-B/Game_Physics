@@ -9,4 +9,9 @@ class SwitchScene : MonoBehaviour
     {
         SceneManager.LoadScene(SceneName);
     }
+
+    public void Embrace()
+    {
+        Application.Quit();
+    }
 }
