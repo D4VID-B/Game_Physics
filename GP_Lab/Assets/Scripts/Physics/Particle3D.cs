@@ -574,7 +574,7 @@ public class Particle3D : MonoBehaviour
         float maxReverseVelocity = 0.0f;
 
         float forwardThrust = 4500.0f;
-        float brakeThrust = 5500.0f;
+        float brakeThrust = 20.0f;
 
         float rollMag =20.0f;
         float yawMag = 10.0f;
@@ -602,9 +602,12 @@ public class Particle3D : MonoBehaviour
             //addForce(hoverCompensation);
         }
 
-        if(Input.GetKey(KeyCode.LeftControl))
+        if(Input.GetKey(KeyCode.C))
         {
-            addForce(this.transform.up * -brakeThrust);
+            if(velocity.magnitude >= 10.0f)
+            {
+                addForce(velocity * -brakeThrust);
+            }
         }
         
 
