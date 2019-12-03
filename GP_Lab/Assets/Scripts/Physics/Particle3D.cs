@@ -31,10 +31,11 @@ public class Particle3D : MonoBehaviour
     Vector3 localCoM, worldCoM;
     Matrix4x4 localTensor = Matrix4x4.identity;
     public Matrix4x4 worldTensor = Matrix4x4.identity; //world = local * inverseWorldTransform
-    Vector3 torqueForce,  angularAcceleration;
+    Vector3 torqueForce;
+    public Vector3 angularAcceleration;
     public Vector4 torqueDirection;
     public float torqueMag;
-    private Vector4 f_torque;
+    public Vector4 f_torque;
     Vector3 momentArm;
     
 
@@ -481,7 +482,7 @@ public class Particle3D : MonoBehaviour
         //bruh you cant set a vector3 equal to a matrix
         angularA = worldTensor * f_torque;
 
-        //Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "angularA after tensor: \n" + angularA);
+        Debug.Log("World Tensor: \n" + worldTensor + "f_torque: \n" + f_torque + "\nangularA after tensor: \n" + angularA);
 
         //angularA = worldTensor * new Vector4(mTorque.x, mTorque.y, mTorque.z, 1);
 
@@ -515,7 +516,7 @@ public class Particle3D : MonoBehaviour
         invLT.m00 = 1 / localTensor.m00;
         invLT.m11 = 1 / localTensor.m11;
         invLT.m22 = 1 / localTensor.m22;
-        //invLT.m33 = 1 / localTensor.m33;
+        invLT.m33 = 1 / localTensor.m33;
 
 
         inverseWorldTransform.m00 = worldTransform.m00;
@@ -542,7 +543,7 @@ public class Particle3D : MonoBehaviour
     {
         updateTensorsAndTransforms();
         angularAcceleration = convertToAngularFromTorque();
-        f_torque = Vector3.zero;
+        f_torque.Set(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
     #endregion
@@ -567,16 +568,16 @@ public class Particle3D : MonoBehaviour
         float maxVel = 190.0f;
         float maxReverseVelocity = 0.0f;
 
-        float forwardThrust = 10.0f;
-        float brakeThrust = 20.0f;
+        float forwardThrust = 50.0f;
+        float brakeThrust = 100.0f;
 
         float rollMag =5.0f;
         float yawMag = 5.0f;
         float pitchMag = 5.0f;
 
-        Vector3 rollDir = new Vector3(1.0f, 0.0f, 0.0f);
-        Vector3 yawDir = new Vector3(0.0f, 0.0f, 1.0f);
-        Vector3 pitchDir = new Vector3(0.0f, 1.0f, 0.0f);
+        Vector3 rollDir = new Vector3(0.0f, 0.0f, 1.0f);
+        Vector3 yawDir = new Vector3(0.0f, 1.0f, 0.0f);
+        Vector3 pitchDir = new Vector3(1.0f, 0.0f, 0.0f);
 
 
         //add gravity
@@ -587,17 +588,36 @@ public class Particle3D : MonoBehaviour
         //forward thrust
         if(Input.GetKey(KeyCode.LeftShift))
         {
+            /*
             if(!(velocity.y >= maxVel))
             {
-                addForce(new Vector3(0.0f, forwardThrust, 0.0f));
+                addForce(new Vector3(0.0f, 0.0f, forwardThrust));
+                //addForce(Vector3.up * forwardThrust);
             }
+            */
+            if(!(velocity.magnitude >= maxVel))
+            {
+                //get direction ship is pointed in
+
+                //accelerate in that direction
+            }
+
+            //addForce(new Vector3(rotation.x, rotation.y, rotation.z).normalized * forwardThrust);
+
         }
 
         if(Input.GetKey(KeyCode.LeftControl))
         {
+            /*
             if(!(velocity.y <= maxReverseVelocity))
             {
-                addForce(new Vector3(0.0f, -brakeThrust, 0.0f));
+                addForce(new Vector3(0.0f, 0.0f, -brakeThrust));
+                //addForce(Vector3.up * -brakeThrust);
+            }
+            */
+            if(!(velocity.magnitude <= maxReverseVelocity))
+            {
+
             }
         }
         
@@ -617,12 +637,12 @@ public class Particle3D : MonoBehaviour
         //yaw
         if (Input.GetKey(KeyCode.Q))
         {
-            addTorque(calculateTorque(yawMag, yawDir));
+            addTorque(calculateTorque(-yawMag, yawDir));
         }
 
         if (Input.GetKey(KeyCode.E))
         {
-            addTorque(calculateTorque(-yawMag, yawDir));
+            addTorque(calculateTorque(yawMag, yawDir));
         }
 
 
