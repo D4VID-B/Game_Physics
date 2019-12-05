@@ -95,8 +95,8 @@ public class ForceGenerator3D
 
     public static Vector3 genereateImpulse(Vector3 direction, float forceMultiplier)
     {
-        Vector3 impulse = new Vector3();
+        //impulse = integral of a force applied over some time dt
 
-        return impulse;
+        return direction * forceMultiplier;
     }
 }

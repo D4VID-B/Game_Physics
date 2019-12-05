@@ -11,23 +11,52 @@ public class ShootGrapple : MonoBehaviour
     public float shotStrength = 10f;
     public Transform shipTransform;
 
+    public float attachmentOffset = 1.0f;
+
+    Particle3D grapple;
+    Vector3 attachmentPoint;
+
+    private void Start()
+    {
+        grapple = GetComponent<Particle3D>();
+
+        attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z + attachmentOffset);
+        transform.position = attachmentPoint;
+        grapple.velocity = Vector3.zero;
+        grapple.acceleration = Vector3.zero;
+        grapple.position = transform.position;
+    }
+
     void Update()
     {
+        attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z + attachmentOffset);
         checkInput();
+
+        checkAndReset();
     }
 
     void checkInput()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            GetComponent<Particle3D>().addForce( ForceGenerator3D.genereateImpulse(new Vector3(0f, 0f, 10f), shotStrength));
+
+            grapple.velocity = ForceGenerator3D.genereateImpulse(shipTransform.gameObject.GetComponentInParent<Particle3D>().velocity, shotStrength); 
         }
 
-        Vector3 attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z + .2f);
-
-        GetComponent<Particle3D>().addForce(ForceGenerator3D.GenerateForce_spring(transform.position, attachmentPoint, spring_resting, spring_stiffness));
-        GetComponent<Particle3D>().addForce(ForceGenerator3D.GenerateForce_drag(GetComponent<Particle3D>().velocity, fluidVelocity, fluidDensity, 1, 10.05f));
+        grapple.addForce(ForceGenerator3D.GenerateForce_spring(transform.position, attachmentPoint, spring_resting, spring_stiffness));
+        grapple.addForce(ForceGenerator3D.GenerateForce_drag(grapple.velocity, fluidVelocity, fluidDensity, 1, 10.05f));
     }
 
+    void checkAndReset()
+    {
+        Vector3 diff = transform.position - attachmentPoint;
 
+        if (diff.magnitude > 30f || Input.GetKeyDown(KeyCode.Tab))
+        {
+            transform.position = attachmentPoint;
+            grapple.velocity = Vector3.zero;
+            grapple.acceleration = Vector3.zero;
+            grapple.position = transform.position;
+        }
+    }
 }

@@ -592,8 +592,6 @@ public class Particle3D : MonoBehaviour
 
         //addForce(ForceGenerator3D.GenerateForce_drag(velocity, Vector3.zero, 20.0f, 4.0f, 15.0f));
 
-        //grappling hook
-
         Debug.DrawRay(this.transform.position, this.transform.up * 20, Color.red);
         //forward thrust
         if(Input.GetKey(KeyCode.LeftShift))
@@ -661,7 +659,7 @@ public class Particle3D : MonoBehaviour
     }
 
     #endregion
-    
+
     #region Runtime
 
     void Start()
