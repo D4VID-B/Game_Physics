@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipFuel : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ShipFuel : MonoBehaviour
     float shipFuel;
     public float fuelLoss = 0.5f;
 
+    public Text fuelText;
 
     void Start()
     {
@@ -17,10 +19,13 @@ public class ShipFuel : MonoBehaviour
     void FixedUpdate()
     {
         totalFuel -= fuelLoss;
+
+        fuelText.text = totalFuel.ToString();
+
         if(totalFuel < 0)
         {
             totalFuel = 0;
-            //GetComponent<Particle3D>().disableThrust();
+            GetComponent<Particle3D>().disableThrust();
         }
     }
 

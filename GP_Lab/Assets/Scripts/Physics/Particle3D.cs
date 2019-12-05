@@ -57,6 +57,8 @@ public class Particle3D : MonoBehaviour
     public float height;
     public float x_extent, y_extent, z_extent; //These are cuboid values
 
+
+    bool hasFuel = true;
     #endregion
 
 
@@ -573,7 +575,7 @@ public class Particle3D : MonoBehaviour
         float maxVel = 190.0f;
         float maxReverseVelocity = 0.0f;
 
-        float forwardThrust = 4500.0f;
+        float forwardThrust = 1500.0f;
         float brakeThrust = 20.0f;
 
         float rollMag =20.0f;
@@ -588,13 +590,14 @@ public class Particle3D : MonoBehaviour
 
 
         //add gravity
-        //addForce(ForceGenerator3D.generateForce_Gravity(mass, -1.8f, Vector3.up));
+        //addForce(ForceGenerator3D.generateForce_Gravity(mass, -1.962f, Vector3.up));
 
         //addForce(ForceGenerator3D.GenerateForce_drag(velocity, Vector3.zero, 20.0f, 4.0f, 15.0f));
 
         Debug.DrawRay(this.transform.position, this.transform.up * 20, Color.red);
+        
         //forward thrust
-        if(Input.GetKey(KeyCode.LeftShift))
+        if(Input.GetKey(KeyCode.LeftShift) && hasFuel)
         {
             addForce(this.transform.up * forwardThrust);
             //addForce(hoverCompensation);
@@ -658,6 +661,10 @@ public class Particle3D : MonoBehaviour
         }
     }
 
+    public void disableThrust()
+    {
+        hasFuel = false;
+    }
     #endregion
 
     #region Runtime

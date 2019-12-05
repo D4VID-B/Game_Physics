@@ -12,7 +12,7 @@ public class CollisionManager3D : MonoBehaviour
 
     Scene currentScene;
     public List<CollisionHull3D> colliders;
-    List<GameObject> rootObjects;
+    public List<GameObject> rootObjects;
 
     public bool enableManager = true;
     public bool shouldChangeColor = true;
@@ -30,7 +30,11 @@ public class CollisionManager3D : MonoBehaviour
 
         colliders = new List<CollisionHull3D>();
         rootObjects = new List<GameObject>();
+
         currentScene.GetRootGameObjects(rootObjects);
+
+        //Manually adding Grapple to the list
+        rootObjects.Add(GameObject.Find("3D_Ship/Grapple"));
 
         cm = Camera.main;
 
@@ -131,7 +135,20 @@ public class CollisionManager3D : MonoBehaviour
 
                         if(colliders[i].GetComponent<FuelPickup>() != null || colliders[j].GetComponent<FuelPickup>() != null) //Picked up fuel
                         {
-                            GameObject.Find("Player").GetComponent<ShipFuel>().addFuel(colliders[i].GetComponent<FuelPickup>().FUEL_VALUE);
+                            if(colliders[i].GetComponent<FuelPickup>() != null)
+                            {
+                                GameObject.Find("3D_Ship").GetComponent<ShipFuel>().addFuel(colliders[i].GetComponent<FuelPickup>().FUEL_VALUE);
+
+                                colliders[i].gameObject.SetActive(false);
+                                colliders.Remove(colliders[i]);
+                            }
+                            else
+                            {
+                                GameObject.Find("3D_Ship").GetComponent<ShipFuel>().addFuel(colliders[j].GetComponent<FuelPickup>().FUEL_VALUE);
+
+                                colliders[i].gameObject.SetActive(false);
+                                colliders.Remove(colliders[i]);
+                            }
                         }
                         else if(colliders[i].gameObject.tag == "Respawn" || colliders[j].gameObject.tag == "Respawn") //Hit the ground -> death scene
                         {
