@@ -160,6 +160,8 @@ public class CollisionManager3D : MonoBehaviour
                         else if(colliders[i].gameObject.tag == "Finish" || colliders[j].gameObject.tag == "Finish")//Reached the end of the level
                         {
                             GameObject.Find("f1").GetComponent<SwitchScene>().Switch();
+                            GameObject.Find("f2").GetComponent<SwitchScene>().Switch();
+                            GameObject.Find("f3").GetComponent<SwitchScene>().Switch();
                         }
 
                     }
