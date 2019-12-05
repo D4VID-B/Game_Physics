@@ -392,6 +392,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.1, z: -30.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1519712265}
   - {fileID: 1212955486}
   - {fileID: 203408110}
   - {fileID: 1971267373}
@@ -399,7 +400,6 @@ Transform:
   - {fileID: 533286665}
   - {fileID: 1262689984}
   - {fileID: 705907652}
-  - {fileID: 1519712265}
   - {fileID: 1027536631}
   - {fileID: 1744642041}
   m_Father: {fileID: 0}
@@ -561,6 +561,7 @@ MonoBehaviour:
     e33: 0
   radius: 0.5
   hitExplode: 0
+  DontTestWithTheseColliders: []
 --- !u!1 &203408109
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,21 +593,98 @@ Transform:
   m_LocalScale: {x: 4, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &203408111
-BoxCollider:
+--- !u!114 &203408111
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203408109}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 4
+  y_extent: 1
+  z_extent: 1
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &203408112
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -734,6 +812,7 @@ MonoBehaviour:
     e33: 0
   radius: 0.5
   hitExplode: 0
+  DontTestWithTheseColliders: []
 --- !u!23 &219224389
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -821,25 +900,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533286664}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -1.8136941, z: 1.0460129}
+  m_LocalPosition: {x: 0.24, y: -1.751, z: 1.046}
   m_LocalScale: {x: 0.75, y: 1, z: 0.75}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &533286666
-BoxCollider:
+--- !u!114 &533286666
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533286664}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 0.75
+  y_extent: 1
+  z_extent: 0.75
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &533286667
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -913,25 +1069,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705907651}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -1.561694, z: 1.0460129}
+  m_LocalPosition: {x: -1.27, y: -1.561694, z: 1.0460129}
   m_LocalScale: {x: 0.75, y: 0.5, z: 0.75}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &705907653
-BoxCollider:
+--- !u!114 &705907653
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705907651}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 0.75
+  y_extent: 0.5
+  z_extent: 0.75
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &705907654
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1005,25 +1238,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763444034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 1.721306, z: 1.0460129}
+  m_LocalPosition: {x: 0.24, y: 1.59, z: 1.05}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &763444036
-BoxCollider:
+--- !u!114 &763444036
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763444034}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 1
+  y_extent: 2
+  z_extent: 1
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &763444037
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1211,6 +1521,7 @@ MonoBehaviour:
     e33: 0
   radius: 0.5
   hitExplode: 0
+  DontTestWithTheseColliders: []
 --- !u!1 &949406111
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,25 +1626,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027536630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 0.395, z: 0.288}
+  m_LocalPosition: {x: 0.24, y: 0.4, z: 0.3}
   m_LocalScale: {x: 0.5, y: 2, z: 0.5}
   m_Children: []
   m_Father: {fileID: 32731276}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1027536632
-BoxCollider:
+--- !u!114 &1027536632
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027536630}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 0.5
+  y_extent: 2
+  z_extent: 0.5
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &1027536633
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1521,6 +1909,7 @@ MonoBehaviour:
     e33: 0
   radius: 0.5
   hitExplode: 0
+  DontTestWithTheseColliders: []
 --- !u!1 &1180760251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,6 +2142,7 @@ MonoBehaviour:
     e33: 0
   radius: 5
   hitExplode: 0
+  DontTestWithTheseColliders: []
 --- !u!1 &1212955481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1943,7 +2333,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5000005, z: 0.5000005}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1212955487
 MonoBehaviour:
@@ -1993,6 +2383,7 @@ MonoBehaviour:
     e33: 0
   radius: 0.5
   hitExplode: 0
+  DontTestWithTheseColliders: []
 --- !u!1 &1215415408
 GameObject:
   m_ObjectHideFlags: 0
@@ -2111,25 +2502,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1262689983}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -1.5886942, z: 1.0460129}
+  m_LocalPosition: {x: 1.71, y: -1.489, z: 1.046}
   m_LocalScale: {x: 0.75, y: 0.5, z: 0.75}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1262689985
-BoxCollider:
+--- !u!114 &1262689985
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1262689983}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 0.75
+  y_extent: 0.5
+  z_extent: 0.75
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &1262689986
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2241,6 +2709,7 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 0
+  DontTestWithTheseColliders: []
   length: 100
   height: 1
   depth: 100
@@ -2299,7 +2768,7 @@ Transform:
   m_GameObject: {fileID: 1300865135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -50, z: 40}
-  m_LocalScale: {x: 5, y: 1, z: 10}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2425,7 +2894,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
 --- !u!81 &1519712266
 AudioListener:
@@ -2571,25 +3040,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744642040}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -1.63, z: 0.02}
+  m_LocalPosition: {x: 0.24, y: -1.49, z: 0.08}
   m_LocalScale: {x: 0.2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1744642042
-BoxCollider:
+--- !u!114 &1744642042
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744642040}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 0.2
+  y_extent: 2
+  z_extent: 1
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &1744642043
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2663,25 +3209,102 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971267372}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 0.21130598, z: 1.0460134}
+  m_LocalPosition: {x: 0.24, y: 0.123, z: 1.046}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1971267374
-BoxCollider:
+--- !u!114 &1971267374
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971267372}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ad73ca58e9bee4180db29f5ee1ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldUpdateParticle: 1
+  shipMode: 0
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  startingMass: 0
+  worldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  inverseWorldTransform:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  worldTensor:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  angularAcceleration: {x: 0, y: 0, z: 0}
+  torqueDirection: {x: 0, y: 0, z: 0, w: 0}
+  torqueMag: 0
+  f_torque: {x: 0, y: 0, z: 0, w: 0}
+  spinAngularAcceleration: {x: 0, y: 0, z: 0}
+  spinAngularVelocity: {x: 0, y: 0, z: 0}
+  useAngularVelocityInsteadOfAcceleration: 0
+  moveAcceleration: {x: 0, y: 0, z: 0}
+  moveVelocity: {x: 0, y: 0, z: 0}
+  useVelocityInsteadOfAcceleration: 0
+  radius: 0
+  height: 0
+  x_extent: 2
+  y_extent: 1
+  z_extent: 1
+  IntegrationMethod: 0
+  RotationUpdateMethod: 0
+  MovementType: 0
+  Shape: 2
 --- !u!23 &1971267375
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3046,3 +3669,4 @@ MonoBehaviour:
     e33: 0
   radius: 0.5
   hitExplode: 0
+  DontTestWithTheseColliders: []

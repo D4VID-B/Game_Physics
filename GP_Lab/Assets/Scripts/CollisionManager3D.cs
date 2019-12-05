@@ -35,6 +35,9 @@ public class CollisionManager3D : MonoBehaviour
 
         //Manually adding Grapple to the list
         rootObjects.Add(GameObject.Find("3D_Ship/Grapple"));
+        rootObjects.Add(GameObject.Find("Finish/f1"));
+        rootObjects.Add(GameObject.Find("Finish/f2"));
+        rootObjects.Add(GameObject.Find("Finish/f3"));
 
         cm = Camera.main;
 
@@ -156,7 +159,7 @@ public class CollisionManager3D : MonoBehaviour
                         }
                         else if(colliders[i].gameObject.tag == "Finish" || colliders[j].gameObject.tag == "Finish")//Reached the end of the level
                         {
-                            GameObject.Find("Finish").GetComponent<SwitchScene>().Switch();
+                            GameObject.Find("f1").GetComponent<SwitchScene>().Switch();
                         }
 
                     }

@@ -51,9 +51,9 @@ public class Particle3D : MonoBehaviour
 
     [Header("Lab 07: AD Shape Parameters")]
 
-    [Range(0.0f, 3.0f)]
+    [Range(0.0f, 30.0f)]
     public float radius;
-    [Range(0.0f, 3.0f)]
+    [Range(0.0f, 30.0f)]
     public float height;
     public float x_extent, y_extent, z_extent; //These are cuboid values
 
