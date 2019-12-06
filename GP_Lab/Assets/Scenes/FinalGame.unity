@@ -3139,7 +3139,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300865135}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91467b5200d53fa40a02fefd86012d5e, type: 3}
   m_Name: 
@@ -3180,6 +3180,7 @@ MonoBehaviour:
     e33: 0
   DontTestWithTheseColliders:
   - {fileID: 1212955487}
+  - {fileID: 32731278}
   length: 100
   height: 0
   depth: 100
