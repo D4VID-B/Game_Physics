@@ -64,6 +64,27 @@ public class CircleHull3D : CollisionHull3D
                 //changeColor(circle.gameObject, true);
                 //Debug.Log("Changing color!");
                 Debug.Log("COLLISION");
+
+                col.ownerA = this.gameObject;
+                col.ownerB = circle.gameObject;
+
+                //Calculate contact normal - is also the contact direction
+                distance = Mathf.Sqrt(distance);
+                col.contacts[0].normal = diff * (1 / distance);
+
+                //Calculate contact point => center of the overlap
+                //take the diff
+                //magnitude = distance
+                //normalise by /magnitude
+                Vector2 e0 = col.contacts[0].normal * -radius;
+                Vector2 e1 = col.contacts[0].normal * circle.radius;
+                col.contacts[0].point = (e0 + e1) * 0.5f;
+
+                //Calculate interpenetration depth
+                //subtract distance from sum of radii => interpen depth
+
+                col.interpenDepth = sumOfRadii - distance;
+
                 return true;
             }
             else
@@ -119,6 +140,25 @@ public class CircleHull3D : CollisionHull3D
             if (dSq < (this.radius * this.radius))
             {
                 Debug.Log("c v aabb pass");
+                col.ownerA = this.gameObject;
+                col.ownerB = box.gameObject;
+
+                Vector3 clamped = new Vector3(clampedX, clampedY, clampedZ);
+
+
+                //get the clamped combinded vector as the point to have norm from
+                Vector2 Point = (clamped + (distance.normalized * this.radius)) * 0.5f;
+
+                //take the centerpoint of the circle, subtract the point to get the norm (it may be point - circ)
+                //Vector2 norm = (circCenter - Point).normalized; //(same as distance)
+
+                //col.contacts[0].normal = norm;
+                col.contacts[0].normal = distance.normalized;
+
+                col.contacts[0].point = Point;
+
+                //radius of the circle minus the distance to the original point of entry
+                col.interpenDepth = (this.radius * this.radius) - dSq;
                 return true;
             }
             else

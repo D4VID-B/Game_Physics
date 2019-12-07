@@ -37,7 +37,7 @@ public class Particle3D : MonoBehaviour
     public float torqueMag;
     public Vector4 f_torque;
     Vector3 momentArm;
-    
+    public bool GRAVITY = false;
 
     [Header("Demo: Sin Spin")]
     public Vector3 spinAngularAcceleration;
@@ -584,9 +584,10 @@ public class Particle3D : MonoBehaviour
 
         Vector3 hoverCompensation = Vector3.up * 100.0f;
 
-        Vector3 rollDir = this.transform.up; //new Vector3(0.0f, 0.0f, 1.0f);
-        Vector3 yawDir = this.transform.forward;//new Vector3(0.0f, 1.0f, 0.0f);
-        Vector3 pitchDir = this.transform.right; //new Vector3(1.0f, 0.0f, 0.0f);
+
+        Vector3 rollDir = new Vector3(worldTransform.m01, worldTransform.m11, worldTransform.m21); //new Vector3(0.0f, 0.0f, 1.0f);
+        Vector3 yawDir = new Vector3(worldTransform.m02, worldTransform.m12, worldTransform.m22);//new Vector3(0.0f, 1.0f, 0.0f);
+        Vector3 pitchDir = new Vector3(worldTransform.m00, worldTransform.m10, worldTransform.m20); //new Vector3(1.0f, 0.0f, 0.0f);
 
 
         //add gravity
@@ -747,6 +748,11 @@ public class Particle3D : MonoBehaviour
         if(shipMode)
         {
             updateShip();
+        }
+
+        if(GRAVITY)
+        {
+            addForce(ForceGenerator3D.generateForce_Gravity(mass, -1.8f, Vector3.up));
         }
     }
 
