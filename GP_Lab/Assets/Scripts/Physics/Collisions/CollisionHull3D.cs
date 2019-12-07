@@ -23,6 +23,9 @@ public abstract class CollisionHull3D : MonoBehaviour
         public float restitution; //0-1, collision elasticity
         public Vector3 closingVelocity; //a.velocity - b.velocity
 
+        public GameObject ownerA;
+        public GameObject ownerB;
+
     }
 
 
@@ -181,11 +184,15 @@ public abstract class CollisionHull3D : MonoBehaviour
     public static void updateCollision(ref Collision col, float coeff)
     {
         col.restitution = coeff;
-        col.closingVelocity = -col.restitution * Vector3.Scale((col.a.GetComponent<Particle3D>().velocity - col.b.GetComponent<Particle3D>().velocity), col.contacts[0].normal);
-        
+        //col.closingVelocity = -col.restitution * Vector3.Scale((col.ownerA.GetComponent<Particle3D>().velocity - col.ownerB.GetComponent<Particle3D>().velocity), col.contacts[0].normal);
 
-        col.a.GetComponent<Particle3D>().velocity = col.closingVelocity * 1/col.a.GetComponent<Particle3D>().startingMass;//Inverse mass   
-        col.b.GetComponent<Particle3D>().velocity = -col.closingVelocity * 1/col.b.GetComponent<Particle3D>().startingMass;
+        col.closingVelocity = col.ownerA.GetComponent<Particle3D>().velocity.magnitude * col.contacts[0].normal;
+
+        Debug.DrawRay(col.ownerA.transform.position, col.closingVelocity * 20);
+        //col.closingVelocity = ((col.a.GetComponent<Particle2D>().velocity + col.b.GetComponent<Particle2D>().velocity));
+
+        col.ownerA.GetComponent<Particle3D>().velocity = col.closingVelocity * 1/col.ownerA.GetComponent<Particle3D>().startingMass;//Inverse mass   
+        col.ownerB.GetComponent<Particle3D>().velocity = -col.closingVelocity * 1/col.ownerB.GetComponent<Particle3D>().startingMass;
     }
 
     /*
@@ -193,6 +200,10 @@ public abstract class CollisionHull3D : MonoBehaviour
          */
     public static void resolveInterpenetration(ref Collision col)
     {
-            col.b.transform.Translate(col.contacts[0].normal * col.interpenDepth * -1);
+        //Debug.Log("contNorm: " + col.contacts[0].normal + "    intD: " + col.interpenDepth);
+        //Debug.Log("col b: " + col.owner.name);
+
+        col.ownerA.transform.Translate(col.contacts[0].normal * col.interpenDepth * -1);
+        col.ownerB.transform.Translate(col.contacts[0].normal * col.interpenDepth);
     }
 }

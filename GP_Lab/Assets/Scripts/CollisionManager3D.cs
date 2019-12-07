@@ -91,7 +91,6 @@ public class CollisionManager3D : MonoBehaviour
         foreach (GameObject obj in rootObjects)
         {
             hull = obj.GetComponent<CollisionHull3D>();
-            
 
             if (hull != null /*&& isInView(obj)*/)
             {
@@ -135,6 +134,9 @@ public class CollisionManager3D : MonoBehaviour
                         //    CollisionHull3D.changeColor(colliders[i].gameObject, true);
                         //    CollisionHull3D.changeColor(colliders[j].gameObject, true);
                         //}
+
+                        CollisionHull3D.resolveInterpenetration(ref desc);
+                        CollisionHull3D.updateCollision(ref desc, coefficientOfRestitution);
 
                         if(colliders[i].GetComponent<FuelPickup>() != null && colliders[j].gameObject.tag == "Respawn") //Hit ground
                         {

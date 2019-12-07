@@ -386,6 +386,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -408,11 +409,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32731274}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.1, z: -30.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1519712265}
   - {fileID: 1212955486}
   - {fileID: 203408110}
   - {fileID: 1971267373}
@@ -422,9 +422,10 @@ Transform:
   - {fileID: 705907652}
   - {fileID: 1027536631}
   - {fileID: 1744642041}
+  - {fileID: 1519712265}
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &32731277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 780b1b9ac86ed7548b237c3ee0fd08ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalFuel: 100
+  totalFuel: 1000
   fuelLoss: 0.1
   fuelText: {fileID: 949406113}
 --- !u!114 &32731278
@@ -620,6 +621,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -982,6 +984,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -1022,12 +1025,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203408109}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -0.7951829, z: 1.0460129}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -1.0460129, z: -0.7951832}
   m_LocalScale: {x: 4, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &203408112
 MeshRenderer:
@@ -1312,6 +1315,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 1
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -1352,12 +1356,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533286664}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -1.751, z: 1.046}
-  m_LocalScale: {x: 0.75, y: 1, z: 0.75}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -1.0459999, z: -1.7510014}
+  m_LocalScale: {x: 0.75, y: 1, z: 0.75000095}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &533286667
 MeshRenderer:
@@ -1430,12 +1434,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705907651}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.27, y: -1.561694, z: 1.0460129}
-  m_LocalScale: {x: 0.75, y: 0.5, z: 0.75}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -1.27, y: -1.0460128, z: -1.5616951}
+  m_LocalScale: {x: 0.75, y: 0.5000005, z: 0.75000095}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &705907654
 MeshRenderer:
@@ -1508,12 +1512,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763444034}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 1.59, z: 1.05}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -1.0500003, z: 1.5900002}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &763444037
 MeshRenderer:
@@ -1690,6 +1694,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -2052,6 +2057,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -2169,12 +2175,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027536630}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 0.4, z: 0.3}
-  m_LocalScale: {x: 0.5, y: 2, z: 0.5}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -0.3000001, z: 0.39999962}
+  m_LocalScale: {x: 0.5, y: 2, z: 0.5000005}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1027536633
 MeshRenderer:
@@ -2459,6 +2465,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -2804,6 +2811,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -2955,6 +2963,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -3023,12 +3032,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212955481}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 3.1, z: 1.1}
-  m_LocalScale: {x: 0.5, y: 0.5000005, z: 0.5000005}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -1.1000009, z: 3.1000004}
+  m_LocalScale: {x: 0.5, y: 0.50000095, z: 0.50000095}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1212955487
 MonoBehaviour:
@@ -3197,12 +3206,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1262689983}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.71, y: -1.489, z: 1.046}
-  m_LocalScale: {x: 0.75, y: 0.5, z: 0.75}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.71, y: -1.046, z: -1.4890003}
+  m_LocalScale: {x: 0.75, y: 0.5000005, z: 0.75000095}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1262689986
 MeshRenderer:
@@ -3351,9 +3360,9 @@ MonoBehaviour:
     e33: 0
   DontTestWithTheseColliders:
   - {fileID: 1212955487}
-  length: 50
-  height: 0.5
-  depth: 50
+  length: 100
+  height: 1
+  depth: 100
 --- !u!23 &1300865137
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3433,7 +3442,7 @@ MonoBehaviour:
   acceleration: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   angularVelocity: {x: 0, y: 0, z: 0}
-  startingMass: 1
+  startingMass: 1e+22
   worldTransform:
     e00: 0
     e01: 0
@@ -3508,6 +3517,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
@@ -3639,12 +3649,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1519712264}
-  m_LocalRotation: {x: -0.6427876, y: -0, z: -0, w: 0.76604444}
-  m_LocalPosition: {x: 0.24, y: -13.51, z: -4.94}
+  m_LocalRotation: {x: 0.08715579, y: -0, z: -0, w: 0.9961947}
+  m_LocalPosition: {x: 0.24, y: 4.9400024, z: -13.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 0
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
 --- !u!81 &1519712266
 AudioListener:
@@ -3788,12 +3798,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744642040}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: -1.49, z: 0.08}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -0.079999916, z: -1.4899998}
   m_LocalScale: {x: 0.2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1744642043
 MeshRenderer:
@@ -3866,12 +3876,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971267372}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24, y: 0.123, z: 1.046}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.24, y: -1.0460001, z: 0.12299919}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 32731276}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1971267375
 MeshRenderer:
@@ -4333,6 +4343,7 @@ MonoBehaviour:
   torqueDirection: {x: 0, y: 0, z: 0, w: 0}
   torqueMag: 0
   f_torque: {x: 0, y: 0, z: 0, w: 0}
+  GRAVITY: 0
   spinAngularAcceleration: {x: 0, y: 0, z: 0}
   spinAngularVelocity: {x: 0, y: 0, z: 0}
   useAngularVelocityInsteadOfAcceleration: 0
