@@ -22,6 +22,8 @@ public class CollisionManager3D : MonoBehaviour
     [Range(0.0f, 1.0f)]
     public float coefficientOfRestitution = 0.8f;
 
+    public bool shouldIgnoreGround = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -149,7 +151,7 @@ public class CollisionManager3D : MonoBehaviour
                             colliders[i].gameObject.SetActive(false);
                             colliders.Remove(colliders[i]);
                         }
-                        else if(colliders[i].gameObject.tag == "Respawn" && colliders[j].GetComponent<FuelPickup>() == null) //Hit the ground -> death scene
+                        else if(colliders[i].gameObject.tag == "Respawn" && colliders[j].GetComponent<FuelPickup>() == null && !shouldIgnoreGround) //Hit the ground -> death scene
                         {
                             //if (colliders[i].gameObject.tag == "Player")
                             //{
@@ -168,7 +170,7 @@ public class CollisionManager3D : MonoBehaviour
 
                             GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
                         }
-                        else if(colliders[j].gameObject.tag == "Respawn" && colliders[i].GetComponent<FuelPickup>() == null)
+                        else if(colliders[j].gameObject.tag == "Respawn" && colliders[i].GetComponent<FuelPickup>() == null && !shouldIgnoreGround)
                         {
                             GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
                         }

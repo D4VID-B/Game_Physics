@@ -26,6 +26,7 @@ public class ShipFuel : MonoBehaviour
         {
             totalFuel = 0;
             GetComponent<Particle3D>().disableThrust();
+            GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
         }
     }
 

@@ -273,6 +273,7 @@ MonoBehaviour:
   enableManager: 1
   shouldChangeColor: 0
   coefficientOfRestitution: 0.8
+  shouldIgnoreGround: 1
 --- !u!1 &32731274
 GameObject:
   m_ObjectHideFlags: 0
