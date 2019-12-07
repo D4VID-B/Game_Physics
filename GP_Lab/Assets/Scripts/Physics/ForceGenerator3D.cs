@@ -100,14 +100,28 @@ public class ForceGenerator3D
         return direction * forceMultiplier;
     }
 
-    public static float calcImpulseMagnitude(float restCoeff, float mass_1, float mass_2, Quaternion rot_1, Quaternion rot_2, Vector3 angVel_1, Vector3 angVel_2, Vector3 com_1, Vector3 com_2, Vector3 vel_1, Vector3 vel_2, Vector3 relVel, Matrix4x4 wsit_1, Matrix4x4 wsit_2, Matrix4x4 osit_1, Matrix4x4 osit_2, Vector3 cpn, Vector3 cp_1, Vector3 cp_2)
+    public static float calcImpulseMagnitude(float restCoeff, float mass_1, float mass_2, Quaternion rot_1, Quaternion rot_2, Vector3 angVel_1, Vector3 angVel_2, Vector3 com_1, Vector3 com_2, Vector3 vel_1, Vector3 vel_2, Matrix4x4 wsit_1, Matrix4x4 wsit_2, Matrix4x4 osit_1, Matrix4x4 osit_2, Vector3 cpn, Vector3 cp_1, Vector3 cp_2)
     {
         float mag = 0;
 
-        Vector3 top = relVel * -(1 + restCoeff);
         Vector3 rA = cp_1 - com_1;
-        Vector3 iA;
-        var bottom = (1 / mass_1 + 1 / mass_2) + Vector3.Cross(Vector3.Dot(cpn, (Vector3.Dot(iA,(Vector3.Cross(rA, cpn))))), rA);
+        Vector3 rB = cp_2 - com_2;
+        Vector4 temp_1 = new Vector4(rot_1.x, rot_1.y, rot_1.z, rot_1.w);
+        Vector4 temp_2 = new Vector4(rot_2.x, rot_2.y, rot_2.z, rot_2.w);
+        Vector3 iA = osit_1.inverse * temp_1;
+        Vector3 iB = osit_2.inverse * temp_2;
+
+        Vector3 pA = Vector3.Cross(vel_1 + angVel_1, (cp_1 - com_1));
+        Vector3 pB = Vector3.Cross(vel_2 + angVel_2, (cp_2 - com_2));
+        float vRel = Vector3.Dot(cpn, (pA - pB));
+
+        float top = -(1 + restCoeff) * vRel;
+
+        float bottom_1 = (1 / mass_1 + 1 / mass_2);
+        float bottom_2 = Vector3.Dot(cpn, Vector3.Cross(Vector3.Scale(iA, Vector3.Cross(rA, cpn)), rA)); 
+        float bottom_3 = Vector3.Dot(cpn, Vector3.Cross(Vector3.Scale(iB, Vector3.Cross(rB, cpn)), rB));
+
+        mag = top / (bottom_1 + bottom_2 + bottom_3);
 
         return mag;
     }
