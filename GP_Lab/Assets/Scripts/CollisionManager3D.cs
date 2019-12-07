@@ -151,21 +151,25 @@ public class CollisionManager3D : MonoBehaviour
                         }
                         else if(colliders[i].gameObject.tag == "Respawn" && colliders[j].GetComponent<FuelPickup>() == null) //Hit the ground -> death scene
                         {
-                            if (colliders[i].GetComponent<ShipFuel>() != null)
-                            {
-                                Vector3 norm = new Vector3(0f, 10f, 0f);
-                                float mult = ForceGenerator3D.calcImpulseMagnitude(0.5f, colliders[i].GetComponent<Particle3D>().getMass(), colliders[j].GetComponent<Particle3D>().getMass(),
-                                    colliders[i].GetComponent<Particle3D>().rotation, colliders[j].GetComponent<Particle3D>().rotation,
-                                    colliders[i].GetComponent<Particle3D>().angularVelocity, colliders[j].GetComponent<Particle3D>().angularVelocity,
-                                    colliders[i].GetComponent<Particle3D>().localCoM, colliders[j].GetComponent<Particle3D>().localCoM,
-                                    colliders[i].GetComponent<Particle3D>().velocity, colliders[j].GetComponent<Particle3D>().velocity,
-                                    colliders[i].GetComponent<Particle3D>().worldTensor, colliders[j].GetComponent<Particle3D>().worldTensor,
-                                    colliders[i].GetComponent<Particle3D>().localTensor, colliders[j].GetComponent<Particle3D>().localTensor,
-                                    norm, colliders[i].transform.position, new Vector3(0f, 0f, 0f));
+                            //if (colliders[i].gameObject.tag == "Player")
+                            //{
+                            //    Vector3 norm = new Vector3(0f, 10f, 0f);
+                            //    float mult = ForceGenerator3D.calcImpulseMagnitude(0.5f, colliders[i].GetComponent<Particle3D>().getMass(), colliders[j].GetComponent<Particle3D>().getMass(),
+                            //        colliders[i].GetComponent<Particle3D>().rotation, colliders[j].GetComponent<Particle3D>().rotation,
+                            //        colliders[i].GetComponent<Particle3D>().angularVelocity, colliders[j].GetComponent<Particle3D>().angularVelocity,
+                            //        colliders[i].GetComponent<Particle3D>().localCoM, colliders[j].GetComponent<Particle3D>().localCoM,
+                            //        colliders[i].GetComponent<Particle3D>().velocity, colliders[j].GetComponent<Particle3D>().velocity,
+                            //        colliders[i].GetComponent<Particle3D>().worldTensor, colliders[j].GetComponent<Particle3D>().worldTensor,
+                            //        colliders[i].GetComponent<Particle3D>().localTensor, colliders[j].GetComponent<Particle3D>().localTensor,
+                            //        norm, colliders[i].transform.position, new Vector3(0f, 0f, 0f));
                                 
-                                colliders[i].GetComponent<Particle3D>().addForce(ForceGenerator3D.genereateImpulse(norm, mult));
-                            }
+                            //    colliders[i].GetComponent<Particle3D>().addForce(ForceGenerator3D.genereateImpulse(norm, mult));
+                            //}
 
+                            GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
+                        }
+                        else if(colliders[j].gameObject.tag == "Respawn" && colliders[i].GetComponent<FuelPickup>() == null)
+                        {
                             GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
                         }
                         else if(colliders[i].gameObject.tag == "Finish" || colliders[j].gameObject.tag == "Finish")//Reached the end of the level
