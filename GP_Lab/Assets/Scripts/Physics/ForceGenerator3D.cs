@@ -99,4 +99,16 @@ public class ForceGenerator3D
 
         return direction * forceMultiplier;
     }
+
+    public static float calcImpulseMagnitude(float restCoeff, float mass_1, float mass_2, Quaternion rot_1, Quaternion rot_2, Vector3 angVel_1, Vector3 angVel_2, Vector3 com_1, Vector3 com_2, Vector3 vel_1, Vector3 vel_2, Vector3 relVel, Matrix4x4 wsit_1, Matrix4x4 wsit_2, Matrix4x4 osit_1, Matrix4x4 osit_2, Vector3 cpn, Vector3 cp_1, Vector3 cp_2)
+    {
+        float mag = 0;
+
+        Vector3 top = relVel * -(1 + restCoeff);
+        Vector3 rA = cp_1 - com_1;
+        Vector3 iA;
+        var bottom = (1 / mass_1 + 1 / mass_2) + Vector3.Cross(Vector3.Dot(cpn, (Vector3.Dot(iA,(Vector3.Cross(rA, cpn))))), rA);
+
+        return mag;
+    }
 }
