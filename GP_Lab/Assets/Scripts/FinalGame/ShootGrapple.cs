@@ -11,7 +11,6 @@ public class ShootGrapple : MonoBehaviour
     public float shotStrength = 10f;
     public Transform shipTransform;
 
-    public float attachmentOffset = 1.0f;
 
     Particle3D grapple;
     Vector3 attachmentPoint;
@@ -20,16 +19,16 @@ public class ShootGrapple : MonoBehaviour
     {
         grapple = GetComponent<Particle3D>();
 
-        attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z + attachmentOffset);
-        transform.position = attachmentPoint;
+        attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z);
+        grapple.position = attachmentPoint;
         grapple.velocity = Vector3.zero;
         grapple.acceleration = Vector3.zero;
-        grapple.position = transform.position;
+        
     }
 
     void Update()
     {
-        attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z + attachmentOffset);
+        attachmentPoint = new Vector3(shipTransform.position.x, shipTransform.position.y, shipTransform.position.z);
         checkInput();
 
         checkAndReset();

@@ -149,7 +149,7 @@ public class CollisionManager3D : MonoBehaviour
                             colliders[i].gameObject.SetActive(false);
                             colliders.Remove(colliders[i]);
                         }
-                        else if(colliders[i].gameObject.tag == "Respawn" || colliders[j].gameObject.tag == "Respawn") //Hit the ground -> death scene
+                        else if(colliders[i].gameObject.tag == "Respawn" && colliders[j].GetComponent<FuelPickup>() == null) //Hit the ground -> death scene
                         {
                             if (colliders[i].GetComponent<ShipFuel>() != null)
                             {
@@ -166,7 +166,7 @@ public class CollisionManager3D : MonoBehaviour
                                 colliders[i].GetComponent<Particle3D>().addForce(ForceGenerator3D.genereateImpulse(norm, mult));
                             }
 
-                            //GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
+                            GameObject.Find("GameManager").GetComponent<SwitchScene>().Switch();
                         }
                         else if(colliders[i].gameObject.tag == "Finish" || colliders[j].gameObject.tag == "Finish")//Reached the end of the level
                         {
