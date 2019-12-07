@@ -7,7 +7,7 @@ public class AxisAlignedBoundingBoxHull3D : CollisionHull3D
 
     public AxisAlignedBoundingBoxHull3D() : base(CollisionHullType3D.Hull_AABB) { }
 
-    public const float maxRange = 100f;
+    public const float maxRange = 1000f;
     public List<CollisionHull3D> DontTestWithTheseColliders;
 
     [Range(0f, maxRange)]

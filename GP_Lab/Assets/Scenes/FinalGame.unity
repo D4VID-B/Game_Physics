@@ -3359,9 +3359,9 @@ MonoBehaviour:
     e33: 0
   DontTestWithTheseColliders:
   - {fileID: 1212955487}
-  length: 100
+  length: 500
   height: 1
-  depth: 100
+  depth: 500
 --- !u!23 &1300865137
 MeshRenderer:
   m_ObjectHideFlags: 0
